@@ -1,0 +1,35 @@
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons";
+
+.offcanvas {
+  background-color: rgba(33, 37, 41, 0.75);
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.svh-100 {
+  height: 100svh;
+}
+
+.min-svh-100 {
+  min-height: 100svh;
+}
+
+@media (min-width: 992px) {
+  .navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .nav-link {
+      padding-top: $navbar-padding-y + $nav-link-padding-y;
+      padding-bottom: $navbar-padding-y + $nav-link-padding-y;
+
+      &.active {
+        border-bottom: 3px solid $navbar-light-active-color;
+        padding-bottom: $navbar-padding-y + $nav-link-padding-y - 0.1875rem;
+      }
+    }
+  }
+}
