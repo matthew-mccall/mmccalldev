@@ -12,6 +12,8 @@ export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}
     const [offcanvasAcrylic, setOffcanvasAcrylic] = useState<string | null>(null)
     const ref = useRef<HTMLDivElement | null>(null)
 
+    const navStyles = ['shadow', 'bg-opacity-75', AcrylicStyle.acrylic]
+
     useEffect(() => {
         if (typeof document === 'undefined') return;
 
@@ -32,9 +34,9 @@ export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 0) {
-                ref.current!.classList.add('shadow')
+                ref.current!.classList.add(...navStyles)
             } else {
-                ref.current!.classList.remove('shadow')
+                ref.current!.classList.remove(...navStyles)
             }
         })
     })
@@ -59,7 +61,7 @@ export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}
         <Navbar bg={'body'}
                 expand={'lg'} fixed={position === 'fixed' ? 'top' : undefined}
                 sticky={position === 'sticky' ? 'top' : undefined}
-                className={`shadow bg-opacity-75 ${AcrylicStyle.acrylic}`}
+                className={navStyles.join(' ')}
                 ref={ref}>
             <Container>
                 <Navbar.Brand href={"/"}>mmccall.dev</Navbar.Brand>

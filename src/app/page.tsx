@@ -23,11 +23,11 @@ export default async function Home() {
     const content = await getContent();
     return (
         <main>
-            <div className={'d-flex align-items-center justify-content-center'} style={{height: '67dvh'}}>
-                <div className={'text-center'}>
+            <div className={'d-flex align-items-center'} style={{height: '67dvh'}}>
+                <Container className="text-center">
                     <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
-                    <p className={'lead'}>Computer Science Major at Rensselaer Polytechnic Institute</p>
-                </div>
+                    <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer Polytechnic Institute</p>
+                </Container>
             </div>
             <Container>
                 <div className={'d-flex justify-content-center pb-5'}>
