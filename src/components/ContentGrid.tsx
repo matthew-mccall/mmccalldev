@@ -30,7 +30,7 @@ export default function ContentGrid({content}: ContentGridProps) {
 
     return (
         <Container>
-            <Row xs={1} small={2} md={3} lg={4} ref={rowRef} className={"g-4"}>
+            <Row xs={1} small={2} md={3} xl={4} ref={rowRef} className={"g-4"}>
                 {
                     content.map((content, index) => {
                         return (

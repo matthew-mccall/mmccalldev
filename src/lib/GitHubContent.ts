@@ -28,52 +28,36 @@ const GetGitHubContent: ContentProvider = async () => {
 
     let pushEvents: PublicEventsForUserType = res.data.filter((event) => event.type === 'PushEvent' && event.actor.login === 'matthew-mccall');
 
-    let pushDates = pushEvents
-        .reduce((acc, event) => {
-            if (event.created_at) {
-                acc.add(new Date(event.created_at).toLocaleDateString());
-            }
+    // Group pushEvents by date and repository
+    const groupedPushEvents: { [key: string]: { [key: string]: number } } = {};
 
-            return acc;
-        }, new Set<string>)
+    pushEvents.forEach((event) => {
+        const date = event.created_at ? event.created_at.split('T')[0] : '';
+        const repo = event.repo.name;
 
-    let pushedRepos = pushEvents
-        .reduce((acc, event) => {
-            if (event.repo.name) {
-                acc.add(event.repo.name);
-            }
+        if (!groupedPushEvents[date]) {
+            groupedPushEvents[date] = {};
+        }
 
-            return acc;
-        }, new Set<string>)
+        if (!groupedPushEvents[date][repo]) {
+            groupedPushEvents[date][repo] = 0;
+        }
 
-    pushDates.forEach((date) => {
-        pushedRepos.forEach((repo) => {
-            const commitCount = pushEvents
-                .filter(event =>
-                    event.repo.name === repo &&
-                    event.created_at &&
-                    new Date(event.created_at).toLocaleDateString() === date)
-                .reduce((acc, event) => {
-                    // @ts-ignore
-                    if (event.payload.commits) {
-                        // @ts-ignore
-                        acc += event.payload.commits.length;
-                    }
-                    return acc;
-                }, 0)
+        groupedPushEvents[date][repo]++;
+    });
 
-            if (commitCount === 0) {
-                return;
-            }
+    // Add corresponding Content to the content array
+    Object.entries(groupedPushEvents).forEach(([date, repos]) => {
+        Object.entries(repos).forEach(([repo, commitCount]) => {
+            const repoName = repo.replace('matthew-mccall/', '');
 
-            const shortenedRepoName = repo.indexOf('matthew-mccall/') === 0 ? repo.slice(15) : repo;
-            const formattedRepoName = shortenedRepoName.replace(/-/g, '\u2011');
-
-            content.push(Promise.resolve({
-                title: `Pushed ${commitCount} commit${commitCount > 1 ? 's' : ''} to ${formattedRepoName}`,
-                date: date,
+            const contentItem: Content = {
+                date,
+                title: `Pushed ${commitCount} commit${commitCount > 1 ? 's' : ''} to ${repoName}`,
                 icon: 'github',
-            }));
+            };
+
+            content.push(Promise.resolve(contentItem));
         });
     });
 
