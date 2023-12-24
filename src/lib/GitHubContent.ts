@@ -61,6 +61,25 @@ const GetGitHubContent: ContentProvider = async () => {
         });
     });
 
+    // Filter for pull request merge events
+    let pullRequestEvents: PublicEventsForUserType = res.data.filter((event) => event.type === 'PullRequestEvent' && event.payload.action === 'closed' && event.payload.pull_request.merged);
+
+    // Add corresponding Content to the content array for pull request merge events
+    pullRequestEvents.forEach((event) => {
+        const pullRequestNumber = event.payload.pull_request.number;
+        const pullRequestLink = event.payload.pull_request.html_url;
+        const repoName = event.repo.name.replace('matthew-mccall/', '');
+
+        const contentItem: Content = {
+            date: event.created_at ? event.created_at.split('T')[0] : '',
+            title: `Merged pull request #${pullRequestNumber} into ${repoName}`,
+            icon: 'github',
+            link: pullRequestLink,
+        };
+
+        content.push(Promise.resolve(contentItem));
+    });
+
     return content;
 }
 
