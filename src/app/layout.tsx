@@ -2,11 +2,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import localFont from "next/font/local";
 import Footer from "@mmccalldev/components/Footer";
 import NavigationBar from "@mmccalldev/components/NavigationBar";
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = localFont({
+    src: "fonts/Inter.var.woff2",
+})
 
 export const metadata: Metadata = {
   title: 'Matthew McCall',
