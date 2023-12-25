@@ -29,7 +29,7 @@ export default async function Home() {
         ['linkedin', 'https://www.linkedin.com/in/96d9/'],
         ['instagram', 'https://www.instagram.com/__mmccall/'],
         ['twitter', 'https://twitter.com/__mmccall'],
-        ['youtube', 'https://www.youtube.com/channel/UCZy0e5PQ0XxMq5U4kXlFq8w'],
+        ['youtube', 'https://www.youtube.com/@__mmccall'],
         ['twitch', 'https://www.twitch.tv/mmapptv'],
     ]);
 
