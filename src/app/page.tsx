@@ -5,15 +5,17 @@ import GetUnsplashContent from "@mmccalldev/lib/UnsplashContent";
 import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
 import ContentGrid from "@mmccalldev/components/ContentGrid";
 import GitHubCalendarWrapper from "@mmccalldev/components/GitHubCalendar";
+import GetInstagramContent from "@mmccalldev/lib/InstagramContent";
 
 async function getContent() {
-    const [youtubeContent, githubContent, unsplashContent, twitchContent] = await Promise.all([
+    const [youtubeContent, githubContent, unsplashContent, twitchContent, instagramContent] = await Promise.all([
         GetYouTubeContent(),
         GetGitHubContent(),
         GetUnsplashContent(),
-        GetTwitchContent()]);
+        GetTwitchContent(),
+        GetInstagramContent()]);
 
-    return (await Promise.all([...youtubeContent, ...githubContent, ...unsplashContent, ...twitchContent]))
+    return (await Promise.all([...youtubeContent, ...githubContent, ...unsplashContent, ...twitchContent, ...instagramContent]))
         .sort((a, b) => {
             return (new Date(b.date)).getTime() - (new Date(a.date)).getTime();
         });
