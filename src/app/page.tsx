@@ -23,12 +23,31 @@ async function getContent() {
 
 export default async function Home() {
     const content = await getContent();
+
+    const socials: Map<string, string> = new Map([
+        ['github', 'https://github.com/matthew-mccall'],
+        ['linkedin', 'https://www.linkedin.com/in/96d9/'],
+        ['instagram', 'https://www.instagram.com/__mmccall/'],
+        ['twitter', 'https://twitter.com/__mmccall'],
+        ['youtube', 'https://www.youtube.com/channel/UCZy0e5PQ0XxMq5U4kXlFq8w'],
+        ['twitch', 'https://www.twitch.tv/mmapptv'],
+    ]);
+
     return (
         <main>
             <div className={'d-flex align-items-center'} style={{height: '67dvh'}}>
                 <Container className="text-center">
                     <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
                     <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer Polytechnic Institute</p>
+                    <div className={'d-flex justify-content-center'}>
+                        <div className={'d-flex flex-wrap justify-content-center'}>
+                            {[...socials].map(([name, url]) => (
+                                <a key={name} href={url} className={'fs-3 mx-3'}>
+                                    <i className={`bi bi-${name}`}/>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
                 </Container>
             </div>
             <Container>
