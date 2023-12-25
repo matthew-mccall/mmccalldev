@@ -54,7 +54,7 @@ export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}
 
     const navLinks: Map<string, string> = new Map([
         ['home', '/'],
-        ['resume', '/resume'],
+        // ['resume', '/resume'],
     ]);
 
     return (
