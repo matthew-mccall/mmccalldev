@@ -8,14 +8,14 @@ import GitHubCalendarWrapper from "@mmccalldev/components/GitHubCalendar";
 import GetInstagramContent from "@mmccalldev/lib/InstagramContent";
 
 async function getContent() {
-    const [youtubeContent, githubContent, unsplashContent, instagramContent] = await Promise.all([
+    const [youtubeContent, githubContent, unsplashContent, twitchContent, instagramContent] = await Promise.all([
         GetYouTubeContent(),
         GetGitHubContent(),
         GetUnsplashContent(),
-        // GetTwitchContent(),
+        GetTwitchContent(),
         GetInstagramContent()]);
 
-    return (await Promise.all([...youtubeContent, ...githubContent, ...unsplashContent, ...instagramContent]))
+    return (await Promise.all([...youtubeContent, ...githubContent, ...unsplashContent, ...twitchContent, ...instagramContent]))
         .sort((a, b) => {
             return (new Date(b.date)).getTime() - (new Date(a.date)).getTime();
         });

@@ -1,33 +1,48 @@
 import {ContentProvider} from "@mmccalldev/lib/Content";
-import {AppTokenAuthProvider} from "@twurple/auth";
-import {ApiClient} from "@twurple/api";
 
-const authProvider = new AppTokenAuthProvider(process.env.TWITCH_CLIENT_ID!, process.env.TWITCH_CLIENT_SECRET!)
-const apiClient = new ApiClient({authProvider});
+const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID!;
+const TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET!;
 
-const GetTwitchContent: ContentProvider = async ()=> {
+const GetTwitchContent: ContentProvider = async () => {
+    const tokenResponse = await fetch(`https://id.twitch.tv/oauth2/token?client_id=${TWITCH_CLIENT_ID}&client_secret=${TWITCH_CLIENT_SECRET}&grant_type=client_credentials`, {
+        method: 'POST'
+    });
 
-    const user = await apiClient.users.getUserByName('mmapptv');
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
 
-    if (!user) {
-        return [];
-    }
+    const response = await fetch(`https://api.twitch.tv/helix/users?login=mmapptv`, {
+        headers: {
+            'Client-ID': TWITCH_CLIENT_ID,
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
 
-    const { data: videos } = await apiClient.videos.getVideosByUser(user);
+    const data = await response.json();
+    const userId = data.data[0].id;
 
-    return videos.map(async ({title, url, creationDate, thumbnailUrl}) => {
+    const videoResponse = await fetch(`https://api.twitch.tv/helix/videos?user_id=${userId}`, {
+        headers: {
+            'Client-ID': TWITCH_CLIENT_ID,
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
 
-        thumbnailUrl = thumbnailUrl.replace(/%{width}x%{height}/, '320x200');
+    const videoData = await videoResponse.json();
+
+    return videoData.data.map(({title, url, created_at, thumbnail_url}: any) => {
+        thumbnail_url = thumbnail_url.replace(/%{width}x%{height}/, '320x200');
 
         return {
             title,
-            date: creationDate.toString(),
+            date: new Date(created_at).toString(),
             icon: 'twitch',
             link: url,
-            image: thumbnailUrl,
+            image: thumbnail_url,
             // overlay: true,
+            color: '#9146FF'
         }
-    })
+    });
 }
 
 export default GetTwitchContent;
