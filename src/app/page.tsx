@@ -35,14 +35,14 @@ export default async function Home() {
 
     return (
         <main>
-            <div className={'d-flex align-items-center'} style={{height: '67dvh'}}>
+            <div className={'d-flex align-items-center'} style={{height: '67lvh'}}>
                 <Container className="text-center">
                     <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
                     <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer Polytechnic Institute</p>
                     <div className={'d-flex justify-content-center'}>
                         <div className={'d-flex flex-wrap justify-content-center'}>
                             {[...socials].map(([name, url]) => (
-                                <a key={name} href={url} className={'fs-3 mx-3'}>
+                                <a key={name} href={url} className={'fs-4 mx-3'}>
                                     <i className={`bi bi-${name}`}/>
                                 </a>
                             ))}
