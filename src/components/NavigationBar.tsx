@@ -61,7 +61,6 @@ export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}
         <Navbar bg={'body'}
                 expand={'lg'} fixed={position === 'fixed' ? 'top' : undefined}
                 sticky={position === 'sticky' ? 'top' : undefined}
-                className={navStyles.join(' ')}
                 ref={ref}>
             <Container>
                 <Navbar.Brand href={"/"}>mmccall.dev</Navbar.Brand>
