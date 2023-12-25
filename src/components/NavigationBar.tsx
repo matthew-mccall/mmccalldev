@@ -6,7 +6,7 @@ import {Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 
-export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}) {
+export default function NavigationBar() {
 
     const [show, setShow] = useState(false);
     const [offcanvasAcrylic, setOffcanvasAcrylic] = useState<string | null>(null)
@@ -54,13 +54,13 @@ export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}
 
     const navLinks: Map<string, string> = new Map([
         ['home', '/'],
+        ['docs', 'https://docs.mmccall.dev'],
         // ['resume', '/resume'],
     ]);
 
     return (
         <Navbar bg={'body'}
-                expand={'lg'} fixed={position === 'fixed' ? 'top' : undefined}
-                sticky={position === 'sticky' ? 'top' : undefined}
+                expand={'lg'} fixed='top'
                 ref={ref}>
             <Container>
                 <Navbar.Brand href={"/"}>mmccall.dev</Navbar.Brand>
@@ -81,11 +81,21 @@ export default function NavigationBar({position}: {position: 'fixed' | 'sticky'}
                     <Offcanvas.Body>
                         <Nav className={"justify-content-end flex-grow-1 pe-3"}>
                             {
-                                [...navLinks.entries()].map(([key, value]) =>
-                                    <Link href={value} key={key} className={`nav-link ${pathname === value ? 'active' : ''}`}>
-                                        {key}
-                                    </Link>
-                                )
+                                [...navLinks.entries()].map(([key, value]) => {
+                                    if (value.startsWith('/')) {
+                                        return (
+                                            <Link href={value} key={key} className={`nav-link ${pathname === value ? 'active' : ''}`}>
+                                                {key}
+                                            </Link>
+                                        );
+                                    } else {
+                                        return (
+                                            <a href={value} key={key} className={`nav-link ${pathname === value ? 'active' : ''}`}>
+                                                {key}
+                                            </a>
+                                        );
+                                    }
+                                })
                             }
                         </Nav>
                     </Offcanvas.Body>

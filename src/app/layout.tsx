@@ -23,7 +23,7 @@ export default function RootLayout({children}: {
     <ThemeProvider className={inter.className} style={{
         fontFeatureSettings: "'ss01', 'cv11'",
     }}>
-    <NavigationBar position={"fixed"}/>
+    <NavigationBar/>
     {children}
     <Footer/>
     </ThemeProvider>
