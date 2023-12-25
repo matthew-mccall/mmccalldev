@@ -62,7 +62,7 @@ const GetGitHubContent: ContentProvider = async () => {
     });
 
     // Filter for pull request merge events
-    let pullRequestEvents: PublicEventsForUserType = res.data.filter((event) => event.type === 'PullRequestEvent' && event.payload.action === 'closed' && event.payload.pull_request.merged);
+    let pullRequestEvents: any[] = res.data.filter((event: any) => event.type === 'PullRequestEvent' && event.payload.action === 'closed' && event.payload.pull_request.merged);
 
     // Add corresponding Content to the content array for pull request merge events
     pullRequestEvents.forEach((event) => {
