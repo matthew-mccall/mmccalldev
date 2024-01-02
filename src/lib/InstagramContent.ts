@@ -15,6 +15,7 @@ const GetInstagramContent: ContentProvider = async () => {
             link: post.permalink,
             date: new Date(post.timestamp),
             icon: 'instagram',
+            overlay: true,
         }));
 
     return content;
