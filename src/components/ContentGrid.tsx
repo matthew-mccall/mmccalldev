@@ -18,11 +18,16 @@ export default function ContentGrid({content}: ContentGridProps) {
         if (typeof document !== 'undefined' && rowRef.current) {
             Promise.all([
                 import('jquery'),
-                import('masonry-layout')
-            ]).then(([, masonry]) => {
-                new masonry.default(rowRef.current!, {
+                import('masonry-layout'),
+                import('imagesloaded')
+            ]).then(([, Masonry, imagesloaded]) => {
+                const msnry = new Masonry.default(rowRef.current!, {
                     itemSelector: '.col',
                     percentPosition: true
+                })
+
+                imagesloaded.default(rowRef.current!).on('progress', () => {
+                    msnry.layout && msnry.layout()
                 })
             })
         }
