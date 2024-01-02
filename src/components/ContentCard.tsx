@@ -31,10 +31,8 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
             theme = backgroundColor.contrastWCAG21(lightForeground) > backgroundColor.contrastWCAG21(darkForeground) ? "dark" : "light";
         }
 
-        theme = theme || "dark";
-
         if (overlay) {
-            return (<Card className={"border-0 shadow"} data-bs-theme={theme}>
+            return (<Card className={"border-0 shadow"} data-bs-theme={theme || 'dark'}>
                 <Card.Img src={image} alt={title} />
                 <Card.ImgOverlay className={"d-flex flex-column justify-content-end"} style={{backgroundImage: `linear-gradient(transparent 33%, ${color || 'black'})`}}>
                     {cardContent}
