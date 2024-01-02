@@ -5,23 +5,21 @@ import Color from "colorjs.io"
 
 export default function ContentCard({image, overlay, icon, color, title, description, link, date}: Content) {
 
-    const descriptionContent = description ? <Card.Text className={"text-truncate"}>{description}</Card.Text> : null;
-
     const cardTitleStyle: CSSProperties = {
         fontFeatureSettings: "'ss01', 'cv11', 'zero'",
     }
 
-    let linkElement = <a href={link} className={"stretched-link text-reset text-decoration-none"}><Card.Title style={cardTitleStyle}>{title}</Card.Title></a>
+    const linkElement = <a href={link} className={"stretched-link text-reset text-decoration-none"}><Card.Title style={cardTitleStyle}>{title}</Card.Title></a>
 
     const cardContent = (<>
         {link ? linkElement : <Card.Title style={cardTitleStyle}>{title}</Card.Title> }
-        {descriptionContent}
-        <Card.Text>
-            <div className={"d-flex flex-row justify-content-between text-muted"}>
+        <Card.Text className={'text-truncate'}>
+            {description}
+        </Card.Text>
+        <div className={"d-flex flex-row justify-content-between text-muted"}>
             <small>{(new Date(date)).toDateString()}</small>
             <i className={`bi-${icon}`}></i>
-            </div>
-        </Card.Text>
+        </div>
     </>)
 
     if (image && color) {
