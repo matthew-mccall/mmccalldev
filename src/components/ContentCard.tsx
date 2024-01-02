@@ -9,14 +9,18 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
         fontFeatureSettings: "'ss01', 'cv11', 'zero'",
     }
 
-    const linkElement = <a href={link} className={"stretched-link text-reset text-decoration-none"}><Card.Title style={cardTitleStyle}>{title}</Card.Title></a>
 
     const cardContent = (<>
-        {link ? linkElement : <Card.Title style={cardTitleStyle}>{title}</Card.Title> }
+        {title && <Card.Title style={cardTitleStyle}>{title}</Card.Title> }
         {description && <Card.Text className={'text-truncate'}>{description}</Card.Text>}
-        <div className={"d-flex flex-row justify-content-between text-muted"}>
-            <small>{(new Date(date)).toDateString()}</small>
-            <i className={`bi-${icon}`}></i>
+        <div className={"d-flex flex-row text-muted"}>
+            <small className={'me-auto'}>{(new Date(date)).toDateString()}</small>
+            <i className={`bi-${icon} mx-2`}></i>
+            {link &&
+            <a href={link} target={"_blank"} rel={"noreferrer"} className={'stretched-link text-reset'}>
+                <i className={`bi-link-45deg`}></i>
+            </a>
+            }
         </div>
     </>)
 

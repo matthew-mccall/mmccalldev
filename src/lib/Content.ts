@@ -1,5 +1,5 @@
 export interface Content {
-    title: string;
+    title?: string;
     date: string;
     icon: string;
     link?: string;

@@ -1,4 +1,5 @@
 import {Content, ContentProvider} from "@mmccalldev/lib/Content";
+import {getAverageColor} from "fast-average-color-node";
 
 const GetInstagramContent: ContentProvider = async () => {
 
@@ -15,7 +16,8 @@ const GetInstagramContent: ContentProvider = async () => {
             link: post.permalink,
             date: new Date(post.timestamp),
             icon: 'instagram',
-            overlay: true,
+            // overlay: true,
+            color: (await getAverageColor(post.media_url)).hex,
         }));
 
     return content;

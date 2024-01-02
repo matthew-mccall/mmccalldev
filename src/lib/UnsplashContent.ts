@@ -22,7 +22,7 @@ const GetUnsplashContent: ContentProvider = async ()=> {
             overlay: height > width,
             icon: 'image',
             color: color ?? (await getAverageColor(urls.regular)).hex,
-            title: alt_description ?? "Shared a photo",
+            title: alt_description ?? undefined,
             link: links.html,
             date: created_at,
         }
