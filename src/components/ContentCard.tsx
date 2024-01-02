@@ -13,9 +13,9 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
     const cardContent = (<>
         {title && <Card.Title style={cardTitleStyle}>{title}</Card.Title> }
         {description && <Card.Text className={'text-truncate'}>{description}</Card.Text>}
-        <div className={"d-flex flex-row text-muted"}>
+        <div className={"d-flex flex-row text-muted column-gap-2"}>
             <small className={'me-auto'}>{(new Date(date)).toDateString()}</small>
-            <i className={`bi-${icon} mx-2`}></i>
+            <i className={`bi-${icon}`}></i>
             {link &&
             <a href={link} target={"_blank"} rel={"noreferrer"} className={'stretched-link text-reset'}>
                 <i className={`bi-link-45deg`}></i>
