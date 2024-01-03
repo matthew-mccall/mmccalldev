@@ -1,4 +1,4 @@
-import {Container} from "react-bootstrap";
+import {Container, Stack} from "react-bootstrap";
 import GetYouTubeContent from "@mmccalldev/lib/YouTubeContent";
 import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
 import GetUnsplashContent from "@mmccalldev/lib/UnsplashContent";
@@ -39,22 +39,22 @@ export default async function Home() {
                 <Container className="text-center">
                     <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
                     <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer Polytechnic Institute</p>
-                    <div className={'d-flex justify-content-center'}>
-                        <div className={'d-flex flex-wrap justify-content-center'}>
-                            {[...socials].map(([name, url]) => (
-                                <a key={name} href={url} className={'fs-4 mx-3'}>
-                                    <i className={`bi bi-${name}`}/>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
+                    <Stack direction={"horizontal"} gap={4} className={"d-inline-flex mx-auto"}>
+                        {[...socials].map(([name, url]) => (
+                            <a key={name} href={url} className={'fs-4'}>
+                                <i className={`bi-${name}`}/>
+                            </a>
+                        ))}
+                    </Stack>
                 </Container>
             </div>
             <Container>
-                <div className={'d-flex justify-content-center pb-5'}>
-                    <GitHubCalendarWrapper />
-                </div>
-                <ContentGrid content={content} />
+                <Stack gap={5}>
+                    <div className={'mx-auto'}>
+                        <GitHubCalendarWrapper />
+                    </div>
+                    <ContentGrid content={content} />
+                </Stack>
             </Container>
         </main>)
 }

@@ -1,6 +1,6 @@
 import {Content} from "@mmccalldev/lib/Content";
 import React, {CSSProperties} from "react";
-import {Card} from "react-bootstrap";
+import {Card, Stack} from "react-bootstrap";
 import Color from "colorjs.io"
 
 export default function ContentCard({image, overlay, icon, color, title, description, link, date}: Content) {
@@ -13,7 +13,7 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
     const cardContent = (<>
         {title && <Card.Title style={cardTitleStyle}>{title}</Card.Title> }
         {description && <Card.Text className={'text-truncate'}>{description}</Card.Text>}
-        <div className={"d-flex flex-row text-muted column-gap-2"}>
+        <Stack direction="horizontal" gap={2}>
             <small className={'me-auto'}>{(new Date(date)).toDateString()}</small>
             <i className={`bi-${icon}`}></i>
             {link &&
@@ -21,7 +21,7 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
                 <i className={`bi-link-45deg`}></i>
             </a>
             }
-        </div>
+        </Stack>
     </>)
 
     if (image) {
