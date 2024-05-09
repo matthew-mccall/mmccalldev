@@ -26,7 +26,7 @@ export default async function Home() {
         ['github', 'https://github.com/matthew-mccall'],
         ['linkedin', 'https://www.linkedin.com/in/96d9/'],
         ['instagram', 'https://www.instagram.com/__mmccall/'],
-        ['twitter', 'https://twitter.com/__mmccall'],
+        ['twitter-x', 'https://twitter.com/__mmccall'],
         ['youtube', 'https://www.youtube.com/@__mmccall'],
         ['twitch', 'https://www.twitch.tv/mmapptv'],
     ]);
