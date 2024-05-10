@@ -7,6 +7,7 @@ export interface Content {
     overlay?: boolean;
     color?: string | null;
     description?: string | null;
+    value?: number | null;
 }
 
 export type ContentProvider = () => Promise<Promise<Content>[]>;

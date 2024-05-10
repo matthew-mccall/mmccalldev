@@ -55,6 +55,7 @@ const GetGitHubContent: ContentProvider = async () => {
                 date,
                 title: `Pushed ${commitCount} commit${commitCount > 1 ? 's' : ''} to ${repoName}`,
                 icon: 'github',
+                value: commitCount
             };
 
             content.push(Promise.resolve(contentItem));
@@ -75,6 +76,7 @@ const GetGitHubContent: ContentProvider = async () => {
             title: `Merged pull request #${pullRequestNumber} into ${repoName}`,
             icon: 'github',
             link: pullRequestLink,
+            value: 1
         };
 
         content.push(Promise.resolve(contentItem));

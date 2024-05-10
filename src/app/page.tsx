@@ -3,24 +3,29 @@ import GetYouTubeContent from "@mmccalldev/lib/YouTubeContent";
 import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
 import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
 import ContentGrid from "@mmccalldev/components/ContentGrid";
-import GitHubCalendarWrapper from "@mmccalldev/components/GitHubCalendar";
 import GetInstagramContent from "@mmccalldev/lib/InstagramContent";
 
-async function getContent() {
-    const [youtubeContent, githubContent, twitchContent, instagramContent] = await Promise.all([
+async function getGitHubContent() {
+    return Promise.all(await GetGitHubContent())
+}
+
+async function getSocialContent() {
+    const [youtubeContent, twitchContent, instagramContent] = await Promise.all([
         GetYouTubeContent(),
-        GetGitHubContent(),
         GetTwitchContent(),
         GetInstagramContent()]);
 
-    return (await Promise.all([...youtubeContent, ...githubContent, ...twitchContent, ...instagramContent]))
-        .sort((a, b) => {
-            return (new Date(b.date)).getTime() - (new Date(a.date)).getTime();
-        });
+    return await Promise.all([...youtubeContent, ...twitchContent, ...instagramContent])
 }
 
 export default async function Home() {
-    const content = await getContent();
+    const gitHubContent = await getGitHubContent();
+    const socialContent = await getSocialContent();
+
+    const totalContent = socialContent.concat(gitHubContent)
+        .sort((a, b) => {
+            return (new Date(b.date)).getTime() - (new Date(a.date)).getTime();
+        });
 
     const socials: Map<string, string> = new Map([
         ['github', 'https://github.com/matthew-mccall'],
@@ -48,10 +53,7 @@ export default async function Home() {
             </div>
             <Container>
                 <Stack gap={5}>
-                    <div className={'mx-auto'}>
-                        <GitHubCalendarWrapper />
-                    </div>
-                    <ContentGrid content={content} />
+                    <ContentGrid content={totalContent} />
                 </Stack>
             </Container>
         </main>)
