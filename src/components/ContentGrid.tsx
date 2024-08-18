@@ -1,13 +1,13 @@
 'use client'
 
 import ContentCard from "@mmccalldev/components/ContentCard";
+import MagicGrid from "magic-grid"
 import {Content} from "@mmccalldev/lib/Content";
 import {useEffect, useRef} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 
 interface ContentGridProps {
     content: Content[]
-    maxColumns?: number
 }
 
 export default function ContentGrid({content}: ContentGridProps) {
@@ -15,18 +15,16 @@ export default function ContentGrid({content}: ContentGridProps) {
     const rowRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
-        if (typeof document !== 'undefined' && rowRef.current) {
-            Promise.all([
-                import('magic-grid'),
-            ]).then(([MagicGrid]) => {
-                const magicGrid = new MagicGrid.default({
-                    container: rowRef.current!,
-                    static: true
-                })
-                magicGrid.listen();
-            })
+        if (typeof document === 'undefined' || !rowRef.current) {
+            return;
         }
-    })
+
+        const magicGrid = new MagicGrid({
+            container: rowRef.current,
+            static: true,
+        })
+        magicGrid.listen();
+    }, [])
 
     return (
         <Container>

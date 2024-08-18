@@ -51,9 +51,7 @@ export default async function Home() {
                 </Container>
             </div>
             <Container>
-                <Stack gap={5}>
-                    <ContentGrid content={totalContent} />
-                </Stack>
+                <ContentGrid content={totalContent} />
             </Container>
         </main>)
 }
