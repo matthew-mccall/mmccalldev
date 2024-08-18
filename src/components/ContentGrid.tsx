@@ -17,25 +17,20 @@ export default function ContentGrid({content}: ContentGridProps) {
     useEffect(() => {
         if (typeof document !== 'undefined' && rowRef.current) {
             Promise.all([
-                import('jquery'),
-                import('masonry-layout'),
-                import('imagesloaded')
-            ]).then(([, Masonry, imagesloaded]) => {
-                const msnry = new Masonry.default(rowRef.current!, {
-                    itemSelector: '.col',
-                    percentPosition: true
+                import('magic-grid'),
+            ]).then(([MagicGrid]) => {
+                const magicGrid = new MagicGrid.default({
+                    container: rowRef.current!,
+                    static: true
                 })
-
-                imagesloaded.default(rowRef.current!).on('progress', () => {
-                    msnry.layout && msnry.layout()
-                })
+                magicGrid.listen();
             })
         }
     })
 
     return (
         <Container>
-            <Row xs={1} small={2} md={3} xl={4} ref={rowRef} className={"g-4"}>
+            <Row xs={1} sm={2} md={3} lg={4} xl={5} className={"g-0"} ref={rowRef}>
                 {
                     content.map((content, index) => {
                         return (
