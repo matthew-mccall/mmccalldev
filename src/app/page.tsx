@@ -10,12 +10,11 @@ async function getGitHubContent() {
 }
 
 async function getSocialContent() {
-    const [youtubeContent, twitchContent, instagramContent] = await Promise.all([
+    const [youtubeContent, twitchContent] = await Promise.all([
         GetYouTubeContent(),
-        GetTwitchContent(),
-        GetInstagramContent()]);
+        GetTwitchContent()]);
 
-    return await Promise.all([...youtubeContent, ...twitchContent, ...instagramContent])
+    return await Promise.all([...youtubeContent, ...twitchContent])
 }
 
 export default async function Home() {
