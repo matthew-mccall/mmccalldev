@@ -11,7 +11,7 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
 
 
     const cardContent = (<>
-        {title && <Card.Title style={cardTitleStyle}>{title}</Card.Title> }
+        {title && <Card.Title style={cardTitleStyle} dangerouslySetInnerHTML={{ __html: title }} /> }
         {description && <Card.Text className={'text-truncate'}>{description}</Card.Text>}
         <Stack direction="horizontal" gap={2}>
             <small className={'me-auto'}>{(new Date(date)).toDateString()}</small>
