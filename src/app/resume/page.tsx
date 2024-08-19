@@ -11,6 +11,7 @@ import {
     Row,
     Stack
 } from "react-bootstrap";
+import Link from "next/link";
 
 export default function ResumePage() {
     return (<main>
@@ -21,6 +22,7 @@ export default function ResumePage() {
             <Stack direction={"horizontal"} gap={4} className={"justify-content-center"}>
                 <a href={"mailto:m-mccall@outlook.com"}>m-mccall@outlook.com</a>
                 <a href={"https://linkedin.com/in/96d9"}>linkedin.com/in/96d9</a>
+                <Link href={"/resume.pdf"}>PDF Version</Link>
             </Stack>
             <Stack gap={3}>
                 <div>
