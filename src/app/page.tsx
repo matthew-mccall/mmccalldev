@@ -3,7 +3,6 @@ import GetYouTubeContent from "@mmccalldev/lib/YouTubeContent";
 import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
 import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
 import ContentGrid from "@mmccalldev/components/ContentGrid";
-import GetInstagramContent from "@mmccalldev/lib/InstagramContent";
 
 async function getGitHubContent() {
     return Promise.all(await GetGitHubContent())
@@ -56,6 +55,17 @@ export default async function Home() {
                 </Card>
                 <h2>Recent Activity</h2>
                 <ContentGrid content={totalContent}/>
+                <h2>Fun Facts</h2>
+                <p>Ah! So you scrolled all the way to the bottom. Well, here are some fun facts about me:</p>
+                <ul>
+                    <li>Preferred programming language: C++</li>
+                    <li>
+                        Favorite games: Minecraft and Tetris
+                        <br />
+                        <span className={"fw-semibold"}>Bonus fact:</span> I've made two plugins for the Paper Minecraft server.
+                    </li>
+                    <li>The '96d9' in my LinkedIn link is the first 4 letters of the SHA-1 checksum of my name: <code>echo Matthew McCall | shasum</code>.</li>
+                </ul>
             </Stack>
         </Container>
     </main>)
