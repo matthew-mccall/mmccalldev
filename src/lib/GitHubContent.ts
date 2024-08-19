@@ -7,7 +7,9 @@ import {
 const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
     request: {
-        fetch: fetch
+        fetch: (input: RequestInfo | URL, init: RequestInit | undefined) => {
+            return fetch(input, {...init, next: {revalidate: 60}});
+        }
     }
 });
 
