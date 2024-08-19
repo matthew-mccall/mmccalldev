@@ -62,9 +62,9 @@ export default async function Home() {
                     <li>
                         Favorite games: Minecraft and Tetris
                         <br />
-                        <span className={"fw-semibold"}>Bonus fact:</span> I've made two plugins for the Paper Minecraft server.
+                        <span className={"fw-semibold"}>Bonus fact:</span> I&apos;ve made two plugins for the Paper Minecraft server.
                     </li>
-                    <li>The '96d9' in my LinkedIn link is the first 4 letters of the SHA-1 checksum of my name: <code>echo Matthew McCall | shasum</code>.</li>
+                    <li>The &lsquo;96d9&rsquo; in my LinkedIn link is the first 4 letters of the SHA-1 checksum of my name: <code>echo Matthew McCall | shasum</code>.</li>
                 </ul>
             </Stack>
         </Container>
