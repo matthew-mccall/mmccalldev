@@ -31,7 +31,7 @@ export default function ContentGrid({content}: ContentGridProps) {
                 })
             })
         }
-    })
+    }, [])
 
     return (
         <Container>
