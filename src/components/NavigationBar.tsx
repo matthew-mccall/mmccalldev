@@ -2,7 +2,7 @@
 
 import AcrylicStyle from "@mmccalldev/styles/Acrylic.module.css";
 import {useEffect, useRef, useState} from "react";
-import {Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
+import {Container, Nav, Navbar, NavLink, Offcanvas} from "react-bootstrap";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 
@@ -51,21 +51,15 @@ export default function NavigationBar() {
     };
 
     const pathname = usePathname();
+    const navLinks: Map<string, string> = new Map([['home', '/'], ['resume', '/resume'], ['docs', 'https://docs.mmccall.dev'],]);
 
-    const navLinks: Map<string, string> = new Map([
-        ['home', '/'],
-        ['docs', 'https://docs.mmccall.dev'],
-        // ['resume', '/resume'],
-    ]);
-
-    return (
-        <Navbar bg={'body'}
-                expand={'lg'} fixed='top'
-                ref={ref}>
+    return (<Navbar bg={'body'}
+                    expand={'lg'} sticky='top'
+                    ref={ref}>
             <Container>
                 <Navbar.Brand href={"/"}>mmccall.dev</Navbar.Brand>
-                <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} >
-                    <i className={"bi-list fs-2"} />
+                <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow}>
+                    <i className={"bi-list fs-2"}/>
                 </Navbar.Toggle>
                 <Navbar.Offcanvas
                     id={"offcanvasNavbar"}
@@ -79,28 +73,17 @@ export default function NavigationBar() {
                         <Offcanvas.Title id="offcanvasNavbarLabel">mmccall.dev</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                        <Nav className={"justify-content-end flex-grow-1 pe-3"}>
-                            {
-                                [...navLinks.entries()].map(([key, value]) => {
-                                    if (value.startsWith('/')) {
-                                        return (
-                                            <Link href={value} key={key} className={`nav-link ${pathname === value ? 'active' : ''}`}>
-                                                {key}
-                                            </Link>
-                                        );
-                                    } else {
-                                        return (
-                                            <a href={value} key={key} className={`nav-link ${pathname === value ? 'active' : ''}`}>
-                                                {key}
-                                            </a>
-                                        );
-                                    }
-                                })
-                            }
+                        <Nav className={"justify-content-end flex-grow-1 pe-3"} activeKey={pathname}
+                             variant={"underline"}>
+                            {[...navLinks.entries()].map(([key, value]) => (
+                                <Link href={value} key={key} passHref legacyBehavior>
+                                    <NavLink eventKey={value}>
+                                        {key}
+                                    </NavLink>
+                                </Link>))}
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
             </Container>
-        </Navbar>
-    )
+        </Navbar>)
 }

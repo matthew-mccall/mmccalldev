@@ -41,7 +41,7 @@ export default async function Home() {
         </div>
         <Container>
             <Stack gap={3}>
-                <h1>Projects</h1>
+                <h2>Projects</h2>
                 <Card>
                     <CardBody>
                         <CardTitle>Open Algebra Software for Inferring Solutions</CardTitle>
@@ -54,7 +54,7 @@ export default async function Home() {
                         <CardLink href="https://oasis.mmccall.dev">Open Algebra Project Website</CardLink>
                     </CardBody>
                 </Card>
-                <h1>Recent Activity</h1>
+                <h2>Recent Activity</h2>
                 <ContentGrid content={totalContent}/>
             </Stack>
         </Container>
