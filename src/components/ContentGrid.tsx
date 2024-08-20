@@ -16,20 +16,16 @@ export default function ContentGrid({content}: ContentGridProps) {
     const rowRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
-        if (typeof document !== 'undefined' && rowRef.current) {
-            Promise.all([
-                import('jquery'),
-            ]).then(() => {
-                const msnry = new Masonry(rowRef.current!, {
-                    itemSelector: '.col',
-                    percentPosition: true
-                })
+        if (typeof document === 'undefined' || !rowRef.current) { return; }
 
-                imagesloaded(rowRef.current!).on('progress', () => {
-                    msnry.layout && msnry.layout()
-                })
-            })
-        }
+        const msnry = new Masonry(rowRef.current, {
+            itemSelector: '.col',
+            percentPosition: true
+        })
+
+        imagesloaded(rowRef.current).on('progress', () => {
+            msnry.layout && msnry.layout()
+        })
     }, [])
 
     return (
