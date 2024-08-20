@@ -4,10 +4,11 @@ import ContentCard from "@mmccalldev/components/ContentCard";
 import {Content} from "@mmccalldev/lib/Content";
 import {useEffect, useRef} from "react";
 import {Col, Container, Row} from "react-bootstrap";
+import Masonry from "masonry-layout";
+import imagesloaded from "imagesloaded";
 
 interface ContentGridProps {
     content: Content[]
-    maxColumns?: number
 }
 
 export default function ContentGrid({content}: ContentGridProps) {
@@ -18,15 +19,13 @@ export default function ContentGrid({content}: ContentGridProps) {
         if (typeof document !== 'undefined' && rowRef.current) {
             Promise.all([
                 import('jquery'),
-                import('masonry-layout'),
-                import('imagesloaded')
-            ]).then(([, Masonry, imagesloaded]) => {
-                const msnry = new Masonry.default(rowRef.current!, {
+            ]).then(() => {
+                const msnry = new Masonry(rowRef.current!, {
                     itemSelector: '.col',
                     percentPosition: true
                 })
 
-                imagesloaded.default(rowRef.current!).on('progress', () => {
+                imagesloaded(rowRef.current!).on('progress', () => {
                     msnry.layout && msnry.layout()
                 })
             })
@@ -35,7 +34,7 @@ export default function ContentGrid({content}: ContentGridProps) {
 
     return (
         <Container>
-            <Row xs={1} small={2} md={3} xl={4} ref={rowRef} className={"g-4"}>
+            <Row xs={1} sm={2} md={3} xl={4} ref={rowRef} className={"g-4"}>
                 {
                     content.map((content, index) => {
                         return (
