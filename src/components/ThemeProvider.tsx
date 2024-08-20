@@ -1,10 +1,10 @@
 'use client'
 
-import React, {createContext, CSSProperties, useEffect, useState} from "react";
+import React, {createContext, HTMLProps, useEffect, useState} from "react";
 
 export const ThemeContext = createContext("light" as "light" | "dark")
 
-export default function ThemeProvider({children, style, className}: { children: React.ReactNode, style: CSSProperties, className?: string }) {
+export default function ThemeProvider(props: HTMLProps<HTMLBodyElement>) {
     const [theme, setTheme] = useState<"light" | "dark">("light")
 
     useEffect(() => {
@@ -15,8 +15,8 @@ export default function ThemeProvider({children, style, className}: { children: 
 
     return (
         <ThemeContext.Provider value={theme}>
-            <body className={className} style={style} data-bs-theme={theme}>
-            {children}
+            <body {...props} data-bs-theme={theme}>
+                {props.children}
             </body>
         </ThemeContext.Provider>
     )
