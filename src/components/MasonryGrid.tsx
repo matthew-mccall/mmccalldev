@@ -2,7 +2,6 @@
 
 import {useEffect, useRef} from "react";
 import {Row, RowProps} from "react-bootstrap";
-import Masonry from "masonry-layout";
 import imagesloaded from "imagesloaded";
 
 export default function MasonryGrid({ children, ...props }: RowProps ) {
@@ -12,13 +11,15 @@ export default function MasonryGrid({ children, ...props }: RowProps ) {
     useEffect(() => {
         if (typeof document === 'undefined' || !rowRef.current) { return; }
 
-        const msnry = new Masonry(rowRef.current, {
-            itemSelector: '.col',
-            percentPosition: true
-        })
+        import('masonry-layout').then(Masonry => {
+            const msnry = new Masonry.default(rowRef.current!, {
+                itemSelector: '.col',
+                percentPosition: true
+            })
 
-        imagesloaded(rowRef.current).on('progress', () => {
-            msnry.layout && msnry.layout()
+            imagesloaded(rowRef.current!).on('progress', () => {
+                msnry.layout && msnry.layout()
+            })
         })
     }, [])
 
