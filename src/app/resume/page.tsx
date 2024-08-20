@@ -12,7 +12,7 @@ import {
     Stack
 } from "react-bootstrap";
 import Link from "next/link";
-import MasonryGrid from "@mmccalldev/components/MasonryGrid";
+import MagicGrid from "@mmccalldev/components/MagicGrid";
 
 export default function ResumePage() {
     return (<main>
@@ -39,8 +39,8 @@ export default function ResumePage() {
                 </div>
                 <div>
                     <h2>Project Experience</h2>
-                    <MasonryGrid xs={1} sm={2} lg={3} className={"g-3"}>
-                        <Col>
+                    <MagicGrid xs={1} sm={2} lg={3}>
+                        <Col className={"pb-4"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>
@@ -57,7 +57,7 @@ export default function ResumePage() {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col>
+                        <Col className={"pb-4"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>
@@ -79,7 +79,7 @@ export default function ResumePage() {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col>
+                        <Col className={"pb-4"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>
@@ -96,12 +96,12 @@ export default function ResumePage() {
                                 </CardBody>
                             </Card>
                         </Col>
-                    </MasonryGrid>
+                    </MagicGrid>
                 </div>
                 <div>
                     <h2>Research and On-Campus Work</h2>
-                    <MasonryGrid xs={1} sm={2} lg={3} className={"g-3"}>
-                        <Col>
+                    <MagicGrid xs={1} sm={2} lg={3}>
+                        <Col className={"pb-4"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>Scientific Computation Research Center (SCOREC)</CardTitle>
@@ -120,7 +120,7 @@ export default function ResumePage() {
                                 </ListGroup>
                             </Card>
                         </Col>
-                        <Col>
+                        <Col className={"pb-4"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>Rensselaer Center for Open Source (RCOS)</CardTitle>
@@ -153,7 +153,7 @@ export default function ResumePage() {
                                 </ListGroup>
                             </Card>
                         </Col>
-                    </MasonryGrid>
+                    </MagicGrid>
                 </div>
                 <div>
                     <h2>Education</h2>
