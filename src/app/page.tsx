@@ -55,17 +55,19 @@ export default async function Home() {
                 </Card>
                 <h2>Recent Activity</h2>
                 <ContentGrid content={totalContent}/>
-                <h2>Fun Facts</h2>
-                <p>Ah! So you scrolled all the way to the bottom. Well, here are some fun facts about me:</p>
-                <ul>
-                    <li>Preferred programming language: C++</li>
-                    <li>
-                        Favorite games: Minecraft and Tetris
-                        <br />
-                        <span className={"fw-semibold"}>Bonus fact:</span> I&apos;ve made two plugins for the Paper Minecraft server.
-                    </li>
-                    <li>The &lsquo;96d9&rsquo; in my LinkedIn link is the first 4 letters of the SHA-1 checksum of my name: <code>echo Matthew McCall | shasum</code>.</li>
-                </ul>
+                <div>
+                    <h2>Fun Facts</h2>
+                    <p>Ah! So you scrolled all the way to the bottom. Well, here are some fun facts about me:</p>
+                    <ul>
+                        <li>Preferred programming language: C++</li>
+                        <li>
+                            Favorite games: Minecraft and Tetris
+                            <br />
+                            <span className={"fw-semibold"}>Bonus fact:</span> I&apos;ve made two plugins for the Paper Minecraft server.
+                        </li>
+                        <li>The &lsquo;96d9&rsquo; in my LinkedIn link is the first 4 letters of the SHA-1 checksum of my name: <code>echo Matthew McCall | shasum</code>.</li>
+                    </ul>
+                </div>
             </Stack>
         </Container>
     </main>)

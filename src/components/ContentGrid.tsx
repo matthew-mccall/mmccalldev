@@ -1,36 +1,16 @@
-'use client'
-
 import ContentCard from "@mmccalldev/components/ContentCard";
 import {Content} from "@mmccalldev/lib/Content";
-import {useEffect, useRef} from "react";
-import {Col, Container, Row} from "react-bootstrap";
-import Masonry from "masonry-layout";
-import imagesloaded from "imagesloaded";
+import {Col, Container} from "react-bootstrap";
+import MasonryGrid from "@mmccalldev/components/MasonryGrid";
 
 interface ContentGridProps {
     content: Content[]
 }
 
 export default function ContentGrid({content}: ContentGridProps) {
-
-    const rowRef = useRef<HTMLDivElement | null>(null)
-
-    useEffect(() => {
-        if (typeof document === 'undefined' || !rowRef.current) { return; }
-
-        const msnry = new Masonry(rowRef.current, {
-            itemSelector: '.col',
-            percentPosition: true
-        })
-
-        imagesloaded(rowRef.current).on('progress', () => {
-            msnry.layout && msnry.layout()
-        })
-    }, [])
-
     return (
         <Container>
-            <Row xs={1} sm={2} md={3} xl={4} ref={rowRef} className={"g-4"}>
+            <MasonryGrid xs={1} sm={2} md={3} xl={4} className={"g-4"}>
                 {
                     content.map((content, index) => {
                         return (
@@ -40,7 +20,7 @@ export default function ContentGrid({content}: ContentGridProps) {
                         )
                     })
                 }
-            </Row>
+            </MasonryGrid>
         </Container>
     )
 }

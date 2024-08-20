@@ -12,6 +12,7 @@ import {
     Stack
 } from "react-bootstrap";
 import Link from "next/link";
+import MasonryGrid from "@mmccalldev/components/MasonryGrid";
 
 export default function ResumePage() {
     return (<main>
@@ -19,12 +20,18 @@ export default function ResumePage() {
             <div className={"text-center"}>
                 <h1 className={"display-1 fw-semibold"}>Matthew McCall</h1>
             </div>
-            <Stack direction={"horizontal"} gap={4} className={"justify-content-center"}>
-                <a href={"mailto:m-mccall@outlook.com"}>m-mccall@outlook.com</a>
-                <a href={"https://linkedin.com/in/96d9"}>linkedin.com/in/96d9</a>
-                <Link href={"/resume.pdf"}>PDF Version</Link>
-            </Stack>
             <Stack gap={3}>
+                <Row xs={1} md={3} className={"g-2 g-lg-5 text-center"}>
+                    <Col lg={"auto"} className={"ms-md-auto"}>
+                        <a href={"mailto:m-mccall@outlook.com"}>m-mccall@outlook.com</a>
+                    </Col>
+                    <Col lg={"auto"}>
+                        <a href={"https://linkedin.com/in/96d9"}>linkedin.com/in/96d9</a>
+                    </Col>
+                    <Col lg={"auto"} className={"me-md-auto"}>
+                        <Link href={"/resume.pdf"}>PDF Version</Link>
+                    </Col>
+                </Row>
                 <div>
                     <h2>About</h2>
                     <p className={"lead"}>A highly motivated computer science and computer systems engineering dual major who led multiple teams,
@@ -32,7 +39,7 @@ export default function ResumePage() {
                 </div>
                 <div>
                     <h2>Project Experience</h2>
-                    <Row>
+                    <MasonryGrid xs={1} sm={2} lg={3} className={"g-3"}>
                         <Col>
                             <Card>
                                 <CardBody>
@@ -89,11 +96,11 @@ export default function ResumePage() {
                                 </CardBody>
                             </Card>
                         </Col>
-                    </Row>
+                    </MasonryGrid>
                 </div>
                 <div>
                     <h2>Research and On-Campus Work</h2>
-                    <Row>
+                    <MasonryGrid xs={1} sm={2} lg={3} className={"g-3"}>
                         <Col>
                             <Card>
                                 <CardBody>
@@ -146,11 +153,11 @@ export default function ResumePage() {
                                 </ListGroup>
                             </Card>
                         </Col>
-                    </Row>
+                    </MasonryGrid>
                 </div>
                 <div>
                     <h2>Education</h2>
-                    <Row>
+                    <Row xs={1} md={2} className={"g-3"}>
                         <Col>
                             <Card className={"h-100"}>
                                 <CardBody>
