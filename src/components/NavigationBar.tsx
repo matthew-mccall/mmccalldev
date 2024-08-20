@@ -2,7 +2,7 @@
 
 import AcrylicStyle from "@mmccalldev/styles/Acrylic.module.css";
 import {useEffect, useRef, useState} from "react";
-import {Container, Nav, Navbar, NavLink, Offcanvas} from "react-bootstrap";
+import {Container, Nav, Navbar, NavbarText, NavLink, Offcanvas} from "react-bootstrap";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 
@@ -81,6 +81,7 @@ export default function NavigationBar() {
                                         {key}
                                     </NavLink>
                                 </Link>))}
+                            <NavbarText className={"text-muted d-lg-none"}>Pro tip: Swift left to open the navigation menu and swipe right to close it.</NavbarText>
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
