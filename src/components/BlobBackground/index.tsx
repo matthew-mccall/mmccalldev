@@ -1,6 +1,7 @@
 'use client'
 
 import React, {HTMLProps, useEffect, useState} from "react";
+import style from "./style.module.css"
 
 interface ColorScheme {
     scheme: 'Complementary' | 'Analogous' | 'Triadic' | 'Split Complementary' | 'Tetradic' | 'Monochromatic';
@@ -68,7 +69,7 @@ export default function BlobBackground({children, className, blobCount = 5}: {
         <div className={`position-relative ${className}`} style={{zIndex: -2}}>
             {state && <svg style={{
                 filter: "blur(72px)",
-            }} className={"z-n1 position-absolute w-100 h-100"}>
+            }} className={`z-n1 position-absolute w-100 h-100 ${style.fadeIn}`}>
                 {
                     state.sampledHues.map((hue, i) => {
                         const lightness = state.colorScheme.scheme === 'Monochromatic' ? 50 : Math.random() * 50 + 25;
