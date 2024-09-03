@@ -46,7 +46,7 @@ export default async function Home() {
                 </Container>
             </Stack>
         </BlobBackground>
-        <div className={"pt-5"} style={{backdropFilter: "brightness(66%)", WebkitBackdropFilter: "brightness(66%)"}}>
+        <div className={"pt-5 bg-body bg-opacity-25"}>
             <Container>
                 <Stack gap={3}>
                     <h2>Projects</h2>

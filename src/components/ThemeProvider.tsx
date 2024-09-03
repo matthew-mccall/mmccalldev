@@ -12,10 +12,17 @@ export default function ThemeProvider(props: HTMLProps<HTMLBodyElement>) {
     const [showCookieState, setShowCookieState] = useState<boolean>(true)
 
     useEffect(() => {
-        if (window && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            setTheme("dark")
-        }
-    }, [])
+        const handleChange = (e: MediaQueryListEvent) => {
+            setTheme(e.matches ? "dark" : "light");
+        };
+
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        setTheme(mediaQuery.matches ? "dark" : "light");
+        mediaQuery.addEventListener('change', handleChange);
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+        };
+    }, []);
 
     return (<ThemeContext.Provider value={theme}>
         <body {...props} data-bs-theme={theme}>
