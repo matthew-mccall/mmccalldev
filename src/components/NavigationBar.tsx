@@ -12,7 +12,7 @@ export default function NavigationBar() {
     const [offcanvasAcrylic, setOffcanvasAcrylic] = useState<string | null>(null)
     const ref = useRef<HTMLDivElement | null>(null)
 
-    const navStyles = ['shadow', 'bg-opacity-75', AcrylicStyle.acrylic]
+    const navStyles = ['shadow']
 
     useEffect(() => {
         if (typeof document === 'undefined') return;
@@ -53,8 +53,8 @@ export default function NavigationBar() {
     const pathname = usePathname();
     const navLinks: Map<string, string> = new Map([['home', '/'], ['resume', '/resume'], ['docs', 'https://docs.mmccall.dev'],]);
 
-    return (<Navbar bg={'body'}
-                    expand={'lg'} sticky='top'
+    return (<Navbar bg={'body'} className={`bg-opacity-75 ${AcrylicStyle.acrylic}`}
+                    expand={'lg'} fixed='top'
                     ref={ref}>
             <Container>
                 <Navbar.Brand href={"/"}>mmccall.dev</Navbar.Brand>

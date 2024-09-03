@@ -28,20 +28,25 @@ export default async function Home() {
 
     return (<main>
         <BlobBackground className={"bg-black text-light"} blobCount={10}>
-            <div className={'d-flex align-items-center'} style={{height: '67lvh'}}>
-                <Container className="text-center">
-                    <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
-                    <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer
-                        Polytechnic Institute</p>
-                    <Stack direction={"horizontal"} gap={4} className={"d-inline-flex mx-auto"}>
-                        {[...socials].map(([name, url]) => (<a key={name} href={url} className={'fs-4 text-reset'}>
-                            <i className={`bi-${name}`}/>
-                        </a>))}
-                    </Stack>
+            <Stack className={'vh-100'} direction={"vertical"}>
+                <div className={'d-flex align-items-center flex-grow-1'}>
+                    <Container className="text-center">
+                        <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
+                        <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer
+                            Polytechnic Institute</p>
+                        <Stack direction={"horizontal"} gap={4} className={"d-inline-flex mx-auto"}>
+                            {[...socials].map(([name, url]) => (<a key={name} href={url} className={'fs-4 text-reset'}>
+                                <i className={`bi-${name}`}/>
+                            </a>))}
+                        </Stack>
+                    </Container>
+                </div>
+                <Container className={'text-center py-3'}>
+                    Learn More <br /> <i className={'bi-chevron-down'} />
                 </Container>
-            </div>
+            </Stack>
         </BlobBackground>
-        <div className={"bg-body pt-5"}>
+        <div className={"pt-5"} style={{backdropFilter: "brightness(66%)", WebkitBackdropFilter: "brightness(66%)"}}>
             <Container>
                 <Stack gap={3}>
                     <h2>Projects</h2>
