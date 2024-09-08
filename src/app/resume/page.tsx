@@ -16,11 +16,9 @@ import MagicGrid from "@mmccalldev/components/MagicGrid";
 
 export default function ResumePage() {
     return (<main>
-        <Container className={"mt-5"}>
-            <div className={"text-center"}>
+        <Container>
+            <Stack style={{height: "66vh"}} className={"text-center justify-content-center"}>
                 <h1 className={"display-1 fw-semibold"}>Matthew McCall</h1>
-            </div>
-            <Stack gap={3}>
                 <Row xs={1} md={3} className={"g-2 g-lg-5 text-center"}>
                     <Col lg={"auto"} className={"ms-md-auto"}>
                         <a href={"mailto:m-mccall@outlook.com"}>m-mccall@outlook.com</a>
@@ -32,6 +30,8 @@ export default function ResumePage() {
                         <Link href={"/resume.pdf"}>PDF Version</Link>
                     </Col>
                 </Row>
+            </Stack>
+            <Stack gap={3}>
                 <div>
                     <h2>About</h2>
                     <p className={"lead"}>A highly motivated computer science and computer systems engineering dual major who led multiple teams,

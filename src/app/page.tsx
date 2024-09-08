@@ -59,7 +59,7 @@ export default async function Home() {
                                 active development and continues to introduce new features on a regular basis. I am also
                                 responsible for many of its subprojects including the web and desktop applications, and the
                                 C wrapper.</CardText>
-                            <CardLink href="https://oasis.mmccall.dev">Open Algebra Project Website</CardLink>
+                            <CardLink href="https://openalgebra.org">Open Algebra Project Website</CardLink>
                         </CardBody>
                     </Card>
                     <h2>Recent Activity</h2>
