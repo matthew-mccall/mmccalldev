@@ -1,32 +1,14 @@
 'use client'
 
-import React, {createContext, HTMLProps, useEffect, useState} from "react";
+import React, {useState} from "react";
 import Script from "next/script";
 import {Toast, ToastBody, ToastContainer, ToastHeader} from "react-bootstrap";
 import AcrylicStyle from "@mmccalldev/styles/Acrylic.module.css";
 
-export const ThemeContext = createContext("light" as "light" | "dark")
-
-export default function ThemeProvider(props: HTMLProps<HTMLBodyElement>) {
-    const [theme, setTheme] = useState<"light" | "dark">("light")
+export default function CookieDisclaimer() {
     const [showCookieState, setShowCookieState] = useState<boolean>(true)
 
-    useEffect(() => {
-        const handleChange = (e: MediaQueryListEvent) => {
-            setTheme(e.matches ? "dark" : "light");
-        };
-
-        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        setTheme(mediaQuery.matches ? "dark" : "light");
-        mediaQuery.addEventListener('change', handleChange);
-        return () => {
-            mediaQuery.removeEventListener('change', handleChange);
-        };
-    }, []);
-
-    return (<ThemeContext.Provider value={theme}>
-        <body {...props} data-bs-theme={theme}>
-        {props.children}
+    return (<>
         <ToastContainer className={"p-3 z-1 position-fixed"} position={"bottom-end"}>
             <Toast show={showCookieState} onClose={() => setShowCookieState(false)} className={AcrylicStyle.acrylic}>
                 <ToastHeader><span className={"me-auto"}>Cookie Statement</span></ToastHeader>
@@ -45,6 +27,5 @@ export default function ThemeProvider(props: HTMLProps<HTMLBodyElement>) {
                 })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
                `}
         </Script>
-        </body>
-    </ThemeContext.Provider>)
+    </>)
 }

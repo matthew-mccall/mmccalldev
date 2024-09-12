@@ -1,11 +1,8 @@
 $body-bg-dark: #0B0201;
+$color-mode-type: media-query;
 
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons";
-
-.offcanvas {
-  background-color: rgba(33, 37, 41, 0.75);
-}
 
 .navbar-toggler {
   border: none;
@@ -30,8 +27,14 @@ $body-bg-dark: #0B0201;
 
       &.active {
         border-bottom: 3px solid $navbar-light-active-color;
-        padding-bottom: $navbar-padding-y + $nav-link-padding-y - 0.1875rem;
+        padding-bottom: $navbar-padding-y + $nav-link-padding-y - $nav-underline-border-width;
       }
     }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
   }
 }

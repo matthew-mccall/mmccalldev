@@ -1,12 +1,11 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-icons/font/bootstrap-icons.css'
+import "@mmccalldev/styles/globals.scss"
 
 import type {Metadata} from 'next'
 import localFont from "next/font/local";
 import Footer from "@mmccalldev/components/Footer";
 import NavigationBar from "@mmccalldev/components/NavigationBar";
 import React from "react";
-import ThemeProvider from '@mmccalldev/components/ThemeProvider';
+import CookieDisclaimer from '@mmccalldev/components/CookieDisclaimer';
 
 const inter = localFont({
     src: "fonts/Inter.var.woff2",
@@ -20,13 +19,14 @@ export default function RootLayout({children}: {
     children: React.ReactNode
 }) {
     return (<html lang="en">
-    <ThemeProvider className={inter.className} style={{
+    <body className={inter.className} style={{
         fontFeatureSettings: "'ss01', 'cv11'",
     }}>
     <NavigationBar/>
     {children}
     <Footer/>
-    </ThemeProvider>
+    <CookieDisclaimer/>
+    </body>
     </html>)
 }
 
