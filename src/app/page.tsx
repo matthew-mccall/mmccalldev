@@ -28,7 +28,7 @@ export default async function Home() {
 
     return (<main>
         <BlobBackground className={"bg-black"} blobCount={10}>
-            <Stack className={'vh-100 text-light'} direction={"vertical"}>
+            <Stack className={'text-light'} direction={"vertical"} style={{height: '100svh'}}>
                 <div className={'d-flex align-items-center flex-grow-1'}>
                     <Container className="text-center">
                         <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
