@@ -66,20 +66,22 @@ export default function BlobBackground({children, className, blobCount = 5}: {
     }, [])
 
     return (
-        <div className={`position-relative ${className}`} style={{zIndex: -2}}>
-            {state && <svg style={{
-                filter: "blur(72px)",
-            }} className={`z-n1 position-absolute w-100 h-100 ${style.fadeIn}`}>
-                {
-                    state.sampledHues.map((hue, i) => {
-                        const lightness = state.colorScheme.scheme === 'Monochromatic' ? 50 : Math.random() * 50 + 25;
-                        return (<circle key={i} cx={`${Math.random() * 100}%`} cy={`${Math.random() * 100}%`}
-                                        r={`${Math.random() * 100 + 72}`}
-                                        fill={`hsla(${hue}, 100%, ${lightness}%, 0.75)`}/>)
-                    })
-                }
-            </svg>}
+        <>
+            <div className={`position-absolute z-n1 h-100 w-100 ${className}`}>
+                {state && <svg style={{
+                    filter: "blur(72px)",
+                }} className={`position-absolute w-100 h-100 ${style.fadeIn}`}>
+                    {
+                        state.sampledHues.map((hue, i) => {
+                            const lightness = state.colorScheme.scheme === 'Monochromatic' ? 50 : Math.random() * 50 + 25;
+                            return (<circle key={i} cx={`${Math.random() * 100}%`} cy={`${Math.random() * 100}%`}
+                                            r={`${Math.random() * 100 + 72}`}
+                                            fill={`hsla(${hue}, 100%, ${lightness}%, 0.75)`}/>)
+                        })
+                    }
+                </svg>}
+            </div>
             {children}
-        </div>
+        </>
     )
 }

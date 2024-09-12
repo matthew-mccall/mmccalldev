@@ -27,8 +27,8 @@ export default async function Home() {
     const socials: Map<string, string> = new Map([['github', 'https://github.com/matthew-mccall'], ['linkedin', 'https://www.linkedin.com/in/96d9/'], ['instagram', 'https://www.instagram.com/__mmccall/'], ['twitter-x', 'https://twitter.com/__mmccall'], ['youtube', 'https://www.youtube.com/@__mmccall'], ['twitch', 'https://www.twitch.tv/mmapptv'],]);
 
     return (<main>
-        <BlobBackground className={"bg-black text-light"} blobCount={10}>
-            <Stack className={'vh-100'} direction={"vertical"}>
+        <BlobBackground className={"bg-black"} blobCount={10}>
+            <Stack className={'vh-100 text-light'} direction={"vertical"}>
                 <div className={'d-flex align-items-center flex-grow-1'}>
                     <Container className="text-center">
                         <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
@@ -42,11 +42,11 @@ export default async function Home() {
                     </Container>
                 </div>
                 <Container className={'text-center py-3'}>
-                    Learn More <br /> <i className={'bi-chevron-down'} />
+                    <a href={"#content"} className={"text-reset text-decoration-none"}>Learn More <br /><i className={'bi-chevron-down'} /></a>
                 </Container>
             </Stack>
         </BlobBackground>
-        <div className={"pt-5 bg-body bg-opacity-25"}>
+        <div className={"pt-5 bg-body bg-opacity-25"} id={"content"}>
             <Container>
                 <Stack gap={3}>
                     <h2>Projects</h2>
