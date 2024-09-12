@@ -4,22 +4,15 @@ import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
 import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
 import ContentGrid from "@mmccalldev/components/ContentGrid";
 import BlobBackground from "@mmccalldev/components/BlobBackground";
+import GitHubCalendar from "react-github-calendar";
 
-async function getGitHubContent() {
-    return Promise.all(await GetGitHubContent())
-}
-
-async function getSocialContent() {
-    const [youtubeContent, twitchContent] = await Promise.all([GetYouTubeContent(), GetTwitchContent()]);
-
-    return await Promise.all([...youtubeContent, ...twitchContent])
+async function getContent() {
+    const [youtubeContent, twitchContent, githubContent] = await Promise.all([GetYouTubeContent(), GetTwitchContent(), GetGitHubContent()]);
+    return await Promise.all([...youtubeContent, ...twitchContent, ...githubContent])
 }
 
 export default async function Home() {
-    const gitHubContent = await getGitHubContent();
-    const socialContent = await getSocialContent();
-
-    const totalContent = socialContent.concat(gitHubContent)
+    const content = (await getContent())
         .sort((a, b) => {
             return (new Date(b.date)).getTime() - (new Date(a.date)).getTime();
         });
@@ -49,21 +42,28 @@ export default async function Home() {
         <div className={"pt-5 bg-body bg-opacity-25"} id={"content"}>
             <Container>
                 <Stack gap={3}>
-                    <h2>Projects</h2>
-                    <Card>
-                        <CardBody>
-                            <CardTitle>Open Algebra Software for Inferring Solutions</CardTitle>
-                            <CardText>Open Algebra Software for Inferring Solutions (OASIS) is a C++ library for embedding
-                                computer algebra and symbolic manipulation. I have led the development of the project since
-                                its initial pitch to the Rensselaer Center for Open Source. The project is under continuous
-                                active development and continues to introduce new features on a regular basis. I am also
-                                responsible for many of its subprojects including the web and desktop applications, and the
-                                C wrapper.</CardText>
-                            <CardLink href="https://openalgebra.org">Open Algebra Project Website</CardLink>
-                        </CardBody>
-                    </Card>
-                    <h2>Recent Activity</h2>
-                    <ContentGrid content={totalContent}/>
+                    <Stack direction={"horizontal"} className={"justify-content-center"}>
+                        <GitHubCalendar username={"matthew-mccall"} />
+                    </Stack>
+                    <div>
+                        <h2>Projects</h2>
+                        <Card>
+                            <CardBody>
+                                <CardTitle>Open Algebra Software for Inferring Solutions</CardTitle>
+                                <CardText>Open Algebra Software for Inferring Solutions (OASIS) is a C++ library for embedding
+                                    computer algebra and symbolic manipulation. I have led the development of the project since
+                                    its initial pitch to the Rensselaer Center for Open Source. The project is under continuous
+                                    active development and continues to introduce new features on a regular basis. I am also
+                                    responsible for many of its subprojects including the web and desktop applications, and the
+                                    C wrapper.</CardText>
+                                <CardLink href="https://openalgebra.org">Open Algebra Project Website</CardLink>
+                            </CardBody>
+                        </Card>
+                    </div>
+                    <div>
+                        <h2>Recent Activity</h2>
+                        <ContentGrid content={content}/>
+                    </div>
                     <div>
                         <h2>Fun Facts</h2>
                         <p>Ah! So you scrolled all the way to the bottom. Well, here are some fun facts about me:</p>
