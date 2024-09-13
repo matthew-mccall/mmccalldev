@@ -16,7 +16,7 @@ $color-mode-type: media-query;
   min-height: 100svh;
 }
 
-@media (min-width: 992px) {
+@include media-breakpoint-up(lg) {
   .navbar {
     padding-top: 0;
     padding-bottom: 0;
@@ -26,7 +26,7 @@ $color-mode-type: media-query;
       padding-bottom: $navbar-padding-y + $nav-link-padding-y;
 
       &.active {
-        border-bottom: 3px solid $navbar-light-active-color;
+        border-bottom: $nav-underline-border-width solid $nav-underline-link-active-color;
         padding-bottom: $navbar-padding-y + $nav-link-padding-y - $nav-underline-border-width;
       }
     }
