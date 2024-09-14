@@ -17,7 +17,7 @@ import MagicGrid from "@mmccalldev/components/MagicGrid";
 export default function ResumePage() {
     return (<main>
         <Container>
-            <Stack style={{height: "66vh"}} className={"text-center justify-content-center"}>
+            <Stack className={"text-center justify-content-center py-5"}>
                 <h1 className={"display-1 fw-semibold"}>Matthew McCall</h1>
                 <Row xs={1} md={3} className={"g-2 g-lg-5 text-center"}>
                     <Col lg={"auto"} className={"ms-md-auto"}>
