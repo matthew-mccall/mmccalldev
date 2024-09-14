@@ -8,12 +8,8 @@ $color-mode-type: media-query;
   border: none;
 }
 
-.svh-100 {
-  height: 100svh;
-}
-
-.min-svh-100 {
-  min-height: 100svh;
+.full-height {
+  height: calc(100svh - $navbar-brand-height - $navbar-padding-y - $navbar-padding-y - $nav-link-padding-y - $nav-link-padding-y);
 }
 
 @include media-breakpoint-up(lg) {

@@ -54,7 +54,7 @@ export default function NavigationBar() {
     const navLinks: Map<string, string> = new Map([['home', '/'], ['resume', '/resume'], ['docs', 'https://docs.mmccall.dev'],]);
 
     return (<Navbar bg={'body'} className={`bg-opacity-75 ${AcrylicStyle.acrylic}`}
-                    expand={'lg'} fixed='top'
+                    expand={'lg'} sticky='top'
                     ref={ref}>
             <Container>
                 <Navbar.Brand href={"/"}>mmccall.dev</Navbar.Brand>
