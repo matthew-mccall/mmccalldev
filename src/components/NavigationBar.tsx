@@ -51,7 +51,7 @@ export default function NavigationBar() {
     };
 
     const pathname = usePathname();
-    const navLinks: Map<string, string> = new Map([['home', '/'], ['resume', '/resume'], ['docs', 'https://docs.mmccall.dev'],]);
+    const navLinks: Map<string, string> = new Map([['home', '/'], ['resume', '/resume'], ['papers', '/papers'], ['docs', 'https://docs.mmccall.dev'],]);
 
     return (<Navbar bg={'body'} className={`bg-opacity-75 ${AcrylicStyle.acrylic}`}
                     expand={'lg'} sticky='top'

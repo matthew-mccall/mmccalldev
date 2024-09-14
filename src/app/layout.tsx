@@ -6,6 +6,7 @@ import Footer from "@mmccalldev/components/Footer";
 import NavigationBar from "@mmccalldev/components/NavigationBar";
 import React from "react";
 import CookieDisclaimer from '@mmccalldev/components/CookieDisclaimer';
+import {Stack} from "react-bootstrap";
 
 const inter = localFont({
     src: "fonts/Inter.var.woff2",
@@ -22,9 +23,11 @@ export default function RootLayout({children}: {
     <body className={inter.className} style={{
         fontFeatureSettings: "'ss01', 'cv11'",
     }}>
+    <Stack style={{minHeight: "100svh"}}>
     <NavigationBar/>
-    {children}
-    <Footer/>
+        <div className={"flex-grow-1"}>{children}</div>
+        <Footer/>
+    </Stack>
     <CookieDisclaimer/>
     </body>
     </html>)
