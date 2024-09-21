@@ -40,13 +40,13 @@ export default async function Home() {
                 </Container>
             </Stack>
         </BlobBackground>
-        <div className={"pt-5 bg-body"} id={"content"}>
+        <div className={"pt-5 rounded-top-4 bg-body"} id={"content"}>
             <Container>
                 <Stack gap={5}>
                     <Stack direction={"horizontal"} className={"justify-content-center"}>
                         <GitHubCalendar username={"matthew-mccall"} />
                     </Stack>
-                    <div>
+                    <section>
                         <h2>Projects</h2>
                         <MagicGridRow xs={1} lg={2}>
                             <Col className={"pb-4"}>
@@ -82,12 +82,12 @@ export default async function Home() {
                                 </Card>
                             </Col>
                         </MagicGridRow>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <h2>Recent Activity</h2>
                         <ContentGrid content={content}/>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <h2>Fun Facts</h2>
                         <p>Ah! So you scrolled all the way to the bottom. Well, here are some fun facts about me:</p>
                         <ul>
@@ -99,7 +99,7 @@ export default async function Home() {
                             </li>
                             <li>The &lsquo;96d9&rsquo; in my LinkedIn link is the first 4 letters of the SHA-1 checksum of my name: <code>echo Matthew McCall | shasum</code>.</li>
                         </ul>
-                    </div>
+                    </section>
                 </Stack>
             </Container>
         </div>

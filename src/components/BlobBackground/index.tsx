@@ -63,7 +63,7 @@ export default function BlobBackground({children, className, blobCount = 5}: {
 
     return (
         <div className={"position-relative"}>
-            <div className={`position-absolute z-n1 h-100 w-100 ${className}`} style={{backgroundColor: `hsl(${state?.sampledHues[0]}, 50%, 7%)`}}>
+            <div className={`position-fixed z-n1 vh-100 w-100 ${className} top-0`} style={{backgroundColor: `hsl(${state?.sampledHues[0]}, 50%, 10%)`}}>
                 {state && <svg style={{
                     filter: "blur(72px)",
                 }} className={`position-absolute w-100 h-100 ${style.fadeIn}`}>

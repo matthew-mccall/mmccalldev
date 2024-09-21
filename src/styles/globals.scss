@@ -9,7 +9,7 @@ $color-mode-type: media-query;
 }
 
 .full-height {
-  height: calc(100svh - $navbar-brand-height - $navbar-padding-y - $navbar-padding-y - $nav-link-padding-y - $nav-link-padding-y + $nav-underline-border-width);
+  height: calc(100svh - $navbar-brand-height - $navbar-padding-y - $navbar-padding-y - $navbar-brand-padding-y - $navbar-brand-padding-y);
 }
 
 @include media-breakpoint-up(lg) {
