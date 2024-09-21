@@ -9,7 +9,6 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
         fontFeatureSettings: "'ss01', 'cv05', 'cv11', 'zero'",
     }
 
-
     const cardContent = (<>
         {title && <CardTitle style={cardTitleStyle} dangerouslySetInnerHTML={{ __html: title }} /> }
         {description && <CardText className={'text-truncate'}>{description}</CardText>}
@@ -25,18 +24,18 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
     </>)
 
     if (image) {
-        let theme;
+        let textColor;
 
         if (color) {
             const backgroundColor = new Color(color);
             const lightForeground = new Color("white");
             const darkForeground = new Color("black");
 
-            theme = backgroundColor.contrastWCAG21(lightForeground) > backgroundColor.contrastWCAG21(darkForeground) ? "dark" : "light";
+            textColor = backgroundColor.contrastWCAG21(lightForeground) > backgroundColor.contrastWCAG21(darkForeground) ? "light" : "dark";
         }
 
         if (overlay) {
-            return (<Card data-bs-theme={theme || 'dark'}>
+            return (<Card>
                 <CardImg src={image} alt={title} />
                 <CardImgOverlay className={"d-flex flex-column justify-content-end"} style={{backgroundImage: `linear-gradient(transparent 33%, ${color || 'black'})`}}>
                     {cardContent}
@@ -44,7 +43,7 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
             </Card>)
         }
 
-        return (<Card className={color ? 'border-0' : undefined} data-bs-theme={theme} style={color ? {background: color} : undefined}>
+        return (<Card className={`${color ? 'border-0' : ''} ${textColor ? `text-${textColor}` : ''}`} style={color ? {background: color} : undefined}>
             <CardImg src={image} alt={title} variant={"top"} />
             <CardBody>
                 {cardContent}

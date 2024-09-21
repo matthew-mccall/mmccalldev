@@ -17,7 +17,7 @@ const GetInstagramContent: ContentProvider = async () => {
             date: new Date(post.timestamp),
             icon: 'instagram',
             // overlay: true,
-            // color: (await getAverageColor(post.media_url)).hex,
+            color: (await getAverageColor(post.media_url)).hex,
         }));
 
     return content;

@@ -1,3 +1,5 @@
+import GetInstagramContent from "@mmccalldev/lib/InstagramContent";
+
 export const revalidate = 3600 // invalidate every hour
 
 import {Card, CardBody, CardLink, CardText, CardTitle, Col, Container, Stack} from "react-bootstrap";
@@ -10,8 +12,8 @@ import GitHubCalendar from "react-github-calendar";
 import MagicGridRow from "@mmccalldev/components/MagicGridRow";
 
 async function getContent() {
-    const [youtubeContent, twitchContent, githubContent] = await Promise.all([GetYouTubeContent(), GetTwitchContent(), GetGitHubContent()]);
-    return await Promise.all([...youtubeContent, ...twitchContent, ...githubContent])
+    const [youtubeContent, twitchContent, githubContent, instagramContent] = await Promise.all([GetYouTubeContent(), GetTwitchContent(), GetGitHubContent(), GetInstagramContent()]);
+    return await Promise.all([...youtubeContent, ...twitchContent, ...githubContent, ...instagramContent])
 }
 
 export default async function Home() {
