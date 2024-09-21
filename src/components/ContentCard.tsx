@@ -36,7 +36,7 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
         }
 
         if (overlay) {
-            return (<Card className={"shadow"} data-bs-theme={theme || 'dark'}>
+            return (<Card data-bs-theme={theme || 'dark'}>
                 <CardImg src={image} alt={title} />
                 <CardImgOverlay className={"d-flex flex-column justify-content-end"} style={{backgroundImage: `linear-gradient(transparent 33%, ${color || 'black'})`}}>
                     {cardContent}
@@ -44,7 +44,7 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
             </Card>)
         }
 
-        return (<Card className={`${color ? 'border-0' : undefined} shadow`} data-bs-theme={theme} style={color ? {background: color} : undefined}>
+        return (<Card className={color ? 'border-0' : undefined} data-bs-theme={theme} style={color ? {background: color} : undefined}>
             <CardImg src={image} alt={title} variant={"top"} />
             <CardBody>
                 {cardContent}
@@ -52,7 +52,7 @@ export default function ContentCard({image, overlay, icon, color, title, descrip
         </Card>)
     }
 
-    return (<Card className={`shadow`}>
+    return (<Card>
         <CardBody>{cardContent}</CardBody>
     </Card>)
 }
