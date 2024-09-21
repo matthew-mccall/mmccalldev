@@ -18,14 +18,14 @@
     "fast-average-color-node": "^2.6.0",
     "googleapis": "^126.0.1",
     "hammerjs": "^2.0.8",
+    "magic-grid": "^3.4.7",
     "next": "^14.2.3",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
     "react-github-calendar": "^4.3.0",
     "sass": "^1.78.0",
-    "unsplash-js": "^7.0.18",
-    "use-magic-grid": "^0.0.8"
+    "unsplash-js": "^7.0.18"
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.11.2",

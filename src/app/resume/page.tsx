@@ -12,7 +12,7 @@ import {
     Stack
 } from "react-bootstrap";
 import Link from "next/link";
-import MagicGrid from "@mmccalldev/components/MagicGrid";
+import MagicGridRow from "@mmccalldev/components/MagicGridRow";
 
 export default function ResumePage() {
     return (<main>
@@ -39,7 +39,7 @@ export default function ResumePage() {
                 </div>
                 <div>
                     <h2>Project Experience</h2>
-                    <MagicGrid xs={1} sm={2} lg={3}>
+                    <MagicGridRow xs={1} sm={2} lg={3}>
                         <Col className={"pb-4"}>
                             <Card>
                                 <CardBody>
@@ -96,11 +96,11 @@ export default function ResumePage() {
                                 </CardBody>
                             </Card>
                         </Col>
-                    </MagicGrid>
+                    </MagicGridRow>
                 </div>
                 <div>
                     <h2>Research and On-Campus Work</h2>
-                    <MagicGrid xs={1} sm={2} lg={3}>
+                    <MagicGridRow xs={1} sm={2} lg={3}>
                         <Col className={"pb-4"}>
                             <Card>
                                 <CardBody>
@@ -153,7 +153,7 @@ export default function ResumePage() {
                                 </ListGroup>
                             </Card>
                         </Col>
-                    </MagicGrid>
+                    </MagicGridRow>
                 </div>
                 <div>
                     <h2>Education</h2>

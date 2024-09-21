@@ -1,10 +1,11 @@
-import {Card, CardBody, CardLink, CardText, CardTitle, Container, Stack} from "react-bootstrap";
+import {Card, CardBody, CardLink, CardText, CardTitle, Col, Container, Stack} from "react-bootstrap";
 import GetYouTubeContent from "@mmccalldev/lib/YouTubeContent";
 import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
 import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
 import ContentGrid from "@mmccalldev/components/ContentGrid";
 import BlobBackground from "@mmccalldev/components/BlobBackground";
 import GitHubCalendar from "react-github-calendar";
+import MagicGridRow from "@mmccalldev/components/MagicGridRow";
 
 async function getContent() {
     const [youtubeContent, twitchContent, githubContent] = await Promise.all([GetYouTubeContent(), GetTwitchContent(), GetGitHubContent()]);
@@ -47,18 +48,40 @@ export default async function Home() {
                     </Stack>
                     <div>
                         <h2>Projects</h2>
-                        <Card>
-                            <CardBody>
-                                <CardTitle>Open Algebra Software for Inferring Solutions</CardTitle>
-                                <CardText>Open Algebra Software for Inferring Solutions (OASIS) is a C++ library for embedding
-                                    computer algebra and symbolic manipulation. I have led the development of the project since
-                                    its initial pitch to the Rensselaer Center for Open Source. The project is under continuous
-                                    active development and continues to introduce new features on a regular basis. I am also
-                                    responsible for many of its subprojects including the web and desktop applications, and the
-                                    C wrapper.</CardText>
-                                <CardLink href="https://openalgebra.org">Open Algebra Project Website</CardLink>
-                            </CardBody>
-                        </Card>
+                        <MagicGridRow xs={1} lg={2}>
+                            <Col className={"pb-4"}>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle>Open Algebra Software for Inferring Solutions</CardTitle>
+                                        <CardText>Open Algebra Software for Inferring Solutions (OASIS) is a C++ library for embedding
+                                            computer algebra and symbolic manipulation. I have led the development of the project since
+                                            its initial pitch to the Rensselaer Center for Open Source. The project is under continuous
+                                            active development and continues to introduce new features on a regular basis. I am also
+                                            responsible for many of its subprojects including the web and desktop applications, and the
+                                            C wrapper.</CardText>
+                                        <CardLink href="https://openalgebra.org">Open Algebra Project Website</CardLink>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            <Col className={"pb-4"}>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle>superround</CardTitle>
+                                        <CardText>superround is a library that uses Bezier curves to create smoother rounded corners</CardText>
+                                        <CardLink href="https://docs.mmccall.dev/superround">Documentation</CardLink>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            <Col className={"pb-4"}>
+                                <Card>
+                                    <CardBody>
+                                        <CardTitle>Bulk URl Navigator</CardTitle>
+                                        <CardText>Bulk URl Navigator (BURN) is an extension for Firefox that allows you to paginate through a list of URLs in a single tab.</CardText>
+                                        <CardLink href="https://addons.mozilla.org/addon/burn/">BURN on AMO</CardLink>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        </MagicGridRow>
                     </div>
                     <div>
                         <h2>Recent Activity</h2>
