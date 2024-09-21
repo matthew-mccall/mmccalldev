@@ -21,7 +21,7 @@ export default function RootLayout({children}: {
 }) {
     return (<html lang="en">
     <body className={inter.className} style={{
-        fontFeatureSettings: "'ss01', 'cv11'",
+        fontFeatureSettings: "'ss01', 'cv05', 'cv11'",
     }}>
     <Stack style={{minHeight: "100svh"}}>
     <NavigationBar/>
