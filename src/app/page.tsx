@@ -1,3 +1,5 @@
+export const revalidate = 3600 // invalidate every hour
+
 import {Card, CardBody, CardLink, CardText, CardTitle, Col, Container, Stack} from "react-bootstrap";
 import GetYouTubeContent from "@mmccalldev/lib/YouTubeContent";
 import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
