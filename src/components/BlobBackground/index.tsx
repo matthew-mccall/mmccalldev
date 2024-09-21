@@ -4,7 +4,7 @@ import React, {HTMLProps, useEffect, useState} from "react";
 import style from "./style.module.css"
 
 interface ColorScheme {
-    scheme: 'Complementary' | 'Analogous' | 'Triadic' | 'Split Complementary' | 'Tetradic' | 'Monochromatic';
+    scheme: 'Complementary' | 'Analogous' | 'Triadic' | 'Split Complementary' | 'Tetradic';
     hues?: number[];
 }
 
@@ -27,7 +27,6 @@ export default function BlobBackground({children, className, blobCount = 5}: {
             { scheme: 'Triadic' },
             { scheme: 'Split Complementary' },
             { scheme: 'Tetradic' },
-            { scheme: 'Monochromatic' }
         ];
 
         const colorScheme = colorSchemes[Math.floor(Math.random() * colorSchemes.length)];
@@ -51,9 +50,6 @@ export default function BlobBackground({children, className, blobCount = 5}: {
             case 'Tetradic':
                 colorScheme.hues = [baseHue, baseHue + 90, baseHue + 180, baseHue + 270];
                 break;
-            case 'Monochromatic':
-                colorScheme.hues = [baseHue]
-                break;
         }
 
         // sample 10 colors from array
@@ -67,16 +63,15 @@ export default function BlobBackground({children, className, blobCount = 5}: {
 
     return (
         <div className={"position-relative"}>
-            <div className={`position-absolute z-n1 h-100 w-100 ${className}`}>
+            <div className={`position-absolute z-n1 h-100 w-100 ${className}`} style={{backgroundColor: `hsl(${state?.sampledHues[0]}, 50%, 7%)`}}>
                 {state && <svg style={{
                     filter: "blur(72px)",
                 }} className={`position-absolute w-100 h-100 ${style.fadeIn}`}>
                     {
                         state.sampledHues.map((hue, i) => {
-                            const lightness = state.colorScheme.scheme === 'Monochromatic' ? 50 : Math.random() * 50 + 25;
                             return (<circle key={i} cx={`${Math.random() * 100}%`} cy={`${Math.random() * 100}%`}
                                             r={`${Math.random() * 100 + 72}`}
-                                            fill={`hsla(${hue}, 100%, ${lightness}%, 0.75)`}/>)
+                                            fill={`hsla(${hue}, 100%, 50%, 75%)`}/>)
                         })
                     }
                 </svg>}

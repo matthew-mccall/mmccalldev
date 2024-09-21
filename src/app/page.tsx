@@ -21,7 +21,7 @@ export default async function Home() {
     const socials: Map<string, string> = new Map([['github', 'https://github.com/matthew-mccall'], ['linkedin', 'https://www.linkedin.com/in/96d9/'], ['instagram', 'https://www.instagram.com/__mmccall/'], ['twitter-x', 'https://twitter.com/__mmccall'], ['youtube', 'https://www.youtube.com/@__mmccall'], ['twitch', 'https://www.twitch.tv/mmapptv'],]);
 
     return (<main>
-        <BlobBackground className={"bg-black"} blobCount={10}>
+        <BlobBackground blobCount={10}>
             <Stack className={`text-light full-height`} direction={"vertical"}>
                 <div className={'d-flex align-items-center flex-grow-1'}>
                     <Container className="text-center">
@@ -40,9 +40,9 @@ export default async function Home() {
                 </Container>
             </Stack>
         </BlobBackground>
-        <div className={"pt-5 bg-body bg-opacity-25"} id={"content"}>
+        <div className={"pt-5 bg-body"} id={"content"}>
             <Container>
-                <Stack gap={3}>
+                <Stack gap={5}>
                     <Stack direction={"horizontal"} className={"justify-content-center"}>
                         <GitHubCalendar username={"matthew-mccall"} />
                     </Stack>

@@ -31,7 +31,7 @@ export default function ResumePage() {
                     </Col>
                 </Row>
             </Stack>
-            <Stack gap={3}>
+            <Stack gap={5}>
                 <div>
                     <h2>About</h2>
                     <p className={"lead"}>A highly motivated computer science and computer systems engineering dual major who led multiple teams,

@@ -34,3 +34,7 @@ $color-mode-type: media-query;
     color-scheme: dark;
   }
 }
+
+h2 {
+  @extend .border-top, .border-black, .border-3, .py-2;
+}
