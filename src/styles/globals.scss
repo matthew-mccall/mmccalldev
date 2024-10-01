@@ -29,12 +29,16 @@ $color-mode-type: media-query;
   }
 }
 
+h2 {
+  @extend .border-top, .border-black, .border-3, .py-2;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
 
-h2 {
-  @extend .border-top, .border-black, .border-3, .py-2;
+  h2 {
+    border-color: $light !important;
+  }
 }

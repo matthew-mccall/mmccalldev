@@ -1,7 +1,7 @@
 import {
     Badge,
     Card,
-    CardBody,
+    CardBody, CardFooter,
     CardText,
     CardTitle,
     Col,
@@ -32,15 +32,72 @@ export default function ResumePage() {
                 </Row>
             </Stack>
             <Stack gap={5}>
-                <div>
+                <section>
                     <h2>About</h2>
                     <p className={"lead"}>A highly motivated computer science and computer systems engineering dual major who led multiple teams,
                         contributes to the community, and is passionate for embedded development and robotics.</p>
-                </div>
-                <div>
+                    <p><strong>Skills: </strong>C++, React, TypeScript, MATLAB, VHDL, KiCad, SolidWorks, FreeCAD, LaTeX, MS Word, Excel, PowerPoint</p>
+                </section>
+                <section>
+                    <h2>Work Experience</h2>
+                    <Row xs={1} md={2} className={"g-4"}>
+                        <Col>
+                            <Card>
+                                <CardBody>
+                                    <CardTitle>Undergraduate Research Intern at Scientific Computation Research Center (SCOREC)</CardTitle>
+                                    <Stack direction="horizontal" gap={1} className={"mt-2"}>
+                                        <Badge>C++</Badge>
+                                        <Badge>Django</Badge>
+                                        <Badge>LaTeX</Badge>
+                                    </Stack>
+                                </CardBody>
+                                <ListGroup className="list-group-flush">
+                                    <ListGroupItem>
+                                        Integrated a <strong>GPU-bound memory pool</strong> in Omega_h, a C++ library for
+                                        triangle mesh adaptivity which reduced runtime by 30% on high performance computing
+                                        systems such as OLCF Frontier.
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        Authored a <a href={"https://github.com/matthew-mccall/omega_h-kokkos-mempool-paper"}>paper and poster</a> in LaTeX. I presented my work at the Quantum Computing and Spring 2024 Undergraduate Research Symposium Poster Sessions at RPI
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        Built a <strong>Django application</strong> to allow researchers to upload their
+                                        findings from the Plasma Science Virtual Laboratory to an external data storage
+                                        website.
+                                    </ListGroupItem>
+                                </ListGroup>
+                                <CardFooter className="text-muted">Fall 2022 - Summer 2024</CardFooter>
+                            </Card>
+                        </Col>
+                        <Col>
+                            <Card>
+                                <CardBody>
+                                    <CardTitle>Engineering and Quality Intern at HarcoSemco</CardTitle>
+                                    <Stack direction="horizontal" gap={1} className={"mt-2"}>
+                                        <Badge>Arduino C++</Badge>
+                                        <Badge>React</Badge>
+                                    </Stack>
+                                </CardBody>
+                                <ListGroup className="list-group-flush">
+                                    <ListGroupItem>
+                                        Conducted extensive electrical testing of aerospace sensors. Subsequently, I identified potential bottlenecks and submitted written proposals for improvement. I also gained experience using a wide variety of electrical testing equipment.
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        Wrote Arduino code for detecting potential toxic gasses using Bosch sensors and sending data over Bluetooth. I also developed the corresponding React dashboard that leverages Web Bluetooth for displaying data in real time.
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        Automated dimensional inspections of manufactured parts, reducing time to inspect parts.
+                                    </ListGroupItem>
+                                </ListGroup>
+                                <CardFooter className="text-muted">Fall 2024</CardFooter>
+                            </Card>
+                        </Col>
+                    </Row>
+                </section>
+                <section>
                     <h2>Project Experience</h2>
                     <MagicGridRow xs={1} sm={2} lg={3}>
-                        <Col className={"pb-4"}>
+                        <Col className={"pb-3"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>
@@ -55,9 +112,10 @@ export default function ResumePage() {
                                         symbolic manipulation.
                                     </CardText>
                                 </CardBody>
+                                <CardFooter className="text-muted">Fall 2023 - Summer 2024</CardFooter>
                             </Card>
                         </Col>
-                        <Col className={"pb-4"}>
+                        <Col className={"pb-3"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>
@@ -77,9 +135,10 @@ export default function ResumePage() {
                                         commands.
                                     </CardText>
                                 </CardBody>
+                                <CardFooter className="text-muted">Summer 2024</CardFooter>
                             </Card>
                         </Col>
-                        <Col className={"pb-4"}>
+                        <Col className={"pb-3"}>
                             <Card>
                                 <CardBody>
                                     <CardTitle>
@@ -94,33 +153,15 @@ export default function ResumePage() {
                                         others, friends, and study peers.
                                     </CardText>
                                 </CardBody>
+                                <CardFooter className="text-muted">Summer 2024</CardFooter>
                             </Card>
                         </Col>
                     </MagicGridRow>
-                </div>
-                <div>
+                </section>
+                <section>
                     <h2>Research and On-Campus Work</h2>
-                    <MagicGridRow xs={1} sm={2} lg={3}>
-                        <Col className={"pb-4"}>
-                            <Card>
-                                <CardBody>
-                                    <CardTitle>Scientific Computation Research Center (SCOREC)</CardTitle>
-                                </CardBody>
-                                <ListGroup className="list-group-flush">
-                                    <ListGroupItem>
-                                        Integrated a <strong>GPU-bound memory pool</strong> in Omega_h, a C++ library for
-                                        triangle mesh adaptivity which reduced runtime by 30% on high performance computing
-                                        systems such as OLCF Frontier.
-                                    </ListGroupItem>
-                                    <ListGroupItem>
-                                        Built a <strong>Django application</strong> to allow researchers to upload their
-                                        findings from the Plasma Science Virtual Laboratory to an external data storage
-                                        website.
-                                    </ListGroupItem>
-                                </ListGroup>
-                            </Card>
-                        </Col>
-                        <Col className={"pb-4"}>
+                    <Row xs={1} md={2} className={"g-3"}>
+                        <Col>
                             <Card>
                                 <CardBody>
                                     <CardTitle>Rensselaer Center for Open Source (RCOS)</CardTitle>
@@ -128,10 +169,16 @@ export default function ResumePage() {
                                 <ListGroup className="list-group-flush">
                                     <ListGroupItem>
                                         Contributed to the OASIS and glibby projects.
+                                        <div>
+                                            <small className={"text-muted"}>Spring 2023 - Summer 2024</small>
+                                        </div>
                                     </ListGroupItem>
                                     <ListGroupItem>
-                                        Currently a RCOS mentor; Mentors provide guidance and technical support for multiple
-                                        projects.
+                                        Served as a RCOS mentor; Mentors provide guidance and technical support for
+                                        multiple projects.
+                                        <div>
+                                            <small className={"text-muted"}>Summer 2024</small>
+                                        </div>
                                     </ListGroupItem>
                                 </ListGroup>
                             </Card>
@@ -151,11 +198,12 @@ export default function ResumePage() {
                                         and soldering.
                                     </ListGroupItem>
                                 </ListGroup>
+                                <CardFooter>Summer 2024</CardFooter>
                             </Card>
                         </Col>
-                    </MagicGridRow>
-                </div>
-                <div>
+                    </Row>
+                </section>
+                <section>
                     <h2>Education</h2>
                     <Row xs={1} md={2} className={"g-3"}>
                         <Col>
@@ -183,7 +231,7 @@ export default function ResumePage() {
                             </Card>
                         </Col>
                     </Row>
-                </div>
+                </section>
             </Stack>
         </Container>
     </main>)
