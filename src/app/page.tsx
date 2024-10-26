@@ -25,7 +25,7 @@ export default async function Home() {
     const socials: Map<string, string> = new Map([['github', 'https://github.com/matthew-mccall'], ['linkedin', 'https://www.linkedin.com/in/96d9/'], ['instagram', 'https://www.instagram.com/__mmccall/'], ['twitter-x', 'https://twitter.com/__mmccall'], ['youtube', 'https://www.youtube.com/@__mmccall'], ['twitch', 'https://www.twitch.tv/mmapptv'],]);
 
     return (<main>
-        <BlobBackground blobCount={10}>
+        <BlobBackground>
             <Stack className={`text-light full-height`} direction={"vertical"}>
                 <div className={'d-flex align-items-center flex-grow-1'}>
                     <Container className="text-center">

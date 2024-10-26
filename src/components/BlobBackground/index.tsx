@@ -7,7 +7,7 @@ interface BlobBackgroundState {
     sampledHues: number[];
 }
 
-export default function BlobBackground({children, className, blobCount = 5}: {
+export default function BlobBackground({children}: {
     blobCount?: number
 } & HTMLProps<HTMLDivElement>)
 {
