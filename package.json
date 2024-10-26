@@ -10,6 +10,7 @@
     "preview": "npx @cloudflare/next-on-pages@1 && npx wrangler pages dev .vercel/output/static --compatibility-flag=nodejs_compat"
   },
   "dependencies": {
+    "@johnn-e/react-mesh-gradient": "^1.1.1",
     "@octokit/rest": "^20.0.2",
     "@octokit/types": "^12.0.0",
     "bootstrap": "^5.3.3",
