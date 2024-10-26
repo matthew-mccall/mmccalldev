@@ -1,4 +1,5 @@
 $body-bg-dark: #0B0201;
+$body-bg: snow;
 $color-mode-type: media-query;
 
 @import "bootstrap/scss/bootstrap";
@@ -29,8 +30,16 @@ $color-mode-type: media-query;
   }
 }
 
+h1 {
+  font-family: var(--font-playfair-display);
+}
+
 h2 {
-  @extend .border-top, .border-black, .border-3, .py-2;
+  font-family: var(--font-playfair);
+}
+
+h2 {
+  @extend .border-top, .border-black, .border-2, .py-1;
 }
 
 @media (prefers-color-scheme: dark) {

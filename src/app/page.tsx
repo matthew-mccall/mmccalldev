@@ -29,7 +29,7 @@ export default async function Home() {
             <Stack className={`text-light full-height`} direction={"vertical"}>
                 <div className={'d-flex align-items-center flex-grow-1'}>
                     <Container className="text-center">
-                        <h1 className={'display-1 fw-semibold'}>Matthew McCall</h1>
+                        <h1 className={'display-1 fw-medium'}>Matthew McCall</h1>
                         <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer
                             Polytechnic Institute</p>
                         <Stack direction={"horizontal"} gap={4} className={"d-inline-flex mx-auto"}>
