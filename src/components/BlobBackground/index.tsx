@@ -9,11 +9,10 @@ interface ColorScheme {
 }
 
 interface BlobBackgroundState {
-    colorScheme: ColorScheme;
     sampledHues: number[];
 }
 
-export default function BlobBackground({children, className, blobCount = 5}: {
+export default function BlobBackground({children, className, blobCount = 7}: {
     blobCount?: number
 } & HTMLProps<HTMLDivElement>)
 {
@@ -52,13 +51,12 @@ export default function BlobBackground({children, className, blobCount = 5}: {
                 break;
         }
 
-        // sample 10 colors from array
         const sampledHues = [];
         for (let i = 0; i < blobCount; i++) {
             sampledHues.push(colorScheme.hues[Math.floor(Math.random() * colorScheme.hues.length)]);
         }
 
-        setState({ colorScheme, sampledHues });
+        setState({ sampledHues });
     }, [])
 
     return (
@@ -70,8 +68,8 @@ export default function BlobBackground({children, className, blobCount = 5}: {
                     {
                         state.sampledHues.map((hue, i) => {
                             return (<circle key={i} cx={`${Math.random() * 100}%`} cy={`${Math.random() * 100}%`}
-                                            r={`${Math.random() * 100 + 72}`}
-                                            fill={`hsla(${hue}, 100%, 50%, 75%)`}/>)
+                                            r={`${Math.random() * 33 + 33}%`}
+                                            fill={`hsla(${hue}, 90%, 60%, 30%`}/>)
                         })
                     }
                 </svg>}
