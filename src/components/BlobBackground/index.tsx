@@ -66,7 +66,7 @@ export default function BlobBackground({children, className, blobCount = 5}: {
             <div className={`position-fixed z-n1 vh-100 w-100 ${className} top-0`} style={{backgroundColor: `hsl(${state?.sampledHues[0]}, 50%, 10%)`}}>
                 {state && <svg style={{
                     filter: "blur(72px)",
-                }} className={`position-absolute w-100 h-100 ${style.fadeIn}`}>
+                }} className={`w-100 h-100 ${style.fadeIn}`}>
                     {
                         state.sampledHues.map((hue, i) => {
                             return (<circle key={i} cx={`${Math.random() * 100}%`} cy={`${Math.random() * 100}%`}
