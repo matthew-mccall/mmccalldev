@@ -15,7 +15,7 @@ export default function BlobBackground({children}: {
 
     const pickNewHues = () => {
         const baseHue = Math.floor(Math.random() * 360);
-        const hueStep = 10;
+        const hueStep = 12;
         const analogousHues = Array.from({length: 5}, (_, i) => (baseHue + i * hueStep) % 360);
         setState({sampledHues: analogousHues});
     }
@@ -24,7 +24,7 @@ export default function BlobBackground({children}: {
 
     return (
         <>
-            {state && <MeshGradientRenderer className={"vh-100 w-100"} colors={state.sampledHues.map(hue => `hsl(${hue}, 66%, 30%)`)} onGradientClick={pickNewHues} speed={0.005} />}
+            {state && <MeshGradientRenderer className={"vh-100 w-100"} colors={state.sampledHues.map(hue => `hsl(${hue}, 66%, 33%)`)} onGradientClick={pickNewHues} speed={0.005} />}
             {children}
         </>
     )

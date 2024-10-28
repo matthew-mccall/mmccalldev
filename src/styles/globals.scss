@@ -30,16 +30,12 @@ $color-mode-type: media-query;
   }
 }
 
-h1 {
-  font-family: var(--font-playfair-display);
+h1, h2 {
+  font-family: var(--font-playfair-display), serif;
 }
 
 h2 {
-  font-family: var(--font-playfair);
-}
-
-h2 {
-  @extend .border-top, .border-black, .border-2, .py-1;
+  @extend .border-top, .border-black, .border-2, .py-2;
 }
 
 @media (prefers-color-scheme: dark) {
