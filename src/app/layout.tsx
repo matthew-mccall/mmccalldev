@@ -20,7 +20,7 @@ const playfair = Playfair({
 })
 
 const inter = localFont({
-    src: "fonts/Inter.var.woff2",
+    src: "fonts/InterVariable.woff2",
 })
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function RootLayout({children}: {
 }) {
     return (<html lang="en">
     <body className={`${inter.className} ${playfairDisplay.variable} ${playfair.variable}`} style={{
-        fontFeatureSettings: "'ss01', 'cv05', 'cv11'",
+        fontFeatureSettings: "'zero', 'ss01', 'ss03', 'cv05', 'cv06', 'cv11', 'cv12', 'cv12', 'cv13'",
     }}>
     <Stack style={{minHeight: "100svh"}}>
     <NavigationBar/>
