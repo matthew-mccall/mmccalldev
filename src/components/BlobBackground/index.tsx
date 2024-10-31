@@ -1,6 +1,6 @@
 'use client'
 
-import React, {HTMLProps, useEffect, useState} from "react";
+import React, {HTMLProps, useLayoutEffect, useState} from "react";
 import {MeshGradientRenderer} from "@johnn-e/react-mesh-gradient";
 
 interface BlobBackgroundState {
@@ -20,11 +20,11 @@ export default function BlobBackground({children}: {
         setState({sampledHues: analogousHues});
     }
 
-    useEffect(() => { pickNewHues() }, [])
+    useLayoutEffect(() => { pickNewHues() }, [])
 
     return (
         <>
-            {state && <MeshGradientRenderer className={"vh-100 w-100"} colors={state.sampledHues.map(hue => `hsl(${hue}, 66%, 33%)`)} onGradientClick={pickNewHues} speed={0.005} />}
+            {state && <MeshGradientRenderer className={"vh-100 w-100"} colors={state.sampledHues.map(hue => `hsl(${hue}, 66%, 40%)`)} onGradientClick={pickNewHues} speed={0.005} />}
             {children}
         </>
     )
