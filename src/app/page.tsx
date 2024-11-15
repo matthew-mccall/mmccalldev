@@ -1,8 +1,7 @@
-import GetInstagramContent from "@mmccalldev/lib/InstagramContent";
-
 export const revalidate = 3600 // invalidate every hour
 
-import {Card, CardBody, CardLink, CardText, CardTitle, Col, Container, Stack} from "react-bootstrap";
+import {Card, CardBody, CardLink, CardText, CardTitle, Col, Container, Row, Stack} from "react-bootstrap";
+import GetInstagramContent from "@mmccalldev/lib/InstagramContent";
 import GetYouTubeContent from "@mmccalldev/lib/YouTubeContent";
 import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
 import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
@@ -28,15 +27,21 @@ export default async function Home() {
         <BlobBackground>
             <Stack className={`text-light full-height`} direction={"vertical"}>
                 <div className={'d-flex align-items-center flex-grow-1'}>
-                    <Container className="text-center">
-                        <h1 className={'display-1 fw-medium'}>Matthew McCall</h1>
-                        <p className={'lead'}>Computer Science and Computer Systems Engineering Dual Major at Rensselaer
-                            Polytechnic Institute</p>
-                        <Stack direction={"horizontal"} gap={4} className={"d-inline-flex mx-auto"}>
-                            {[...socials].map(([name, url]) => (<a key={name} href={url} className={'fs-4 text-reset'}>
-                                <i className={`bi-${name}`}/>
-                            </a>))}
-                        </Stack>
+                    <Container>
+                        <Row className={"display-5"}>
+                            <Col lg>
+                                <div>Hi, my name is</div>
+                                <div className={"display-1"}>Matthew,</div>
+                                <div>and I like to build circuits, robots, and websites.</div>
+                            </Col>
+                            <Col lg className={"d-flex align-items-center justify-content-center fs-1"}>
+                                <Stack direction={"horizontal"} gap={5} className={"text-center d-inline-flex py-5"}>
+                                    {[...socials].map(([name, url]) => (<a key={name} href={url} className={'text-reset'}>
+                                        <i className={`bi-${name}`}/>
+                                    </a>))}
+                                </Stack>
+                            </Col>
+                        </Row>
                     </Container>
                 </div>
                 <Container className={'text-center py-3'}>
