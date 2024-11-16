@@ -1,6 +1,15 @@
 $body-bg-dark: #0B0201;
 $body-bg: snow;
+
+$dark: #0B0201;
+$light: snow;
+
 $color-mode-type: media-query;
+
+$border-color: $dark;
+$border-color-dark: $light;
+$card-border-radius: 0;
+$card-border-color: $dark;
 
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons";
@@ -35,15 +44,36 @@ h1, h2 {
 }
 
 h2 {
-  @extend .border-top, .border-black, .border-2, .py-2;
+  @extend .border-top, .border-dark, .border-2, .py-2;
 }
 
-@media (prefers-color-scheme: dark) {
+.card {
+  @extend .border-dark;
+  box-shadow: 6px 6px $dark;
+}
+
+.card:has(.card-img-top) {
+  box-shadow: 2px 2px $light, 6px 6px $dark;
+}
+
+@include color-mode(dark) {
   html {
     color-scheme: dark;
   }
 
   h2 {
+    border-color: $light !important;
+  }
+
+  .card {
+    border-color: $light !important;
+  }
+
+  .card:has(.card-img-top) {
+    box-shadow: 3px 3px $dark, 6px 6px $light;
+  }
+
+  .card-footer {
     border-color: $light !important;
   }
 }

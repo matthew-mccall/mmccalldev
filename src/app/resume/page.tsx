@@ -198,7 +198,7 @@ export default function ResumePage() {
                                         and soldering.
                                     </ListGroupItem>
                                 </ListGroup>
-                                <CardFooter>Summer 2024</CardFooter>
+                                <CardFooter className={"text-muted"}>Summer 2024</CardFooter>
                             </Card>
                         </Col>
                     </Row>
