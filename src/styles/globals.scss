@@ -67,6 +67,7 @@ h2 {
 
   .card {
     border-color: $light !important;
+    box-shadow: 6px 6px $light;
   }
 
   .card:has(.card-img-top) {
