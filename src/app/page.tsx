@@ -28,14 +28,14 @@ export default async function Home() {
             <Stack className={`text-light full-height`} direction={"vertical"}>
                 <div className={'d-flex align-items-center flex-grow-1'}>
                     <Container>
-                        <Row className={"display-5"}>
+                        <Row className={"display-4"}>
                             <Col lg>
                                 <div>Hi, my name is</div>
                                 <div className={"display-1"}>Matthew,</div>
                                 <div>and I like to build circuits, robots, and websites.</div>
                             </Col>
-                            <Col lg className={"d-flex align-items-center justify-content-center fs-1"}>
-                                <Stack direction={"horizontal"} gap={5} className={"text-center d-inline-flex py-5"}>
+                            <Col lg className={"d-flex align-items-center justify-content-center"}>
+                                <Stack direction={"horizontal"} gap={5} className={"justify-content-center flex-wrap p-5 display-6"}>
                                     {[...socials].map(([name, url]) => (<a key={name} href={url} className={'text-reset'}>
                                         <i className={`bi-${name}`}/>
                                     </a>))}
