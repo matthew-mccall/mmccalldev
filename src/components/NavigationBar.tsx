@@ -58,7 +58,7 @@ export default function NavigationBar() {
     const pathname = usePathname();
     const navLinks: NavigationBarEntry[] = [
         {name: "home", link: "/"},
-        {name: "resume", link: "/resume"},
+        // {name: "resume", link: "/resume"},
         {name: "papers", link: "/papers"},
         {name: "docs", link: "https://docs.mmccall.dev", icon: "box-arrow-up-right"},
     ];

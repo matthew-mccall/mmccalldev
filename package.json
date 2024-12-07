@@ -20,7 +20,7 @@
     "googleapis": "^126.0.1",
     "hammerjs": "^2.0.8",
     "magic-grid": "^3.4.7",
-    "next": "^14.2.3",
+    "next": "^15.0.4",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.11.2",
+    "@types/bootstrap": "^5.2.10",
     "@types/imagesloaded": "^4.1.6",
     "@types/jquery": "^3.5.20",
     "@types/masonry-layout": "^4.2.5",

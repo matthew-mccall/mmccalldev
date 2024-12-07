@@ -1,5 +1,6 @@
 $body-bg-dark: #0B0201;
 $body-bg: snow;
+$primary: steelblue;
 
 $dark: #0B0201;
 $light: snow;
@@ -19,7 +20,11 @@ $card-border-color: $dark;
 }
 
 .full-height {
-  height: calc(100svh - $navbar-brand-height - $navbar-padding-y - $navbar-padding-y - $navbar-brand-padding-y - $navbar-brand-padding-y);
+  min-height: calc(100svh - $navbar-brand-height - $navbar-padding-y - $navbar-padding-y - $navbar-brand-padding-y - $navbar-brand-padding-y);
+}
+
+.offset-from-navbar {
+  top: calc($navbar-brand-height + $navbar-padding-y + $navbar-padding-y + $navbar-brand-padding-y + $navbar-brand-padding-y);
 }
 
 @include media-breakpoint-up(lg) {
