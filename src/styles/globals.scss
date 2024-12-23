@@ -9,7 +9,6 @@ $color-mode-type: media-query;
 
 $border-color: $dark;
 $border-color-dark: $light;
-//$card-border-radius: 0;
 $card-border-color: $dark;
 
 @import "bootstrap/scss/bootstrap";
@@ -44,12 +43,8 @@ $card-border-color: $dark;
   }
 }
 
-h1, h2 {
-  font-family: 'Georgia', serif;
-}
-
 h2 {
-  @extend .border-top, .border-dark, .border-2, .py-2;
+  @extend .border-top, .border-dark, .border-4, .py-1, .my-3;
 }
 
 .card {
