@@ -38,21 +38,19 @@ export default async function Home() {
         <Stack className={`full-height`} direction={"vertical"}>
             <div className={'d-flex align-items-center flex-grow-1'}>
                 <Container>
-                    <Row xs={1} lg={2}>
+                    <Row xs={1} lg={2} className={"py-3"}>
                         <Col lg className={"d-flex flex-column justify-content-center"}>
-                            <div className={"display-4"}>
-                                <div>Hi, my name is</div>
-                                <div className={"display-1"}>Matthew,</div>
-                                <div>and I like to build circuits, robots, and websites.</div>
+                            <div className={"display-1 fw-semibold"}>
+                                Hi, my name is <span className={"text-decoration-underline"}>Matthew,</span> and I like to build circuits, robots, and websites.
                             </div>
-                            <Stack direction={"horizontal"} gap={5} className={"flex-wrap py-5 fs-3"}>
+                            <Stack direction={"horizontal"} className={"flex-wrap py-5 fs-3 gap-4 gap-lg-5 justify-content-center justify-content-lg-start"}>
                                 {[...socials].map(([name, url]) => (<a key={name} href={url} className={'text-reset'}>
                                     <i className={`bi-${name}`}/>
                                 </a>))}
                             </Stack>
                         </Col>
                         <Col lg className={"d-flex flex-column justify-content-center"}>
-                            <MagicGridRow xs={1} lg={2}>
+                            <MagicGridRow xs={1} xl={2}>
                                 <Col className={"pb-4"}>
                                     <Card>
                                         <CardBody>
@@ -97,7 +95,7 @@ export default async function Home() {
                     </Row>
                 </Container>
             </div>
-            <Container className={'text-center py-3'}>
+            <Container className={'text-center pb-3'}>
                 <a href={"#content"} className={"text-reset text-decoration-none"}>Learn More <br /><i className={'bi-chevron-down'} /></a>
             </Container>
         </Stack>

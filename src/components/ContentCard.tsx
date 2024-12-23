@@ -6,7 +6,7 @@ import Color from "colorjs.io"
 export default function ContentCard({image, overlay, icon, color, title, description, link, date}: Content) {
 
     const cardTitleStyle: CSSProperties = {
-        fontFeatureSettings: "'zero', 'ss01', 'ss03', 'cv05', 'cv06', 'cv11', 'cv12', 'cv12', 'cv13'",
+        fontFeatureSettings: "'zero', 'ss01', 'ss03', 'cv05', 'cv06', 'cv11'",
     }
 
     const cardContent = (<>
