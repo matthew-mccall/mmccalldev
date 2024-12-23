@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@johnn-e/react-mesh-gradient": "^1.1.1",
+    "@microsoft/clarity": "^1.0.0",
     "@octokit/rest": "^20.0.2",
     "@octokit/types": "^12.0.0",
     "bootstrap": "^5.3.3",
