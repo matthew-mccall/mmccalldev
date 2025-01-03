@@ -7,6 +7,7 @@ import NavigationBar from "@mmccalldev/components/NavigationBar";
 import React from "react";
 import CookieDisclaimer from '@mmccalldev/components/CookieDisclaimer';
 import {Stack} from "react-bootstrap";
+import {defaultFontFeatures, FontFeaturesToCSSString} from "@mmccalldev/lib/DefaultFontFeatures";
 
 const inter = localFont({
     src: "fonts/InterVariable.woff2",
@@ -21,7 +22,7 @@ export default function RootLayout({children}: {
 }) {
     return (<html lang="en">
     <body className={`${inter.className}`} style={{
-        fontFeatureSettings: "'ss01', 'ss03', 'cv06', 'cv11'",
+        fontFeatureSettings: FontFeaturesToCSSString(defaultFontFeatures),
     }}>
     <Stack style={{minHeight: "100svh"}}>
     <NavigationBar/>

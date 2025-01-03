@@ -1,6 +1,8 @@
-import Sidebar from "@mmccalldev/components/Sidebar";
+import GitHubCalendar from "react-github-calendar";
 
 export const revalidate = 3600 // invalidate every hour
+
+import Image from "next/image";
 
 import {
     Badge,
@@ -14,17 +16,23 @@ import {
     ListGroup, ListGroupItem, Row,
     Stack
 } from "react-bootstrap";
+
+import ContentGrid from "@mmccalldev/components/ContentGrid";
+import MagicGridRow from "@mmccalldev/components/MagicGridRow";
+import Sidebar from "@mmccalldev/components/Sidebar";
 import GetYouTubeContent from "@mmccalldev/lib/YouTubeContent";
 import GetGitHubContent from "@mmccalldev/lib/GitHubContent";
 import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
-import ContentGrid from "@mmccalldev/components/ContentGrid";
-import GitHubCalendar from "react-github-calendar";
-import MagicGridRow from "@mmccalldev/components/MagicGridRow";
+
+import MatthewHandwritten from "../../public/Matthew.svg"
+import {Suspense} from "react";
 
 async function getContent() {
     const [youtubeContent, twitchContent, githubContent] = await Promise.all([GetYouTubeContent(), GetTwitchContent(), GetGitHubContent()]);
     return await Promise.all([...youtubeContent, ...twitchContent, ...githubContent])
 }
+
+const Matthew = () => <Suspense fallback={"Matthew"}><Image src={MatthewHandwritten} alt={"Matthew"} style={{ height: "1em", width: "4em", fill: "white" }}/></Suspense>
 
 export default async function Home() {
     const content = (await getContent())
@@ -40,7 +48,7 @@ export default async function Home() {
                 <Container>
                     <Row xs={1} lg={2} className={"py-3"}>
                         <Col lg className={"d-flex flex-column justify-content-center"}>
-                            <div className={"display-1 fw-semibold"}>
+                            <div className={"display-1 fw-normal"}>
                                 Hi, my name is <span className={"text-decoration-underline"}>Matthew,</span> and I like to build circuits, robots, and websites.
                             </div>
                             <Stack direction={"horizontal"} className={"flex-wrap py-5 fs-3 gap-4 gap-lg-5 justify-content-center justify-content-lg-start"}>

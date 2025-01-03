@@ -2,11 +2,12 @@ import {Content} from "@mmccalldev/lib/Content";
 import React, {CSSProperties} from "react";
 import {Card, CardBody, CardImg, CardImgOverlay, CardText, CardTitle, Stack} from "react-bootstrap";
 import Color from "colorjs.io"
+import {defaultFontFeatures, FontFeaturesToCSSString} from "@mmccalldev/lib/DefaultFontFeatures";
 
 export default function ContentCard({image, overlay, icon, color, title, description, link, date}: Content) {
 
     const cardTitleStyle: CSSProperties = {
-        fontFeatureSettings: "'zero', 'ss01', 'ss03', 'cv05', 'cv06', 'cv11'",
+        fontFeatureSettings: FontFeaturesToCSSString([...defaultFontFeatures, "zero"])
     }
 
     const cardContent = (<>
