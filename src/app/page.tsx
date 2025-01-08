@@ -1,19 +1,19 @@
 import GitHubCalendar from "react-github-calendar";
-
-export const revalidate = 3600 // invalidate every hour
-
 import Image from "next/image";
 
 import {
     Badge,
     Card,
-    CardBody, CardFooter,
+    CardBody,
+    CardFooter,
     CardLink,
     CardText,
     CardTitle,
     Col,
     Container,
-    ListGroup, ListGroupItem, Row,
+    ListGroup,
+    ListGroupItem,
+    Row,
     Stack
 } from "react-bootstrap";
 
@@ -27,6 +27,8 @@ import GetTwitchContent from "@mmccalldev/lib/TwitchContent";
 import MatthewHandwritten from "../../public/Matthew.svg"
 import {Suspense} from "react";
 
+export const revalidate = 3600 // invalidate every hour
+
 async function getContent() {
     const [youtubeContent, twitchContent, githubContent] = await Promise.all([GetYouTubeContent(), GetTwitchContent(), GetGitHubContent()]);
     return await Promise.all([...youtubeContent, ...twitchContent, ...githubContent])
@@ -34,13 +36,26 @@ async function getContent() {
 
 const Matthew = () => <Suspense fallback={"Matthew"}><Image src={MatthewHandwritten} alt={"Matthew"} style={{ height: "1em", width: "4em", fill: "white" }}/></Suspense>
 
+interface SocialLink {
+    icon: string,
+    link: string,
+    title: string,
+}
+
 export default async function Home() {
     const content = (await getContent())
         .sort((a, b) => {
             return (new Date(b.date)).getTime() - (new Date(a.date)).getTime();
         });
 
-    const socials: Map<string, string> = new Map([['github', 'https://github.com/matthew-mccall'], ['linkedin', 'https://www.linkedin.com/in/96d9/'], ['instagram', 'https://www.instagram.com/__mmccall/'], ['twitter-x', 'https://twitter.com/__mmccall'], ['youtube', 'https://www.youtube.com/@__mmccall'], ['twitch', 'https://www.twitch.tv/mmapptv'],]);
+    const socials: SocialLink[] = [
+        {icon: 'github', link: 'https://github.com/matthew-mccall', title: 'GitHub'},
+        {icon: 'linkedin', link: 'https://www.linkedin.com/in/96d9/', title: 'LinkedIn'},
+        {icon: 'instagram', link: 'https://www.instagram.com/__mmccall/', title: 'Instagram'},
+        {icon: 'twitter-x', link: 'https://twitter.com/__mmccall', title: 'Twitter X'},
+        {icon: 'youtube', link: 'https://www.youtube.com/@__mmccall', title: 'YouTube'},
+        {icon: 'twitch', link: 'https://www.twitch.tv/mmapptv', title: 'Twitch'},
+    ];
 
     return (<main>
         <Stack className={`full-height`} direction={"vertical"}>
@@ -48,12 +63,12 @@ export default async function Home() {
                 <Container>
                     <Row xs={1} lg={2} className={"py-3"}>
                         <Col lg className={"d-flex flex-column justify-content-center"}>
-                            <div className={"display-1 fw-normal"}>
+                            <div className={"display-1"}>
                                 Hi, my name is <span className={"text-decoration-underline"}>Matthew,</span> and I like to build circuits, robots, and websites.
                             </div>
                             <Stack direction={"horizontal"} className={"flex-wrap py-5 fs-3 gap-4 gap-lg-5 justify-content-center justify-content-lg-start"}>
-                                {[...socials].map(([name, url]) => (<a key={name} href={url} className={'text-reset'}>
-                                    <i className={`bi-${name}`}/>
+                                {[...socials].map(({icon, link, title}, i) => (<a key={i} href={link} className={'text-reset'} title={title}>
+                                    <i className={`bi-${icon}`}/>
                                 </a>))}
                             </Stack>
                         </Col>
