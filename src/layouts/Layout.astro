@@ -6,7 +6,9 @@ const navLinks = [
 	{ link: '/', title: 'home' },
 	{ link: '/papers', title: 'papers' },
 	{ link: '/resume.pdf', title: 'resume' },
-]
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
 ---
 
 <!doctype html>
@@ -22,7 +24,7 @@ const navLinks = [
 			<div class="px-5 md:max-w-[8.5in] md:px-[1in] mx-auto text-lg/[2] font-serif">
 				<div class="flex flex-col h-svh">
 					<nav class="flex flex-row justify-center py-4">
-						{ navLinks.map(({link, title}) => <a href={link} class:list={["font-bold px-4 underline-offset-4", Astro.url.pathname === link && "border rounded-full no-underline"]}>{title}</a>)}
+						{ navLinks.map(({link, title}) => <a href={link} class:list={["font-bold px-4 underline-offset-4", currentPath === link && "border rounded-full no-underline"]}>{title}</a>)}
 					</nav>
 					<slot />
 					<footer class="py-4 text-center">
