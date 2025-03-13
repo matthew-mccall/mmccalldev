@@ -1,0 +1,11 @@
+---
+interface Props {
+    icon: string,
+    link: string,
+    title: string,
+}
+
+const { icon, link, title } = Astro.props;
+---
+
+<a href={link} title={title}><i class={`bi-${icon}`} /></a>
