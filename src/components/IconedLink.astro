@@ -8,4 +8,4 @@ interface Props {
 const { icon, link, title } = Astro.props;
 ---
 
-<a href={link} title={title}><i class={`bi-${icon}`} /></a>
+<a href={link} title={title} aria-label={title}><i class={`bi-${icon}`} /></a>

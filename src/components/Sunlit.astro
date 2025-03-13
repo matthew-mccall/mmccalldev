@@ -65,3 +65,10 @@ import './src/styles/sunlit.css'
 <div class="isolate">
     <slot />
 </div>
+<script>
+    if (window.matchMedia) {
+        window
+            .matchMedia('(prefers-color-scheme: dark)')
+            .addEventListener('change', () => document.body.classList.add('animation-ready'));
+    }
+</script>
