@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
 a {
-    @apply underline text-sky-600 hover:text-sky-800 visited:text-purple-600
+    @apply underline text-sky-600 hover:text-sky-800
 }

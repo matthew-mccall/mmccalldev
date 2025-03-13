@@ -1,4 +1,5 @@
 ---
+import Sunlit from '../components/sunlit.astro'
 import './src/styles/global.css'
 ---
 
@@ -12,6 +13,8 @@ import './src/styles/global.css'
 		<title>Astro Basics</title>
 	</head>
 	<body class="p-0 w-full h-full">
-		<slot />
+		<Sunlit>
+			<slot />
+		</Sunlit>
 	</body>
 </html>
