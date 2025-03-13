@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
-a:not(:has(i)) {
-    @apply underline text-sky-700 hover:text-sky-950 dark:hover:text-sky-400;
+@layer base {
+    a {
+        @apply underline underline-offset-2 font-semibold;
+    }
+
+    h1 {
+        @apply text-4xl;
+    }
+
+    h2 {
+        @apply text-2xl py-2 border-t-2;
+    }
 }
