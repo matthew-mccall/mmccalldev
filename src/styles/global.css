@@ -2,5 +2,5 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 a:not(:has(i)) {
-    @apply underline text-sky-600 hover:text-sky-800;
+    @apply underline text-sky-700 hover:text-sky-950 dark:hover:text-sky-400;
 }

@@ -32,18 +32,6 @@ body.animation-ready {
   animation-name: sunrise;
 }
 
-body.animation-ready.dark {
-  animation-duration: 1.7s;
-  animation-name: sunset;
-}
-
-body.dark {
-  --light: var(--night);
-  --dark: var(--day);
-  --shadow: #030307;
-  --bounce-light: #1b293f;
-}
-
 @keyframes sunrise {
   0% {
     background-color: var(--night);
@@ -167,14 +155,6 @@ body.dark {
       0.0000, 0.0000, 0.0000, 1.0000);
 }
 
-.dark .perspective {
-  opacity: 0.3;
-  transform: matrix3d(0.8333, 0.0833, 0.0000, 0.0003,
-      0.0000, 1.0000, 0.0000, 0.0000,
-      0.0000, 0.0000, 1.0000, 0.0000,
-      0.0000, 0.0000, 0.0000, 1.0000);
-}
-
 #leaves {
   position: absolute;
   background-size: cover;
@@ -206,10 +186,6 @@ body.dark {
   transition: gap 1.0s var(--timing-fn);
 }
 
-.dark #blinds>.shutters {
-  gap: 20px;
-}
-
 #blinds>.vertical {
   top: 0;
   position: absolute;
@@ -228,10 +204,6 @@ body.dark {
   width: 100%;
   height: 40px;
   transition: height 1.0s var(--timing-fn);
-}
-
-.dark .shutter {
-  height: 80px;
 }
 
 @keyframes billow {
@@ -253,5 +225,36 @@ body.dark {
 
   100% {
     transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1);
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  body.animation-ready {
+    animation-duration: 1.7s;
+    animation-name: sunset;
+  }
+
+  body {
+    --light: var(--night);
+    --dark: var(--day);
+    --shadow: #030307;
+    --bounce-light: #1b293f;
+  }
+
+  .perspective {
+    opacity: 0.3;
+    transform: matrix3d(0.8333, 0.0833, 0.0000, 0.0003,
+    0.0000, 1.0000, 0.0000, 0.0000,
+    0.0000, 0.0000, 1.0000, 0.0000,
+    0.0000, 0.0000, 0.0000, 1.0000);
+  }
+
+  #blinds>.shutters {
+    gap: 20px;
+  }
+
+  .shutter {
+    height: 80px;
   }
 }
