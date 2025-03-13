@@ -8,7 +8,7 @@ const navLinks = [
 	{ link: '/resume.pdf', title: 'resume' },
 ];
 
-const currentPath = Astro.url.pathname.replace(/\/$/, '');
+const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '');
 ---
 
 <!doctype html>
