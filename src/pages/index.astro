@@ -1,5 +1,4 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
@@ -7,5 +6,17 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-	<Welcome />
+	<div class="flex flex-col place-content-center h-svh"}>
+		<div class="self-stretch">
+			<div class="max-w-sm md:max-w-[6.5in] mx-auto px-4 text-lg/[2] font-serif">
+				Hi, I'm Matthew McCall, a third year Computer Science and Computer Systems Engineering student at
+				Rensselaer Polytechnic Institute. My most notable projects include <a href="openalgebra.org">OASIS</a>,
+				a C++ computer algebra system library and accompanying web application;
+				<a href="docs.mmccall.dev/superround">superround</a>, a JavaScript library for creating smoother rounded
+				corners using Bezier curves; and <a href="https://addons.mozilla.org/addon/burn/">BURN</a>, a
+				<span class="underline">B</span>ulk <span class="underline">UR</span>L
+				<span class="underline">N</span>avigator extension for Firefox.
+			</div>
+		</div>
+	</div>
 </Layout>
