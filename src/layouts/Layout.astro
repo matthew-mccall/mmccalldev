@@ -21,7 +21,7 @@ const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replac
 	</head>
 	<body class="text-amber-950 border-t-amber-950 dark:text-sky-100 dark:border-t-sky-100">
 		<Sunlit>
-			<div class="px-5 md:max-w-[8.5in] md:px-[1in] mx-auto text-lg/[2] font-serif">
+			<div class="px-5 max-w-4xl mx-auto text-lg/[2] font-serif">
 				<div class="flex flex-col h-svh">
 					<nav class="flex flex-row justify-center py-4">
 						{ navLinks.map(({link, title}) => <a href={link} class:list={["font-bold px-4 underline-offset-4", currentPath === link && "border rounded-full no-underline"]}>{title}</a>)}
