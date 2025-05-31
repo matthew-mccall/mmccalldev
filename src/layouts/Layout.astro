@@ -1,14 +1,7 @@
 ---
-import Sunlit from '../components/Sunlit.astro'
 import '../styles/global.css'
-
-const navLinks = [
-	{ link: '/', title: 'home' },
-	{ link: '/papers', title: 'papers' },
-	{ link: '/resume.pdf', title: 'resume' },
-];
-
-const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '');
+import Container from "./Container.astro";
+import NavigationBar from "../components/NavigationBar.astro";
 ---
 
 <!doctype html>
@@ -20,13 +13,18 @@ const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replac
 		<title>Matthew McCall</title>
 	</head>
 	<body class="dark:text-gray-300 dark:bg-black font-sans">
-	<div class="px-5 max-w-4xl mx-auto text-lg/[2]">
-		<div class="flex flex-col h-svh">
-			<nav class="flex flex-row justify-center pb-6 order-last md:order-first md:pt-6">
-				{ navLinks.map(({link, title}) => <a href={link} class:list={["font-bold px-4 underline-offset-4", currentPath === link && "border rounded-full no-underline"]}>{title}</a>)}
-			</nav>
-			<slot />
+		<div class="fixed w-dvw bottom-0 md:top-0">
+			<NavigationBar />
 		</div>
-	</div>
+		<div class="flex flex-col h-svh">
+			<div class="invisible order-last md:order-first ">
+				<NavigationBar />
+			</div>
+			<div class="grow flex flex-col justify-center pb-5">
+				<Container>
+					<slot />
+				</Container>
+			</div>
+		</div>
 	</body>
 </html>
