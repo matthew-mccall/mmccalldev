@@ -10,10 +10,12 @@ import NavigationBar from "../components/NavigationBar.astro";
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://rsms.me/">
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 		<title>Matthew McCall</title>
 	</head>
-	<body class="dark:text-gray-300 dark:bg-black font-sans">
-		<div class="fixed w-dvw bottom-0 md:top-0">
+	<body class="dark:text-gray-300 dark:bg-black">
+		<div class="fixed pointer-events-none w-dvw bottom-0 md:top-0">
 			<NavigationBar />
 		</div>
 		<div class="flex flex-col h-svh">

@@ -3,7 +3,7 @@
 
 @layer base {
     a {
-        @apply underline underline-offset-2 font-semibold;
+        @apply underline underline-offset-2;
     }
 
     h1 {
@@ -13,4 +13,12 @@
     h2 {
         @apply text-2xl py-2 border-t-2;
     }
+}
+
+:root {
+    font-family: Inter, sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1, 'cv11' 1; /* fix for Chrome */
+}
+@supports (font-variation-settings: normal) {
+    :root { font-family: InterVariable, sans-serif; }
 }
