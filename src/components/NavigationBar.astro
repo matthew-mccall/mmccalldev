@@ -11,8 +11,9 @@ const navLinks = [
 const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '');
 ---
 
-<div class="py-4 pointer-events-auto flex flex-row justify-center">
-    <nav class="flex flex-row justify-center bg-white dark:bg-black rounded-full border border-gray-500 p-2">
-        { navLinks.map(({link, title}) => <a href={link} class:list={["font-bold py-2 px-4 underline-offset-4", currentPath === link && "border rounded-full no-underline"]}>{title}</a>)}
+<div class="py-2 pointer-events-auto flex flex-row justify-center">
+    <nav class="flex flex-row justify-center bg-white dark:bg-black rounded-full border p-2">
+        { navLinks.map(({link, title}) => <a href={link} class:list={["border py-2 px-4", currentPath === link && "rounded-full no-underline", currentPath == link ? "border-black dark:border-white" : "border-transparent"]}>{title}</a>)}
+
     </nav>
 </div>
