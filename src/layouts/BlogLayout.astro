@@ -1,0 +1,23 @@
+---
+import Layout from "./Layout.astro";
+import { formatDate } from "../utils/formatDate";
+
+// Handle both direct frontmatter and content collection entry
+const { frontmatter, entry } = Astro.props;
+const title = entry?.data?.title || frontmatter?.title;
+const date = entry?.data?.date || frontmatter?.date;
+const formattedDate = date ? formatDate(date) : null;
+---
+
+<Layout>
+    <main>
+        <div class="py-8">
+            <h1>{title}</h1>
+            {formattedDate && <p class="text-gray-500 dark:text-gray-400 mt-2">{formattedDate}</p>}
+        </div>
+        <hr />
+        <article class="prose dark:prose-invert py-8">
+            <slot />
+        </article>
+    </main>
+</Layout>

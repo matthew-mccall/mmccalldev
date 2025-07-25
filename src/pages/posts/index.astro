@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../utils/formatDate';
+
+// Get all blog posts and sort them by date (newest first)
+const posts = await getCollection('posts');
+const sortedPosts = posts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+---
+
+<Layout>
+  <main>
+    <div class="py-8">
+      <h1>Posts</h1>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">Thoughts, ideas, and technical articles</p>
+    </div>
+    
+    <div class="space-y-8">
+      {sortedPosts.map(post => (
+        <article class="border-b border-gray-200 dark:border-gray-700 pb-6 last:border-0">
+          <h2 class="text-2xl font-semibold">
+            <a href={`/posts/${post.slug}`} class="no-underline hover:underline">
+              {post.data.title}
+            </a>
+          </h2>
+          <time datetime={post.data.date.toISOString()} class="text-sm text-gray-500 dark:text-gray-400 mt-1 block">
+            {formatDate(post.data.date)}
+          </time>
+        </article>
+      ))}
+    </div>
+    
+    {sortedPosts.length === 0 && (
+      <p class="text-center py-10 text-gray-500 dark:text-gray-400">No posts yet. Check back soon!</p>
+    )}
+  </main>
+</Layout>
