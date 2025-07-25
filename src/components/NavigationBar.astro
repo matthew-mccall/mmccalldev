@@ -13,7 +13,7 @@ const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replac
 ---
 
 <div class="py-2 pointer-events-auto flex flex-row justify-center">
-    <nav class="flex flex-row justify-center bg-white dark:bg-black rounded-full border p-2">
+    <nav class="flex flex-row justify-center bg-white dark:bg-black rounded-full border p-1">
         { navLinks.map(({link, title}) => <a href={link} class:list={["border py-2 px-4", currentPath === link && "rounded-full no-underline", currentPath == link ? "border-black dark:border-white" : "border-transparent"]}>{title}</a>)}
 
     </nav>
