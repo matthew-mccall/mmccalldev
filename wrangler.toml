@@ -1,0 +1,5 @@
+name = "mmccalldev"
+compatibility_date = "2025-08-25"
+
+[assets]
+directory = "./dist"
