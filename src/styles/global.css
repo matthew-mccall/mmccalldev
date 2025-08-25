@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 @layer base {
