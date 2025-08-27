@@ -19,7 +19,7 @@ import NavigationBar from "../components/NavigationBar.astro";
 			<NavigationBar />
 		</div>
 		<div class="flex flex-col h-svh">
-			<div class="invisible order-last md:order-first ">
+			<div class="invisible order-last md:order-first">
 				<NavigationBar />
 			</div>
 			<div class="grow flex flex-col justify-center">
@@ -29,9 +29,10 @@ import NavigationBar from "../components/NavigationBar.astro";
 			</div>
 		</div>
         <div class="toast toast-end">
-            <div id="cooke-toast" role="alert" class="alert alert-vertical sm:alert-horizontal">
+            <div id="cookie-toast" role="alert" class="alert alert-vertical sm:alert-horizontal shadow max-w-lg invisible">
                 <i class="bi-cookie"></i>
-                <span>Do you consent to cookie?</span>
+                <span>I improve this website by using Microsoft Clarity to see how you use it. By selecting "Accept",
+                    you agree that Microsoft and I can collect and use this data.</span>
                 <div>
                     <button id="accept-cookie" class="btn btn-sm btn-primary">Accept</button>
                     <button id="decline-cookie" class="btn btn-sm btn-secondary">Deny</button>
@@ -42,22 +43,33 @@ import NavigationBar from "../components/NavigationBar.astro";
 			import Clarity from '@microsoft/clarity';
 			Clarity.init(import.meta.env.PUBLIC_CLARITY_PROJECT_ID);
 
-            const cookieToast = document.querySelector('#cooke-toast');
+            const cookieToast = document.querySelector('#cookie-toast');
+            const alreadyConsented = window.localStorage.getItem('clarity-consent');
+
             if (cookieToast) {
-                const acceptCookieButton = document.querySelector('#accept-cookie');
-                const declineCookieButton = document.querySelector('#decline-cookie');
+                if (alreadyConsented === null) {
+                    cookieToast.classList.remove('invisible');
 
-                if (acceptCookieButton)
-                    acceptCookieButton.addEventListener('click', () => {
-                        Clarity.consent(true);
-                        cookieToast.remove();
-                    })
+                    const acceptCookieButton = document.querySelector('#accept-cookie');
+                    const declineCookieButton = document.querySelector('#decline-cookie');
 
-                if (declineCookieButton)
-                    declineCookieButton.addEventListener('click', () => {
-                        Clarity.consent(false);
-                        cookieToast.remove();
-                    })
+                    if (acceptCookieButton)
+                        acceptCookieButton.addEventListener('click', () => {
+                            Clarity.consent(true);
+                            window.localStorage.setItem('clarity-consent', 'accepted');
+                            cookieToast.remove();
+                        })
+
+                    if (declineCookieButton)
+                        declineCookieButton.addEventListener('click', () => {
+                            Clarity.consent(false);
+                            window.localStorage.setItem('clarity-consent', 'declined');
+                            cookieToast.remove();
+                        })
+                } else {
+                    Clarity.consent(alreadyConsented === 'accepted');
+                    cookieToast.remove();
+                }
             }
         </script>
 	</body>
