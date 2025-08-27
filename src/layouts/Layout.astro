@@ -14,7 +14,7 @@ import NavigationBar from "../components/NavigationBar.astro";
 		<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 		<title>Matthew McCall</title>
 	</head>
-	<body class="dark:text-gray-300 dark:bg-black">
+	<body>
 		<div class="fixed pointer-events-none w-dvw bottom-0 md:top-0">
 			<NavigationBar />
 		</div>
@@ -28,9 +28,37 @@ import NavigationBar from "../components/NavigationBar.astro";
 				</Container>
 			</div>
 		</div>
+        <div class="toast toast-end">
+            <div id="cooke-toast" role="alert" class="alert alert-vertical sm:alert-horizontal">
+                <i class="bi-cookie"></i>
+                <span>Do you consent to cookie?</span>
+                <div>
+                    <button id="accept-cookie" class="btn btn-sm btn-primary">Accept</button>
+                    <button id="decline-cookie" class="btn btn-sm btn-secondary">Deny</button>
+                </div>
+            </div>
+        </div>
 		<script>
 			import Clarity from '@microsoft/clarity';
 			Clarity.init(import.meta.env.PUBLIC_CLARITY_PROJECT_ID);
-		</script>
+
+            const cookieToast = document.querySelector('#cooke-toast');
+            if (cookieToast) {
+                const acceptCookieButton = document.querySelector('#accept-cookie');
+                const declineCookieButton = document.querySelector('#decline-cookie');
+
+                if (acceptCookieButton)
+                    acceptCookieButton.addEventListener('click', () => {
+                        Clarity.consent(true);
+                        cookieToast.remove();
+                    })
+
+                if (declineCookieButton)
+                    declineCookieButton.addEventListener('click', () => {
+                        Clarity.consent(false);
+                        cookieToast.remove();
+                    })
+            }
+        </script>
 	</body>
 </html>

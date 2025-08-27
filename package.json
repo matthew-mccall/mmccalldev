@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "astro": "^5.13.3",
     "bootstrap-icons": "^1.11.3",
+    "daisyui": "^5.0.51",
     "tailwindcss": "^4.1.12"
   },
   "devDependencies": {

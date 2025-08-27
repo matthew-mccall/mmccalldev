@@ -1,7 +1,10 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
-
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
+@plugin "@tailwindcss/typography";
+@plugin "daisyui" {
+    themes: wireframe --default, black --prefersdark;
+}
 
 @layer base {
     a {
