@@ -28,5 +28,9 @@ import NavigationBar from "../components/NavigationBar.astro";
 				</Container>
 			</div>
 		</div>
+		<script>
+			import Clarity from '@microsoft/clarity';
+			Clarity.init(import.meta.env.PUBLIC_CLARITY_PROJECT_ID);
+		</script>
 	</body>
 </html>
