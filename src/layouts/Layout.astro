@@ -2,6 +2,9 @@
 import '../styles/global.css'
 import Container from "./Container.astro";
 import NavigationBar from "../components/NavigationBar.astro";
+import navLinks from "../utils/navlinks";
+import socials from "../utils/socials";
+import IconedLink from "../components/IconedLink.astro";
 ---
 
 <!doctype html>
@@ -15,7 +18,7 @@ import NavigationBar from "../components/NavigationBar.astro";
 		<title>Matthew McCall</title>
 	</head>
 	<body class="h-dvh overflow-y-scroll">
-		<div class="flex flex-col md:flex-row md:justify-evenly min-h-dvh">
+		<div class="flex flex-col md:flex-row md:justify-evenly min-h-dvh pb-8 md:pb-0">
             <aside class="sticky top-0 hidden items-center justify-center md:h-screen md:flex">
 				<NavigationBar />
             </aside>
@@ -28,6 +31,24 @@ import NavigationBar from "../components/NavigationBar.astro";
                 <NavigationBar />
             </div>
         </div>
+        <footer class="footer md:footer-horizontal bg-base-200 text-base-content p-8">
+           <aside>
+               <p class="text-xl">mmccall.dev</p>
+               <p>Copyright &copy; {new Date().getFullYear()} - All rights reserved.</p>
+           </aside>
+            <nav>
+                <h6 class="footer-title">Links</h6>
+                { navLinks.map(({link, title}) =>
+                        <a href={link} class="link link-hover">{title}</a>)
+                }
+            </nav>
+            <nav>
+                <h6 class="footer-title">Socials</h6>
+                <div class="flex flex-row gap-4 text-xl">
+                    {socials.map(social => <IconedLink {...social} />)}
+                </div>
+            </nav>
+        </footer>
         <div class="toast toast-end">
             <div id="cookie-toast" role="alert" class="alert alert-vertical shadow max-w-sm invisible">
                 <span>I improve this website by using Microsoft Clarity to see how you use it. By selecting "Accept",

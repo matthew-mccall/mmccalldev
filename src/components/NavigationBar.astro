@@ -1,13 +1,7 @@
 ---
 import '../styles/global.css'
 import Container from "../layouts/Container.astro";
-
-const navLinks = [
-    { link: '/', title: 'home' },
-    { link: '/posts', title: 'posts' },
-    { link: '/papers', title: 'papers' },
-    { link: '/resume.pdf', title: 'resume' },
-];
+import navLinks from "../utils/navlinks";
 
 const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '');
 ---

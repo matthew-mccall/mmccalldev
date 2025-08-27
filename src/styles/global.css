@@ -7,10 +7,6 @@
 }
 
 @layer base {
-    a {
-        @apply underline underline-offset-4;
-    }
-
     h1 {
         @apply text-4xl;
     }
