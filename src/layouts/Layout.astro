@@ -14,20 +14,20 @@ import NavigationBar from "../components/NavigationBar.astro";
 		<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 		<title>Matthew McCall</title>
 	</head>
-	<body>
-		<div class="fixed pointer-events-none w-dvw bottom-0 md:top-0">
-			<NavigationBar />
-		</div>
-		<div class="flex flex-col min-h-svh">
-			<div class="invisible order-last md:order-first">
+	<body class="h-dvh overflow-y-scroll">
+		<div class="flex flex-col md:flex-row md:justify-evenly min-h-dvh">
+            <aside class="sticky top-0 hidden items-center justify-center md:h-screen md:flex">
 				<NavigationBar />
-			</div>
-			<div class="grow flex flex-col justify-center">
+            </aside>
+			<div class="flex grow md:grow-0 items-center">
 				<Container>
 					<slot />
 				</Container>
 			</div>
-		</div>
+            <div class="sticky bottom-0 flex items-center justify-center md:invisible">
+                <NavigationBar />
+            </div>
+        </div>
         <div class="toast toast-end">
             <div id="cookie-toast" role="alert" class="alert alert-vertical shadow max-w-sm invisible">
                 <span>I improve this website by using Microsoft Clarity to see how you use it. By selecting "Accept",
