@@ -21,11 +21,7 @@
     
     /* Custom styling for code blocks */
     pre {
-        @apply my-6 p-4 rounded-md;
-    }
-    
-    pre code {
-        @apply leading-none whitespace-pre text-sm;
+        @apply my-6 p-4 rounded-md prose max-w-none;
     }
 }
 

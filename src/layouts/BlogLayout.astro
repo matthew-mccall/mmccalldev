@@ -16,7 +16,7 @@ const formattedDate = date ? formatDate(date) : null;
             {formattedDate && <p class="text-gray-500 dark:text-gray-400 mt-2">{formattedDate}</p>}
         </div>
         <hr />
-        <article class="prose dark:prose-invert py-8">
+        <article class="py-8">
             <slot />
         </article>
     </main>
