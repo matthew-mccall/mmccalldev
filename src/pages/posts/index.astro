@@ -20,7 +20,7 @@ const sortedPosts = posts.sort((a, b) => {
     <div class="space-y-8">
       {sortedPosts.map(post => (
         <article class="border-b border-gray-200 dark:border-gray-700 pb-6 last:border-0">
-          <h2 class="text-2xl font-semibold">
+          <h2>
             <a href={`/posts/${post.id}`} class="no-underline hover:underline">
               {post.data.title}
             </a>
