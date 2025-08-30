@@ -10,13 +10,13 @@ const formattedDate = date ? formatDate(date) : null;
 ---
 
 <Layout>
-    <main>
-        <div class="py-8">
+    <main class="flex flex-col gap-5">
+        <div>
             <h1>{title}</h1>
             {formattedDate && <p class="text-gray-500 dark:text-gray-400 mt-2">{formattedDate}</p>}
         </div>
         <hr />
-        <article class="py-8">
+        <article>
             <slot />
         </article>
     </main>
