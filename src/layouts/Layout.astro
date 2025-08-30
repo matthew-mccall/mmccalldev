@@ -27,12 +27,12 @@ import IconedLink from "../components/IconedLink.astro";
     <aside class="sticky top-0 hidden items-center justify-center lg:h-dvh lg:flex">
         <NavigationBar/>
     </aside>
-    <div class="flex grow py-5 lg:grow-0 items-center">
+    <div class="flex grow pt-5 lg:pb-5 lg:grow-0 items-center">
         <Container>
             <slot/>
         </Container>
     </div>
-    <div class="sticky bottom-0 flex items-center justify-center lg:invisible">
+    <div class="sticky bottom-0 flex items-center justify-center pb-5 lg:invisible">
         <NavigationBar/>
     </div>
 </div>
