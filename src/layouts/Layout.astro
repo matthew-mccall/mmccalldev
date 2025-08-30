@@ -2,6 +2,9 @@
 import '../styles/global.css'
 
 import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 import Container from "./Container.astro";
 import NavigationBar from "../components/NavigationBar.astro";
@@ -16,6 +19,7 @@ import IconedLink from "../components/IconedLink.astro";
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin="anonymous" />
 		<title>Matthew McCall</title>
 	</head>
 	<body>

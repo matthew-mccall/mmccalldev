@@ -6,6 +6,11 @@
     themes: wireframe --default, black --prefersdark;
 }
 
+@theme {
+    --font-sans: "Inter", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+}
+
 @layer base {
     h1 {
         @apply text-4xl;
@@ -22,7 +27,6 @@
 }
 
 :root {
-    font-family: Inter, sans-serif;
     font-feature-settings: 'liga' 1, 'calt' 1, 'cv11' 1; /* fix for Chrome */
 }
 
