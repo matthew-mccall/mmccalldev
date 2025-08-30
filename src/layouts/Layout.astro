@@ -15,87 +15,93 @@ import IconedLink from "../components/IconedLink.astro";
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin="anonymous" />
-		<title>Matthew McCall</title>
-	</head>
-	<body>
-		<div class="flex flex-col gap-5 min-h-dvh p-5 lg:flex-row lg:justify-evenly lg:pb-0">
-            <aside class="sticky top-0 hidden items-center justify-center lg:h-screen lg:flex">
-				<NavigationBar />
-            </aside>
-			<div class="flex grow lg:grow-0 items-center">
-				<Container>
-					<slot />
-				</Container>
-			</div>
-            <div class="sticky bottom-0 flex items-center justify-center lg:invisible">
-                <NavigationBar />
-            </div>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin="anonymous"/>
+    <title>Matthew McCall</title>
+</head>
+<body>
+<div class="flex flex-col gap-5 min-h-dvh p-5 lg:flex-row lg:justify-evenly">
+    <aside class="sticky top-0 hidden items-center justify-center lg:h-screen lg:flex">
+        <NavigationBar/>
+    </aside>
+    <div class="flex grow lg:grow-0 items-center">
+        <Container>
+            <slot/>
+        </Container>
+    </div>
+    <div class="sticky bottom-0 flex items-center justify-center lg:invisible">
+        <NavigationBar/>
+    </div>
+</div>
+<footer class="footer footer-horizontal footer-center bg-base-200 text-base-content py-10 px-5">
+    <nav class="flex flex-row gap-4">
+        {navLinks.map(({link, title}) =>
+                <a href={link} class="link link-hover">{title}</a>)
+        }
+    </nav>
+    <nav>
+        <div class="flex flex-row gap-4 text-xl">
+            {socials.map(social =>
+                    <IconedLink {...social}/>)}
         </div>
-        <footer class="footer lg:footer-horizontal bg-base-200 text-base-content p-5">
-           <aside>
-               <p class="text-xl">mmccall.dev</p>
-               <p>Copyright &copy; {new Date().getFullYear()} - All rights reserved.</p>
-           </aside>
-            <nav>
-                <h6 class="footer-title">Links</h6>
-                { navLinks.map(({link, title}) =>
-                        <a href={link} class="link link-hover">{title}</a>)
-                }
-            </nav>
-            <nav>
-                <h6 class="footer-title">Socials</h6>
-                <div class="flex flex-row gap-4 text-xl">
-                    {socials.map(social => <IconedLink {...social} />)}
-                </div>
-            </nav>
-        </footer>
-        <div class="toast toast-end">
-            <div id="cookie-toast" role="alert" class="alert alert-vertical shadow max-w-sm invisible">
+    </nav>
+    <aside class="max-w-xl">
+        <p class="text-xl">mmccall.dev</p>
+        <p>Copyright &copy; {new Date().getFullYear()} - All rights reserved.</p>
+        <small class="text-left">We partner with Microsoft Clarity and Microsoft Advertising to capture how you use and interact with our
+            website through behavioral metrics, heatmaps, and session replay to improve and market our
+            products/services. Website usage data is captured using first and third-party cookies and other tracking
+            technologies to determine the popularity of products/services and online activity. Additionally, we use this
+            information for site optimization, fraud/security purposes, and advertising. For more information about how
+            Microsoft collects and uses your data, visit the <a href="https://www.microsoft.com/privacy/privacystatement">Microsoft Privacy Statement</a>.</small>
+    </aside>
+</footer>
+<div class="toast toast-end">
+    <div id="cookie-toast" role="alert" class="alert alert-vertical shadow max-w-sm invisible">
                 <span>I improve this website by using Microsoft Clarity to see how you use it. By selecting "Accept",
                     you agree that Microsoft and I can collect and use this data.</span>
-                <div>
-                    <button id="accept-cookie" class="btn btn-sm btn-primary">Accept</button>
-                    <button id="decline-cookie" class="btn btn-sm btn-secondary">Deny</button>
-                </div>
-            </div>
+        <div>
+            <button id="accept-cookie" class="btn btn-sm btn-primary">Accept</button>
+            <button id="decline-cookie" class="btn btn-sm btn-secondary">Deny</button>
         </div>
-		<script>
-			import Clarity from '@microsoft/clarity';
-			Clarity.init(import.meta.env.PUBLIC_CLARITY_PROJECT_ID);
+    </div>
+</div>
+<script>
+    import Clarity from '@microsoft/clarity';
 
-            const cookieToast = document.querySelector('#cookie-toast');
-            const alreadyConsented = window.localStorage.getItem('clarity-consent');
+    Clarity.init(import.meta.env.PUBLIC_CLARITY_PROJECT_ID);
 
-            if (cookieToast) {
-                if (alreadyConsented === null) {
-                    cookieToast.classList.remove('invisible');
+    const cookieToast = document.querySelector('#cookie-toast');
+    const alreadyConsented = window.localStorage.getItem('clarity-consent');
 
-                    const acceptCookieButton = document.querySelector('#accept-cookie');
-                    const declineCookieButton = document.querySelector('#decline-cookie');
+    if (cookieToast) {
+        if (alreadyConsented === null) {
+            cookieToast.classList.remove('invisible');
 
-                    if (acceptCookieButton)
-                        acceptCookieButton.addEventListener('click', () => {
-                            Clarity.consent(true);
-                            window.localStorage.setItem('clarity-consent', 'accepted');
-                            cookieToast.remove();
-                        })
+            const acceptCookieButton = document.querySelector('#accept-cookie');
+            const declineCookieButton = document.querySelector('#decline-cookie');
 
-                    if (declineCookieButton)
-                        declineCookieButton.addEventListener('click', () => {
-                            Clarity.consent(false);
-                            window.localStorage.setItem('clarity-consent', 'declined');
-                            cookieToast.remove();
-                        })
-                } else {
-                    Clarity.consent(alreadyConsented === 'accepted');
+            if (acceptCookieButton)
+                acceptCookieButton.addEventListener('click', () => {
+                    Clarity.consent(true);
+                    window.localStorage.setItem('clarity-consent', 'accepted');
                     cookieToast.remove();
-                }
-            }
-        </script>
-	</body>
+                })
+
+            if (declineCookieButton)
+                declineCookieButton.addEventListener('click', () => {
+                    Clarity.consent(false);
+                    window.localStorage.setItem('clarity-consent', 'declined');
+                    cookieToast.remove();
+                })
+        } else {
+            Clarity.consent(alreadyConsented === 'accepted');
+            cookieToast.remove();
+        }
+    }
+</script>
+</body>
 </html>
