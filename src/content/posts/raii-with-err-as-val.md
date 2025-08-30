@@ -15,7 +15,7 @@ public:
     Window();
     ~Window();
     // Likely will want to take into account rule of three/five.
-private;
+private:
     SDL_Window m_window;
 };
 

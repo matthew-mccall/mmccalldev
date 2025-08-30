@@ -11,4 +11,12 @@ export default defineConfig({
     prefetch: {
         prefetchAll: true,
     },
+    markdown: {
+        shikiConfig: {
+            themes: {
+                light: 'github-light',
+                dark: 'github-dark'
+            }
+        }
+    }
 });

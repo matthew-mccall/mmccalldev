@@ -22,8 +22,10 @@
     
     /* Custom styling for code blocks */
     pre {
-        @apply my-6 p-4 rounded-md prose max-w-none;
+        @apply my-6 p-4 rounded-md prose max-w-none border dark:border-0;
     }
+    
+    
 }
 
 :root {
