@@ -9,8 +9,15 @@ const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replac
 <div class="py-2 pointer-events-auto flex flex-row justify-center">
     <nav>
         <ul class="menu menu-horizontal rounded-full bg-base-200 shadow lg:menu-vertical lg:rounded-lg">
-            { navLinks.map(({link, title}) =>
-                <li><a href={link} class=`rounded-full lg:rounded-sm ${currentPath === link && 'menu-active no-underline'}`>{title}</a></li>)
+            { navLinks.map(({link, title, icon}) =>
+                <li>
+                    <a href={link} class=`rounded-full lg:rounded-sm ${currentPath === link && 'menu-active no-underline'}`>
+                        <div class="flex flex-col lg:flex-row items-center gap-x-2">
+                            <i class={`bi-${icon} text-lg`} />
+                            <span class="text-xs lg:text-base">{title}</span>
+                        </div>
+                    </a>
+                </li>)
             }
         </ul>
     </nav>
