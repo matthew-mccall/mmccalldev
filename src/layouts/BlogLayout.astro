@@ -1,5 +1,5 @@
 ---
-import Layout from "./Layout.astro";
+import ContainerLayout from "./ContainerLayout.astro";
 import { formatDate } from "../utils/formatDate";
 
 // Handle both direct frontmatter and content collection entry
@@ -9,7 +9,7 @@ const date = entry?.data?.date || frontmatter?.date;
 const formattedDate = date ? formatDate(date) : null;
 ---
 
-<Layout>
+<ContainerLayout>
     <main class="flex flex-col gap-5">
         <div>
             <h1>{title}</h1>
@@ -20,4 +20,4 @@ const formattedDate = date ? formatDate(date) : null;
             <slot />
         </article>
     </main>
-</Layout>
+</ContainerLayout>

@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import MainLayout from "../layouts/MainLayout.astro";
 import IconedLink from "../components/IconedLink.astro";
 import socials from "../utils/socials";
 
@@ -7,7 +7,7 @@ import socials from "../utils/socials";
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
+<MainLayout>
 	<main class="flex flex-col items-center grow gap-4"}>
 		<div>
             <p> Hi, I'm <span class="font-semibold">Matthew McCall</span>, a fourth year Computer Science and Computer
@@ -24,4 +24,4 @@ import socials from "../utils/socials";
 			{socials.map(social => <IconedLink {...social} />)}
 		</div>
 	</main>
-</Layout>
+</MainLayout>

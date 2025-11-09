@@ -6,7 +6,7 @@ import '@fontsource-variable/jetbrains-mono';
 
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
-import Container from "./Container.astro";
+import Container from "../components/Container.js";
 import NavigationBar from "../components/NavigationBar.astro";
 import navLinks from "../utils/navlinks";
 import socials from "../utils/socials";
@@ -23,19 +23,8 @@ import IconedLink from "../components/IconedLink.astro";
     <title>Matthew McCall</title>
 </head>
 <body>
-<div class="flex flex-col gap-5 min-h-dvh px-5 lg:flex-row lg:justify-evenly">
-    <aside class="sticky top-0 hidden items-center justify-center lg:h-dvh lg:flex">
-        <NavigationBar/>
-    </aside>
-    <div class="flex grow pt-5 lg:pb-5 lg:grow-0 items-center">
-        <Container>
-            <slot/>
-        </Container>
-    </div>
-    <div class="sticky bottom-0 flex items-center justify-center pb-5 lg:invisible">
-        <NavigationBar/>
-    </div>
-</div>
+<slot />
+</body>
 <footer class="footer footer-horizontal footer-center bg-base-200 text-base-content py-10 px-5">
     <nav class="flex flex-row gap-4">
         {navLinks.map(({link, title}) =>
