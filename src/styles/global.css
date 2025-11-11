@@ -3,7 +3,7 @@
 
 @plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-    themes: wireframe --default, black --prefersdark;
+    themes: cmyk --default, business --prefersdark;
 }
 
 @theme {
@@ -18,6 +18,10 @@
 
     h2 {
         @apply text-2xl py-2 border-t-2;
+    }
+
+    h3 {
+        @apply text-lg font-semibold;
     }
     
     /* Custom styling for code blocks */
