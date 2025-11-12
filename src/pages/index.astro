@@ -9,38 +9,41 @@ import LandingButton from "../components/LandingButton.astro";
 ---
 
 <MainLayout>
-	<main class="px-20">
-		<div class="flex flex-col lg:flex-row items-center min-h-svh">
-            <div class="flex-1 lg:order-2">
+	<main class="grow flex px-20">
+		<div class="flex grow flex-col lg:flex-row items-center max-w-full">
+            <div class="flex-1 lg:order-3">
                     <picture>
                         <source srcset="/portrait.jxl" type="image/jxl" />
-                        <img src="/portrait.webp" alt="Portrait of Matthew McCall" class="w-full h-full object-contain"/>
+                        <img src="/portrait.webp" alt="Portrait of Matthew McCall" class=" h-full object-contain"/>
                     </picture>
             </div>
-            <div class="flex-1 flex flex-col gap-2">
+            <div class="flex-1 flex flex-col gap-6">
                 <h1 class="text-9xl">Matthew McCall</h1>
-                <p class="">Computer Science and Computer Systems Engineering</p>
-                <p class="">Rensselaer Polytechnic Institute</p>
-                <a href="https://openalgebra.org">
-                    <LandingButton>
-                        <h3>OASIS</h3>
-                        a C++ computer algebra system library and accompanying web application;
-                    </LandingButton>
-                </a>
-                <a href="https://docs.mmccall.dev/superround">
-                    <LandingButton>
-                        <h3>superround</h3>
-                        a JavaScript library for creating smoother rounded corners using Bezier curves
-                    </LandingButton>
-                </a>
-                <a href="https://addons.mozilla.org/addon/burn/">
-                    <LandingButton>
-                        <h3>BURN</h3>
-                        <span class="underline">B</span>ulk <span class="underline">UR</span>L
-                        <span class="underline">N</span>avigator extension for Firefox.
-                    </LandingButton>
-                </a>
-                <div class="flex flex-row justify-center gap-4 text-xl py-4">
+                <p class="text-lg font-light">
+                    Fourth-year Computer Science and Computer Systems Engineering dual major at Rensselaer
+                    Polytechnic Institute</p>
+                <div class="flex flex-col gap-3">
+                    <a href="https://openalgebra.org">
+                        <LandingButton>
+                            <h3>OASIS</h3>
+                            a C++ computer algebra system library and accompanying web application;
+                        </LandingButton>
+                    </a>
+                    <a href="https://docs.mmccall.dev/superround">
+                        <LandingButton>
+                            <h3>superround</h3>
+                            a JavaScript library for creating smoother rounded corners using Bezier curves
+                        </LandingButton>
+                    </a>
+                    <a href="https://addons.mozilla.org/addon/burn/">
+                        <LandingButton>
+                            <h3>BURN</h3>
+                            <span class="underline">B</span>ulk <span class="underline">UR</span>L
+                            <span class="underline">N</span>avigator extension for Firefox.
+                        </LandingButton>
+                    </a>
+                </div>
+                <div class="flex flex-row justify-center gap-4 text-xl my-6">
                     {socials.map(social => <IconedLink {...social} />)}
                 </div>
             </div>
