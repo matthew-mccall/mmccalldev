@@ -5,22 +5,13 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 
 import MainLayout from "./MainLayout.astro";
-import NavigationBar from "../components/NavigationBar.astro";
 import Container from "../components/Container.astro";
 ---
 
 <MainLayout>
-    <div class="flex flex-col gap-5 min-h-dvh px-5 lg:flex-row lg:justify-evenly">
-        <aside class="sticky top-0 hidden items-center justify-center lg:h-dvh lg:flex">
-            <NavigationBar/>
-        </aside>
-        <div class="flex grow pt-5 lg:pb-5 lg:grow-0 items-center">
-            <Container>
-                <slot/>
-            </Container>
-        </div>
-        <div class="sticky bottom-0 flex items-center justify-center pb-5 lg:invisible">
-            <NavigationBar/>
-        </div>
+    <div class="grow flex items-center justify-center py-6">
+        <Container>
+            <slot/>
+        </Container>
     </div>
 </MainLayout>

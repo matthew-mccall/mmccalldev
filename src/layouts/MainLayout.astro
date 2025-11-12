@@ -6,11 +6,10 @@ import '@fontsource-variable/jetbrains-mono';
 
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
-import Container from "../components/Container.js";
-import NavigationBar from "../components/NavigationBar.astro";
 import navLinks from "../utils/navlinks";
 import socials from "../utils/socials";
 import IconedLink from "../components/IconedLink.astro";
+import NavigationBar from "../components/NavigationBar.astro";
 ---
 
 <!doctype html>
@@ -23,7 +22,12 @@ import IconedLink from "../components/IconedLink.astro";
     <title>Matthew McCall</title>
 </head>
 <body>
-<slot />
+<div class="min-h-dvh flex flex-col">
+    <div class="fixed bottom-0 flex items-center justify-center w-full lg:sticky lg:top-0">
+        <NavigationBar />
+    </div>
+    <slot />
+</div>
 </body>
 <footer class="footer footer-horizontal footer-center bg-base-200 text-base-content py-10 px-5">
     <nav class="flex flex-row gap-4">
