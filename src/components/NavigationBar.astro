@@ -5,19 +5,17 @@ import navLinks from "../data/navlinks.json";
 const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '');
 ---
 
-<div class="py-2 pointer-events-auto flex flex-row justify-center">
-    <nav>
-        <ul class="menu menu-horizontal rounded-full bg-base-200 shadow">
-            { navLinks.map(({link, title, icon}) =>
-                <li>
-                    <a href={link} class=`rounded-full ${currentPath === link && 'menu-active no-underline'}`>
-                        <div class="flex flex-col lg:flex-row items-center gap-x-2">
-                            <i class={`bi-${icon} text-lg`} />
-                            <span class="text-xs lg:text-base">{title}</span>
-                        </div>
-                    </a>
-                </li>)
-            }
-        </ul>
-    </nav>
-</div>
+<nav class="pointer-events-auto flex flex-row justify-center bg-base-100">
+    <ul class="menu menu-horizontal">
+        { navLinks.map(({link, title, icon}) =>
+            <li>
+                <a href={link} class=`${currentPath === link && 'neobrutalist no-underline'}`>
+                    <div class="flex flex-col lg:flex-row items-center gap-x-2">
+                        <i class={`bi-${icon} text-lg`} />
+                        <span class="text-xs lg:text-base">{title}</span>
+                    </div>
+                </a>
+            </li>)
+        }
+    </ul>
+</nav>

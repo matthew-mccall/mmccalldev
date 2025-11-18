@@ -24,7 +24,7 @@ import NavigationBar from "../components/NavigationBar.astro";
 </head>
 <body>
 <div class="min-h-svh flex flex-col">
-    <div class="fixed bottom-0 flex items-center justify-center w-full lg:sticky lg:top-0">
+    <div class="hidden w-full sticky top-0 border-b lg:block">
         <NavigationBar />
     </div>
     <slot />
@@ -39,6 +39,7 @@ import NavigationBar from "../components/NavigationBar.astro";
     <nav>
         <div class="flex flex-row gap-4 text-xl">
             {socials.map(social =>
+                    <!--suppress RequiredAttributes -->
                     <IconedLink {...social}/>)}
         </div>
     </nav>
@@ -53,6 +54,9 @@ import NavigationBar from "../components/NavigationBar.astro";
             Microsoft collects and uses your data, visit the <a href="https://www.microsoft.com/privacy/privacystatement">Microsoft Privacy Statement</a>.</small>
     </aside>
 </footer>
+<div class="visible w-full sticky bottom-0 border-t lg:hidden">
+    <NavigationBar />
+</div>
 <div class="toast toast-end">
     <div id="cookie-toast" role="alert" class="alert alert-vertical shadow max-w-sm invisible">
                 <span>I improve this website by using Microsoft Clarity to see how you use it. By selecting "Accept",
