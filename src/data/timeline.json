@@ -1,0 +1,95 @@
+[
+  {
+    "title": "Fall 2022",
+    "body": [
+      "Started dual B.S. in Computer Science & Computer Systems Engineering at RPI",
+      "Joined SCOREC as Undergraduate Research Assistant"
+    ],
+    "badgeText": "Education",
+    "badgeClass": "badge-primary",
+    "middle": false
+  },
+  {
+    "title": "Spring 2023",
+    "body": [
+      "Continued SCOREC research — mesh adaptivity algorithms in C++"
+    ],
+    "badgeText": "Research",
+    "badgeClass": "badge-secondary",
+    "middle": false
+  },
+  {
+    "title": "Fall 2023",
+    "body": [
+      "Began leading OASIS (open-source C++ algebra library)",
+      "Implemented CI/CD workflows with GitHub Actions"
+    ],
+    "badgeText": "Project",
+    "badgeClass": "badge-accent",
+    "middle": false
+  },
+  {
+    "title": "Spring 2024",
+    "body": [
+      "SCOREC research: GPU memory pool optimization (30% runtime reduction)",
+      "Presented poster sessions at RPI"
+    ],
+    "badgeText": "Research",
+    "badgeClass": "badge-secondary",
+    "middle": false
+  },
+  {
+    "title": "Summer 2024",
+    "body": [
+      "Lab Assistant at Mercer X — guided students in circuit design & soldering",
+      "RCOS Mentor — supported open-source projects",
+      "Volunteer at The Forge (CAD & 3D printing)",
+      "Developed Eye Robot (LiDAR navigation assistant)"
+    ],
+    "badgeText": "Work + Volunteer",
+    "badgeClass": "",
+    "middle": true
+  },
+  {
+    "title": "Fall 2024",
+    "body": [
+      "Engineering & Quality Intern at HarcoSemco",
+      "Bluetooth asset tracking system (12,000 sq ft, ~8 ft accuracy)",
+      "C++ Bosch sensor gas detection + React/TypeScript dashboard"
+    ],
+    "badgeText": "Internship",
+    "badgeClass": "badge-secondary",
+    "middle": false
+  },
+  {
+    "title": "Spring 2025",
+    "body": [
+      "Resumed SCOREC research (nearest simplex algorithm in C++)",
+      "Continued Mercer X Lab Assistant role",
+      "RCOS Mentor + Makerspace volunteer"
+    ],
+    "badgeText": "Research + Volunteer",
+    "badgeClass": "badge-secondary",
+    "middle": false
+  },
+  {
+    "title": "Summer 2025",
+    "body": [
+      "Second HarcoSemco internship — continued Bluetooth tracking & toxic gas detection projects",
+      "Maintained OASIS project leadership"
+    ],
+    "badgeText": "Internship + Project",
+    "badgeClass": "badge-secondary",
+    "middle": false
+  },
+  {
+    "title": "Fall 2025",
+    "body": [
+      "Continuing dual degree coursework at RPI",
+      "Active in SCOREC research, OASIS project, and mentoring roles"
+    ],
+    "badgeText": "Education + Research",
+    "badgeClass": "badge-primary",
+    "middle": false
+  }
+]

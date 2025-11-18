@@ -1,0 +1,45 @@
+---
+export interface Props {
+  title: string;
+  body: string[]; // list of bullet items to render
+  badgeText: string;
+  badgeClass?: string; // e.g., "badge-primary", "badge-secondary", etc.
+  side: 'start' | 'end'; // which side the main card appears on
+  middle?: boolean; // whether to show a center dot between card and badge
+}
+
+const {
+  title,
+  body,
+  badgeText,
+  badgeClass = '',
+  side,
+  middle = false,
+} = Astro.props as Props;
+
+const mainBoxClass = side === 'start'
+  ? 'timeline-start'
+  : 'timeline-end';
+
+const badgeSideClass = side === 'start'
+  ? 'timeline-end'
+  : 'timeline-start';
+---
+<li>
+  <hr class="mx-3" />
+  <div class=`neobrutalist ${mainBoxClass} p-3`>
+    <h3 class="font-semibold">{title}</h3>
+    {body && body.length > 0 ? (
+      <ul class="my-2 list-disc ml-5 space-y-2">
+        {body.map((line) => (
+          <li>{line}</li>
+        ))}
+      </ul>
+    ) : null}
+  </div>
+  <div class={badgeSideClass}>
+    <span class={`badge badge-neutral`}>{badgeText}</span>
+  </div>
+  <hr class="mx-3" />
+  
+</li>

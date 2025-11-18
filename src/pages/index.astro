@@ -3,50 +3,71 @@ import MainLayout from "../layouts/MainLayout.astro";
 import IconedLink from "../components/IconedLink.astro";
 import socials from "../utils/socials";
 import LandingButton from "../components/LandingButton.astro";
+import Container from "../components/Container.astro";
+import TimelineSemester from "../components/TimelineSemester.astro";
+import timeline from "../data/timeline.json";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <MainLayout>
-	<main class="grow flex px-20">
-		<div class="flex grow flex-col lg:flex-row items-center max-w-full">
-            <div class="flex-1 lg:order-3">
+	<main class="pb-6">
+        <section>
+            <div class="flex min-h-svh flex-col lg:flex-row items-center w-full px-4 lg:px-20">
+                <div class="flex-1 lg:order-3">
                     <picture>
                         <source srcset="/portrait.jxl" type="image/jxl" />
                         <img src="/portrait.webp" alt="Portrait of Matthew McCall" class=" h-full object-contain"/>
                     </picture>
-            </div>
-            <div class="flex-1 flex flex-col gap-6">
-                <h1 class="text-9xl">Matthew McCall</h1>
-                <p class="text-lg font-light">
-                    Fourth-year Computer Science and Computer Systems Engineering dual major at Rensselaer
-                    Polytechnic Institute</p>
-                <div class="flex flex-col gap-3">
-                    <a href="https://openalgebra.org">
-                        <LandingButton>
-                            <h3>OASIS</h3>
-                            a C++ computer algebra system library and accompanying web application;
-                        </LandingButton>
-                    </a>
-                    <a href="https://docs.mmccall.dev/superround">
-                        <LandingButton>
-                            <h3>superround</h3>
-                            a JavaScript library for creating smoother rounded corners using Bezier curves
-                        </LandingButton>
-                    </a>
-                    <a href="https://addons.mozilla.org/addon/burn/">
-                        <LandingButton>
-                            <h3>BURN</h3>
-                            <span class="underline">B</span>ulk <span class="underline">UR</span>L
-                            <span class="underline">N</span>avigator extension for Firefox.
-                        </LandingButton>
-                    </a>
                 </div>
-                <div class="flex flex-row justify-center gap-4 text-xl my-6">
-                    {socials.map(social => <IconedLink {...social} />)}
+                <div class="flex-1 flex flex-col gap-6">
+                    <h1 class="text-8xl">Matthew McCall</h1>
+                    <p class="text-lg font-light">
+                        Fourth-year Computer Science and Computer Systems Engineering dual major at Rensselaer
+                        Polytechnic Institute</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="https://openalgebra.org">
+                            <LandingButton>
+                                <h3>OASIS</h3>
+                                a C++ computer algebra system library and accompanying web application;
+                            </LandingButton>
+                        </a>
+                        <a href="https://docs.mmccall.dev/superround">
+                            <LandingButton>
+                                <h3>superround</h3>
+                                a JavaScript library for creating smoother rounded corners using Bezier curves
+                            </LandingButton>
+                        </a>
+                        <a href="https://addons.mozilla.org/addon/burn/">
+                            <LandingButton>
+                                <h3>BURN</h3>
+                                <span class="underline">B</span>ulk <span class="underline">UR</span>L
+                                <span class="underline">N</span>avigator extension for Firefox.
+                            </LandingButton>
+                        </a>
+                    </div>
+                    <div class="flex flex-row justify-center gap-4 text-xl my-6">
+                        {socials.map(social => <IconedLink {...social} />)}
+                    </div>
                 </div>
             </div>
-		</div>
+        </section>
+        <section>
+            <Container>
+                <h2 class="text-2xl mb-6">Timeline</h2>
+
+                <ul class="timeline timeline-vertical leading-[1]">
+                    {timeline.map((item, idx) => (
+                        <TimelineSemester
+                            title={item.title}
+                            body={item.body}
+                            badgeText={item.badgeText}
+                            side={idx % 2 === 0 ? 'start' : 'end'}
+                        />
+                    ))}
+                </ul>
+            </Container>
+        </section>
 	</main>
 </MainLayout>
