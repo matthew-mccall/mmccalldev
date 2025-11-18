@@ -1,8 +1,0 @@
-const navLinks = [
-    { link: '/', title: 'home', icon: 'house-door' },
-    { link: '/posts', title: 'posts', icon: 'newspaper' },
-    { link: '/papers', title: 'papers', icon: 'journal-bookmark' },
-    { link: '/resume.pdf', title: 'resume', icon: 'filetype-pdf' },
-];
-
-export default navLinks;
