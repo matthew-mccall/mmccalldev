@@ -5,7 +5,7 @@ import navLinks from "../data/navlinks.json";
 const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '');
 ---
 
-<nav class="pointer-events-auto flex flex-row justify-center bg-base-100">
+<nav class="pointer-events-auto flex flex-row justify-center glass">
     <ul class="menu menu-horizontal">
         { navLinks.map(({link, title, icon}) =>
             <li>

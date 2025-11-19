@@ -90,6 +90,12 @@
     :root { font-family: InterVariable, sans-serif; }
 }
 
+.neobrutalist {
+    @apply border bg-base-100 mb-2 mr-2;
+    box-shadow:
+            --spacing(2) --spacing(2) var(--color-base-content);
+}
+
 @layer base {
     h1 {
         @apply font-heading text-4xl font-bold;
@@ -100,7 +106,7 @@
     }
 
     h3 {
-        @apply font-heading text-lg;
+        @apply font-heading text-lg font-semibold;
     }
 
     /* Custom styling for code blocks */
@@ -112,10 +118,4 @@
 
 @view-transition {
     navigation: auto;
-}
-
-.neobrutalist {
-    @apply border bg-base-100 mb-2 mr-2;
-    box-shadow: 
-            --spacing(2) --spacing(2) var(--color-base-content);
 }
