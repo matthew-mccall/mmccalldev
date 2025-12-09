@@ -2,6 +2,7 @@
 import ContainerLayout from '../../layouts/ContainerLayout.astro';
 import { getCollection } from 'astro:content';
 import { formatDate } from '../../utils/formatDate';
+import LandingButton from "../../components/LandingButton.astro";
 
 // Get all blog posts and sort them by date (newest first)
 const posts = await getCollection('posts');
@@ -20,14 +21,14 @@ const sortedPosts = posts.sort((a, b) => {
     <div class="space-y-8">
       {sortedPosts.map(post => (
         <article class="border-b border-gray-200 dark:border-gray-700 pb-6 last:border-0">
-          <h2>
-            <a href={`/posts/${post.id}`} class="no-underline hover:underline">
-              {post.data.title}
-            </a>
-          </h2>
-          <time datetime={post.data.date.toISOString()} class="text-sm text-gray-500 dark:text-gray-400 mt-1 block">
-            {formatDate(post.data.date)}
-          </time>
+          <a href={`/posts/${post.id}`}>
+            <LandingButton>
+              <h3>{post.data.title}</h3>
+              <time datetime={post.data.date.toISOString()} class="text-sm text-neutral block">
+                {formatDate(post.data.date)}
+              </time>
+            </LandingButton>
+          </a>
         </article>
       ))}
     </div>
