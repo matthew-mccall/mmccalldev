@@ -13,6 +13,8 @@
   const BG_COLOR = new THREE.Color(0xffffff);
   const LINE_COLOR = new THREE.Color(0x000000);
   const SEED = Math.random() * 10000.0;
+  const MOUSE_RADIUS = 0.7;
+  const MOUSE_STRENGTH = 0.8;
 
   const container = document.getElementById('contour-container');
   if (!container) throw new Error('Contour container not found');
@@ -26,6 +28,12 @@
 
   const geometry = new THREE.PlaneGeometry(2, 2);
 
+  const mouse = new THREE.Vector2(-10, -10);
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX / window.innerWidth;
+    mouse.y = 1.0 - (e.clientY / window.innerHeight);
+  });
+
   const vertexShader = `
     varying vec2 vUv;
     void main() {
@@ -37,11 +45,14 @@
   const fragmentShader = `
     uniform float uTime;
     uniform vec2 uResolution;
+    uniform vec2 uMouse;
     uniform float uSeed;
     uniform float uNoiseScale;
     uniform float uNoiseSpeed;
     uniform float uDensity;
     uniform float uLineWidth;
+    uniform float uMouseRadius;
+    uniform float uMouseStrength;
     uniform vec3 uBgColor;
     uniform vec3 uLineColor;
     varying vec2 vUv;
@@ -112,13 +123,20 @@
     }
 
     void main() {
-      vec2 uv = (vUv - 0.5) * (uResolution / min(uResolution.x, uResolution.y)) * uNoiseScale;
+      vec2 aspect = uResolution / min(uResolution.x, uResolution.y);
+      vec2 uv = (vUv - 0.5) * aspect * uNoiseScale;
+      vec2 mouseUv = (uMouse - 0.5) * aspect * uNoiseScale;
       
       float noise = snoise(vec3(uv, uSeed + uTime * uNoiseSpeed));
       
       // Map noise from [-1, 1] to [0, 1]
       float height = noise * 0.5 + 0.5;
       
+      // Mouse interaction: draw circle with soft edges
+      float distToMouse = length(uv - mouseUv);
+      float mouseEffect = smoothstep(uMouseRadius, 0.0, distToMouse) * uMouseStrength;
+      height -= mouseEffect;
+
       // Calculate fractional part for contours
       float val = height * uDensity;
       float fraction = fract(val);
@@ -138,11 +156,14 @@
     uniforms: {
       uTime: { value: 0 },
       uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+      uMouse: { value: mouse },
       uSeed: { value: SEED },
       uNoiseScale: { value: NOISE_SCALE },
       uNoiseSpeed: { value: NOISE_SPEED },
       uDensity: { value: DENSITY },
       uLineWidth: { value: LINE_WIDTH },
+      uMouseRadius: { value: MOUSE_RADIUS },
+      uMouseStrength: { value: MOUSE_STRENGTH },
       uBgColor: { value: BG_COLOR },
       uLineColor: { value: LINE_COLOR }
     },
