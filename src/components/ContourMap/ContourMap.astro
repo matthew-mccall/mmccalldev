@@ -26,12 +26,32 @@
     container.appendChild(renderer.domElement);
 
     const geometry = new THREE.PlaneGeometry(2, 2);
-
     const mouse = new THREE.Vector2(-10, -10);
-    window.addEventListener('mousemove', (e) => {
+
+    function mouseMoveHandler(e: MouseEvent) : void {
         mouse.x = e.clientX / window.innerWidth;
         mouse.y = 1.0 - (e.clientY / window.innerHeight);
-    });
+    }
+
+    const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let motionEnabled = !motionMediaQuery.matches;
+
+    function handleMotionChange() {
+        const newMotionEnabled = !motionMediaQuery.matches;
+
+        if (newMotionEnabled && !motionEnabled) {
+            window.addEventListener('mousemove', mouseMoveHandler);
+        } else if (!newMotionEnabled && motionEnabled) {
+            window.removeEventListener('mousemove', mouseMoveHandler);
+        }
+
+        motionEnabled = newMotionEnabled;
+    }
+
+    if (motionEnabled)
+        window.addEventListener('mousemove', mouseMoveHandler);
+
+    motionMediaQuery.addEventListener('change', handleMotionChange);
 
     const material = new THREE.ShaderMaterial({
         uniforms: {
@@ -53,13 +73,21 @@
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    function animate(time: number) {
-        material.uniforms.uTime.value = time * 0.001;
+    let lastTime = document.timeline.currentTime as number;
+    let animationTime = 0;
+
+    function animate(currentTime: number) {
+        const deltaTime = currentTime - lastTime;
+        if (motionEnabled)
+            animationTime += deltaTime;
+
+        material.uniforms.uTime.value = animationTime * 0.001;
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
+
+        lastTime = currentTime;
     }
 
-    requestAnimationFrame(animate);
+    renderer.setAnimationLoop(animate);
 
     window.addEventListener('resize', () => {
         const width = window.innerWidth;
