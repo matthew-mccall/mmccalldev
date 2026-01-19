@@ -1,0 +1,70 @@
+<div id="contour-container" class="fixed inset-0 -z-10 w-full h-full overflow-hidden"></div>
+
+<script>
+    import vertexShader from './vertex.glsl?raw'
+    import fragmentShader from './fragment.glsl?raw'
+    import * as THREE from 'three';
+
+    // Constants
+    const NOISE_SCALE = 2.5;
+    const NOISE_SPEED = 0.01;
+    const DENSITY = 5.0;
+    const LINE_WIDTH = 2.0;
+    const BG_COLOR = new THREE.Color(0xffffff);
+    const LINE_COLOR = new THREE.Color(0x000000);
+    const SEED = Math.random() * 10000.0;
+    const MOUSE_RADIUS = 0.7;
+    const MOUSE_STRENGTH = 0.5;
+
+    const container = document.getElementById('contour-container');
+    if (!container) throw new Error('Contour container not found');
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+
+    const mouse = new THREE.Vector2(-10, -10);
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX / window.innerWidth;
+        mouse.y = 1.0 - (e.clientY / window.innerHeight);
+    });
+
+    const material = new THREE.ShaderMaterial({
+        uniforms: {
+            uTime: {value: 0},
+            uResolution: {value: new THREE.Vector2(window.innerWidth, window.innerHeight)},
+            uMouse: {value: mouse},
+            uSeed: {value: SEED},
+            uNoiseScale: {value: NOISE_SCALE},
+            uNoiseSpeed: {value: NOISE_SPEED},
+            uDensity: {value: DENSITY},
+            uLineWidth: {value: LINE_WIDTH},
+            uMouseRadius: {value: MOUSE_RADIUS},
+            uMouseStrength: {value: MOUSE_STRENGTH},
+            uBgColor: {value: BG_COLOR},
+            uLineColor: {value: LINE_COLOR}
+        }, vertexShader, fragmentShader
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    function animate(time: number) {
+        material.uniforms.uTime.value = time * 0.001;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+
+    window.addEventListener('resize', () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        renderer.setSize(width, height);
+        material.uniforms.uResolution.value.set(width, height);
+    });
+</script>
