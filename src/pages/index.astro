@@ -1,6 +1,9 @@
 ---
-import '../styles/global.css'
-import ContourMap from '../components/ContourMap.astro'
+// Supports weights 300-800
+import '@fontsource-variable/host-grotesk';
+
+import '@/styles/global.css'
+import ContourMap from '@/components/ContourMap/ContourMap.astro'
 ---
 
 <html lang="en">
@@ -9,10 +12,15 @@ import ContourMap from '../components/ContourMap.astro'
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Matthew McCall</title>
 	</head>
 	<body>
 		<ContourMap />
-		<h1 class="text-3xl font-bold text-white p-8">Astro</h1>
+		<div class="w-dvw h-dvh bg-orange-100/95">
+			<h1 class="text-3xl font-boldp-8">Matthew McCall</h1>
+		</div>
+		<div class="w-dvw h-dvh bg-red-900/95">
+			<h1 class="text-3xl font-boldp-8">Astro</h1>
+		</div>
 	</body>
 </html>
