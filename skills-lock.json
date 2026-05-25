@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "fulldev": {
+      "source": "fulldotdev/ui",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/fulldev/SKILL.md",
+      "computedHash": "a426eedb0e1ab669f0c8b211ec15bb1f058453523c2ca7ef8ca81cd747aa211a"
+    }
+  }
+}
