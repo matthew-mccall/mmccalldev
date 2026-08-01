@@ -1,0 +1,35 @@
+---
+import { cn } from '@/lib/utils'
+import AustralisTab from '@/components/AustralisTab.astro'
+
+type Props = {
+    title: string
+    description: string
+    href: string
+    class?: string
+}
+
+const { title, description, href, class: className } = Astro.props
+---
+
+<a
+    href={href}
+    class={cn(
+        'group flex flex-col drop-shadow-[0_20px_24px_rgb(20_7_5/0.35)] transition-[filter] duration-300 hover:drop-shadow-[0_28px_36px_rgb(20_7_5/0.5)]',
+        className,
+    )}
+    data-fade
+>
+    <AustralisTab class="self-start text-khaki-light/40 transition-colors duration-300 group-hover:text-maroon group-focus-visible:text-maroon" />
+    <span
+        class="relative flex h-full flex-col gap-4 overflow-hidden rounded-xl rounded-tl-none bg-khaki-light/40 p-8 transition-colors duration-300 group-hover:bg-maroon group-focus-visible:bg-maroon"
+        data-squircle="0 0.75 0.75 0.75"
+    >
+        <span class="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/15" aria-hidden="true"></span>
+        <h3 class="relative font-display text-3xl font-bold text-maroon transition-colors duration-300 group-hover:text-khaki-light group-focus-visible:text-khaki-light">{title}</h3>
+        <p class="relative text-base leading-relaxed text-maroon/80 transition-colors duration-300 group-hover:text-khaki-light/80 group-focus-visible:text-khaki-light/80">{description}</p>
+        <span class="relative mt-auto inline-flex items-center gap-2 pt-2 text-sm uppercase tracking-[0.2em] text-maroon/70 transition-colors duration-300 group-hover:text-khaki group-focus-visible:text-khaki">
+            Visit <i class="bi-arrow-up-right" aria-hidden="true"></i>
+        </span>
+    </span>
+</a>

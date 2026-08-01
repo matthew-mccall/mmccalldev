@@ -1,0 +1,34 @@
+---
+import { cn } from '@/lib/utils'
+import AustralisTab from '@/components/AustralisTab.astro'
+
+type Props = {
+    title: string
+    body: string[]
+    badgeText: string
+    class?: string
+}
+
+const { title, body, badgeText, class: className } = Astro.props
+---
+
+<article class={cn('timeline-card', className)}>
+    <div class="timeline-card-rail" aria-hidden="true"></div>
+    <div class="flex h-full flex-col drop-shadow-[0_24px_32px_rgb(0_0_0/0.45)]">
+        <AustralisTab
+            class="self-start text-maroon/80 text-[0.65rem] font-medium uppercase tracking-[0.2em]"
+            labelClass="px-4"
+        >
+            <span class="text-khaki">{badgeText}</span>
+        </AustralisTab>
+        <div
+            class="flex h-full flex-col gap-3 rounded-xl rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6"
+            data-squircle="0 0.75 0.75 0.75"
+        >
+            <h3 class="text-xl font-semibold text-khaki-light">{title}</h3>
+            <ul class="flex list-disc flex-col gap-2 pl-4 text-sm leading-relaxed text-khaki-light/80 marker:text-khaki-dark">
+                {body.map((line) => <li>{line}</li>)}
+            </ul>
+        </div>
+    </div>
+</article>

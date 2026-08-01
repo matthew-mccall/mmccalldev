@@ -1,0 +1,17 @@
+[
+  {
+    "title": "OASIS",
+    "href": "https://openalgebra.org",
+    "description": "Open-source C++ computer algebra system library and accompanying web application."
+  },
+  {
+    "title": "superround",
+    "href": "https://docs.mmccall.dev/superround",
+    "description": "JavaScript library for creating smoother rounded corners using Bézier curves."
+  },
+  {
+    "title": "BURN",
+    "href": "https://addons.mozilla.org/addon/burn/",
+    "description": "Bulk URL Navigator extension for Firefox."
+  }
+]
