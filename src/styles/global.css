@@ -124,6 +124,20 @@
 }
 
 /*
+ * Severance-style overline: a rule drawn with border-top above headings.
+ * `--overline-thickness` is the single knob that adjusts the rule thickness
+ * for every heading at once; color is set per instance with Tailwind border
+ * utilities (e.g. `border-khaki/40`).
+ */
+:root {
+  --overline-thickness: 2px;
+}
+
+.severance-overline {
+  border-top-width: var(--overline-thickness);
+}
+
+/*
  * Scale the whole layout up on very large screens. Every measurement in the
  * layout is rem-based, so bumping the root font size grows type, spacing and
  * container widths together — no JavaScript involved.
@@ -191,26 +205,65 @@
   display: none;
 }
 
-.timeline-progress,
+.timeline-progress {
+  display: block;
+  position: relative;
+  height: var(--overline-thickness);
+  background: rgb(194 178 128 / 0.4);
+  overflow: hidden;
+}
+
+.timeline-progress-bar {
+  position: absolute;
+  inset: 0;
+  background: var(--color-khaki);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
 .timeline-hint {
   display: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   /*
-   * `overflow: hidden` (not `clip`) and no `will-change` on the track:
-   * Safari's compositor can stop repainting transformed children inside a
-   * pinned (position: fixed) element when `overflow: clip` or a stale
-   * `will-change` layer is involved.
+   * Timeline fills the complete stage behind Projects. Its panel is fixed to
+   * the viewport for the whole cover/reveal — sticky positioning would only
+   * engage once the stage top passes the viewport top, letting the timeline
+   * ride along with the flow while Projects still covers part of it. The
+   * clip-path on the section trims the fixed panel to the stage box (unlike
+   * overflow, clip-path clips fixed descendants without becoming their
+   * containing block), so Projects peels away above it and the footer slides
+   * over it below while the timeline itself never moves. The in-flow spacer
+   * reserves the horizontal pan distance.
    */
-  .js .timeline-section {
-    height: 100svh;
-    overflow: hidden;
+  .js .parallax-stage {
+    position: relative;
   }
 
+  .js .timeline-section {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0);
+  }
+
+  .js .timeline-scroll-space {
+    height: calc(100svh + var(--timeline-pan-distance, 1px));
+  }
+
+  /*
+   * `overflow: hidden` (not `clip`) and no `will-change` on the track:
+   * Safari's compositor can stop repainting transformed children inside a
+   * fixed element when `overflow: clip` or a stale `will-change` layer is
+   * involved. The Timeline surface itself is never transformed, keeping its
+   * CSS-fixed contour stable throughout the reveal and horizontal pan.
+   */
   .js .timeline-pin {
-    height: 100%;
+    position: fixed;
+    inset: 0;
+    height: 100svh;
     justify-content: center;
+    overflow: hidden;
   }
 
   .js .timeline-viewport {
@@ -269,22 +322,6 @@
     height: 0.625rem;
     border-radius: 9999px;
     background: var(--color-khaki);
-  }
-
-  .js .timeline-progress {
-    display: block;
-    position: relative;
-    height: 2px;
-    background: rgb(194 178 128 / 0.2);
-    overflow: hidden;
-  }
-
-  .js .timeline-progress-bar {
-    position: absolute;
-    inset: 0;
-    background: var(--color-khaki);
-    transform: scaleX(0);
-    transform-origin: left;
   }
 
   .js .timeline-hint {

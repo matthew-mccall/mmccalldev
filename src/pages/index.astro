@@ -3,6 +3,7 @@
 import '@fontsource-variable/host-grotesk';
 
 import '@/styles/global.css'
+import BrowserTab from '@/components/BrowserTab.astro'
 import ContourMap from '@/components/ContourMap/ContourMap.astro'
 import IconedLink from '@/components/IconedLink.astro'
 import ProjectCard from '@/components/ProjectCard.astro'
@@ -25,16 +26,26 @@ const year = new Date().getFullYear()
 		<script is:inline>document.documentElement.classList.add('js')</script>
 	</head>
 	<body>
+		<!--
+			Global background: the screen-locked contour map sits behind every
+			section, and each section lays its own translucent color wash over
+			it — red for the hero and timeline, khaki for Projects. The contour
+			shows through everywhere, while the differing washes keep the layers
+			visually distinct — that contrast is what makes the parallax
+			cover/reveal readable. Projects and Timeline additionally carry
+			their own opaque mirror copies so they occlude the sticky hero.
+		-->
 		<ContourMap />
 		<main>
 			<!-- Hero -->
-			<section class="relative flex min-h-svh flex-col justify-center bg-linear-to-b from-maroon-deep/85 via-maroon/70 to-maroon/85">
+			<!--
+				CSS-only parallax backplane: the hero stays pinned while the lower
+				stacking stage moves over it in normal document flow.
+			-->
+			<section class="sticky top-0 z-0 flex min-h-svh flex-col justify-center overflow-hidden bg-linear-to-b from-maroon-deep/80 via-maroon/60 to-maroon/80" data-hero-section>
 				<div class="mx-auto grid w-full max-w-6xl items-center gap-10 px-6 py-24 md:px-12 lg:grid-cols-[3fr_2fr]">
 					<div class="flex flex-col gap-8">
-						<div class="flex flex-col">
-							<div class="h-px w-full bg-khaki/40" aria-hidden="true"></div>
-						</div>
-						<h1 class="font-display text-6xl font-bold leading-none text-khaki-light sm:text-7xl lg:text-8xl xl:text-9xl">
+						<h1 class="severance-overline border-khaki/40 pt-8 font-display text-6xl font-bold leading-none text-khaki-light sm:text-7xl lg:text-8xl xl:text-9xl">
 							Matthew McCall
 						</h1>
 						<p class="max-w-2xl text-xl leading-relaxed text-khaki-light/90 md:text-2xl">
@@ -56,19 +67,48 @@ const year = new Date().getFullYear()
 						/>
 					</picture>
 				</div>
-				<p class="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.35em] text-khaki/60">
-					Scroll &darr;
-				</p>
 			</section>
 
-			<!-- Projects -->
-			<section class="bg-linear-to-b from-khaki/95 via-khaki/85 to-khaki-dark/90 text-maroon">
+			<div class="parallax-stage" data-parallax-stage>
+				<!-- Projects -->
+			<!--
+				This layer deliberately has no viewport-based height. Its content
+				determines its size, allowing the sticky hero above and the timeline
+				below to remain visible together as this section crosses the screen.
+			-->
+			<section class="relative z-20 text-maroon shadow-[0_-2px_12px_rgb(20_7_5/0.7),0_-32px_64px_rgb(20_7_5/0.55)]" data-projects-section>
+				<!--
+					Opaque contour backdrop: every section shares the screen-locked
+					contour map, but this layer slides over the hero and timeline, so
+					it can't be transparent — their content would show through. The
+					mirror canvas is a per-frame copy of the fixed master (see
+					ContourMap) and is position: fixed itself; clip-path — unlike
+					overflow, it clips fixed descendants too — trims it to this
+					wrapper's box. On top of the canvas sits the section's khaki wash;
+					it scrolls with the section (position: absolute) and its top stop
+					is fully opaque so the browser tab above can match it seamlessly,
+					fading down so the contour texture shows through the body of the
+					section. Together with the shadows (a tight dark edge plus a wide
+					soft falloff above) the wash makes the layer read as a
+					distinct surface sliding over the red sections.
+				-->
+				<div class="absolute inset-0 -z-10 [clip-path:inset(0)]" aria-hidden="true">
+					<canvas class="fixed inset-0 h-full w-full" data-contour-mirror></canvas>
+					<div class="absolute inset-0 bg-linear-to-b from-khaki via-khaki/85 to-khaki-dark/90"></div>
+				</div>
+				<!--
+					Centered browser-style tab peeking up into the hero. Its fill
+					matches the khaki wash's opaque top stop and it runs
+					1px into the section so it reads as the same surface with no
+					hairline seam along the join. Its compact negative drop shadow
+					stays above the tab and joins the section's top shadow.
+				-->
+				<BrowserTab class="absolute -top-8 left-1/2 h-[calc(2rem+1px)] -translate-x-1/2 text-khaki" labelClass="px-6">
+					<span class="text-xs uppercase tracking-[0.35em] text-maroon/70">Scroll &darr;</span>
+				</BrowserTab>
 				<div class="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-24 md:px-12 md:py-32">
 					<header class="flex flex-col gap-4">
-						<div class="flex flex-col">
-							<div class="h-px w-full bg-maroon/40" aria-hidden="true"></div>
-						</div>
-						<h2 class="font-display text-4xl font-bold md:text-5xl">Projects</h2>
+						<h2 class="severance-overline border-maroon/40 pt-4 font-display text-4xl font-bold md:text-5xl">Projects</h2>
 					</header>
 					<div class="grid gap-6 md:grid-cols-3">
 						{projects.map((project) => <ProjectCard {...project} />)}
@@ -77,11 +117,23 @@ const year = new Date().getFullYear()
 			</section>
 
 			<!-- Timeline -->
-			<section class="timeline-section bg-linear-to-b from-crimson-deep/90 via-crimson-deep/80 to-maroon-deep/90 text-khaki-light" data-timeline-section>
-				<div class="timeline-pin flex flex-col gap-6 py-12 md:gap-10 md:py-24">
+			<!--
+				The Timeline fills the complete lower-section stage and its inner panel
+				is viewport-fixed, clipped to the stage box (see .timeline-section), so
+				it never rides along with the scroll: Projects peels away above it and
+				the footer slides over it below while the panel holds still. The
+				in-flow spacer below supplies the horizontal pan's scroll distance; GSAP
+				therefore never needs to pin or transform this CSS-fixed surface.
+			-->
+			<section class="timeline-section relative z-10 text-khaki-light" data-timeline-section>
+				<div class="absolute inset-0 -z-10 [clip-path:inset(0)]" aria-hidden="true">
+					<canvas class="fixed inset-0 h-full w-full" data-contour-mirror></canvas>
+					<div class="absolute inset-0 bg-linear-to-b from-crimson-deep/85 via-crimson-deep/70 to-maroon-deep/85"></div>
+				</div>
+				<div class="timeline-pin flex flex-col gap-6 py-12 md:gap-10 md:py-24" data-timeline-pin>
 					<header class="mx-auto flex w-full max-w-6xl flex-col gap-4 px-6 md:px-12">
-						<div class="flex flex-col">
-							<div class="h-px w-full bg-khaki/40" aria-hidden="true"></div>
+						<div class="timeline-progress" aria-hidden="true">
+							<div class="timeline-progress-bar" data-timeline-progress></div>
 						</div>
 						<h2 class="font-display text-4xl font-bold md:text-5xl">Timeline</h2>
 						<p class="timeline-hint text-xs uppercase tracking-[0.3em] text-khaki/60">
@@ -95,14 +147,17 @@ const year = new Date().getFullYear()
 							))}
 						</div>
 					</div>
-					<div class="timeline-progress mx-6 md:mx-12" aria-hidden="true">
-						<div class="timeline-progress-bar" data-timeline-progress></div>
-					</div>
 				</div>
 			</section>
+				<div class="timeline-scroll-space" aria-hidden="true"></div>
+			</div>
 		</main>
 
-		<footer class="border-t border-khaki/20 bg-linear-to-b from-maroon-deep to-black/90">
+		<!--
+			Raised above the timeline layer so its top shadow paints over the fixed
+			panel, selling the footer as the surface sliding over it.
+		-->
+		<footer class="relative z-30 border-t border-khaki/20 bg-linear-to-b from-maroon-deep to-black/90 shadow-[0_-2px_12px_rgb(20_7_5/0.6),0_-24px_48px_rgb(20_7_5/0.4)]">
 			<div class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-12 md:flex-row md:items-center md:justify-between md:px-12">
 				<div class="flex flex-col gap-1">
 					<p class="font-display text-xl font-semibold text-khaki-light">Matthew McCall</p>
@@ -130,20 +185,24 @@ const year = new Date().getFullYear()
 			gsap.registerPlugin(ScrollTrigger)
 
 			const section = document.querySelector<HTMLElement>('[data-timeline-section]')
+			const projectsSection = document.querySelector<HTMLElement>('[data-projects-section]')
+			const stage = document.querySelector<HTMLElement>('[data-parallax-stage]')
 			const track = document.querySelector<HTMLElement>('[data-timeline-track]')
 			const progress = document.querySelector<HTMLElement>('[data-timeline-progress]')
 
 			const matchMedia = gsap.matchMedia()
 
 			matchMedia.add('(prefers-reduced-motion: no-preference)', () => {
-				// Fade project cards in as they scroll into view
+				// Fade project cards in one after the other — each successive card
+				// starts later, but well within the previous card's 0.7s window so
+				// the fades overlap
 				gsap.utils.toArray<HTMLElement>('[data-fade]').forEach((card, i) => {
 					gsap.from(card, {
 						opacity: 0,
 						y: 32,
 						duration: 0.7,
 						ease: 'power2.out',
-						delay: (i % 3) * 0.1,
+						delay: i * 0.15,
 						scrollTrigger: {
 							trigger: card,
 							start: 'top 88%',
@@ -152,7 +211,7 @@ const year = new Date().getFullYear()
 					})
 				})
 
-				if (!section || !track) return
+				if (!section || !projectsSection || !stage || !track) return
 
 				const cards = gsap.utils.toArray<HTMLElement>('.timeline-card', track)
 				if (cards.length === 0) return
@@ -165,7 +224,11 @@ const year = new Date().getFullYear()
 				// releases and normal scrolling continues to the footer.
 				const startX = () => window.innerWidth / 2 - (first.offsetLeft + first.offsetWidth / 2)
 				const endX = () => window.innerWidth / 2 - (last.offsetLeft + last.offsetWidth / 2)
-				const distance = () => Math.max(1, startX() - endX())
+				const distance = () => {
+					const value = Math.max(1, startX() - endX())
+					stage.style.setProperty('--timeline-pan-distance', `${value}px`)
+					return value
+				}
 
 				const pan = gsap.fromTo(
 					track,
@@ -173,11 +236,10 @@ const year = new Date().getFullYear()
 					{
 						x: endX,
 						ease: 'none',
-						scrollTrigger: {
-							trigger: section,
-							start: 'top top',
-							end: () => `+=${distance()}`,
-							pin: true,
+							scrollTrigger: {
+								trigger: projectsSection,
+								start: 'bottom top',
+								end: () => `+=${distance()}`,
 							scrub: 1,
 							anticipatePin: 1,
 							invalidateOnRefresh: true,

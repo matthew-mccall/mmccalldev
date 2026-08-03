@@ -1,0 +1,35 @@
+---
+import { cn } from '@/lib/utils'
+
+/*
+ * Browser-style tab.
+ *
+ * A symmetric tab like a browser's: both sides slope down and outward via
+ * mirrored fixed-geometry SVGs (2rem wide) whose curves blend smoothly into
+ * the label's flat top, so no extra corner rounding is needed. The fill is
+ * driven by `currentColor`, so set a text color on `class` whose color *and*
+ * transparency match the surface the tab sits on — the tab then flows
+ * seamlessly into it. The slopes tuck 1px under the label so hairline seams
+ * can't open up between the three pieces on fractional pixel boundaries.
+ * Give the label span its own text color.
+ */
+
+type Props = {
+    class?: string
+    labelClass?: string
+}
+
+const { class: className, labelClass } = Astro.props
+---
+
+<span class={cn('inline-flex h-8 items-stretch', className)}>
+    <svg class="-mr-px h-full w-8 shrink-0" viewBox="0 0 32 32" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M32 0 C 16 0, 16 32, 0 32 L 32 32 Z" fill="currentColor" />
+    </svg>
+    <span class={cn('flex items-center justify-center bg-current', labelClass)}>
+        <slot />
+    </span>
+    <svg class="-ml-px h-full w-8 shrink-0" viewBox="0 0 32 32" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 0 C 16 0, 16 32, 32 32 L 0 32 Z" fill="currentColor" />
+    </svg>
+</span>

@@ -11,8 +11,10 @@ import { cn } from '@/lib/utils'
  * a top-left corner that shares the cards' squircle radius (0.75rem, plain
  * border-radius as the no-JS fallback). Only the right side slopes down, via
  * a fixed-geometry SVG (2rem wide, 2rem tall) so the gentle slant stays
- * identical on every tab. The slot may be left empty for a purely decorative
- * tab; give the label span its own text color.
+ * identical on every tab. The label and slope end flush with the tab's bottom
+ * edge so transparent fills do not overlap the card and create a darker line.
+ * The slot may be left empty for a purely decorative tab; give the label span
+ * its own text color.
  */
 
 type Props = {
@@ -25,12 +27,12 @@ const { class: className, labelClass } = Astro.props
 
 <span class={cn('inline-flex h-8 items-stretch', className)}>
     <span
-        class={cn('flex min-w-16 items-center justify-center rounded-tl-[0.75rem] bg-current', labelClass)}
+        class={cn('flex h-full min-w-16 items-center justify-center rounded-tl-[0.75rem] bg-current', labelClass)}
         data-squircle="0.75 0 0 0"
     >
         <slot />
     </span>
-    <svg class="h-full w-8 shrink-0" viewBox="0 0 32 32" preserveAspectRatio="none" aria-hidden="true">
+    <svg class="h-full w-8 shrink-0 overflow-visible" viewBox="0 0 32 32" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0 0 C 16 0, 16 32, 32 32 L 0 32 Z" fill="currentColor" />
     </svg>
 </span>

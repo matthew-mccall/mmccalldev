@@ -25,6 +25,24 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
+    // Sections that must occlude content behind them (e.g. the Projects
+    // parallax layer sliding over the hero and timeline) declare their own
+    // <canvas data-contour-mirror> and receive a per-frame copy of the master
+    // render — a cheap GPU blit, so one WebGL context serves every section and
+    // CSS alone keeps every mirror fixed and clipped to its section.
+    const mirrors = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-contour-mirror]'))
+        .map((canvas) => ({canvas, ctx: canvas.getContext('2d')}))
+        .filter((mirror): mirror is {canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D} => mirror.ctx !== null);
+
+    function resizeMirrors(width: number, height: number): void {
+        for (const {canvas} of mirrors) {
+            canvas.width = width;
+            canvas.height = height;
+        }
+    }
+
+    resizeMirrors(window.innerWidth, window.innerHeight);
+
     const geometry = new THREE.PlaneGeometry(2, 2);
     const mouse = new THREE.Vector2(-10, -10);
 
@@ -84,6 +102,11 @@
         material.uniforms.uTime.value = animationTime * 0.001;
         renderer.render(scene, camera);
 
+        // Blit while the drawing buffer is still valid (same rAF callback),
+        // so preserveDrawingBuffer isn't needed.
+        for (const {ctx} of mirrors)
+            ctx.drawImage(renderer.domElement, 0, 0);
+
         lastTime = currentTime;
     }
 
@@ -93,6 +116,7 @@
         const width = window.innerWidth;
         const height = window.innerHeight;
         renderer.setSize(width, height);
+        resizeMirrors(width, height);
         material.uniforms.uResolution.value.set(width, height);
     });
 </script>
