@@ -3,16 +3,16 @@
 import '@fontsource-variable/host-grotesk';
 
 import '@/styles/global.css'
-import BrowserTab from '@/components/BrowserTab.astro'
 import ContourMap from '@/components/ContourMap/ContourMap.astro'
 import IconedLink from '@/components/IconedLink.astro'
+import NavBar from '@/components/NavBar.astro'
 import ProjectCard from '@/components/ProjectCard.astro'
+import SiteFooter from '@/components/SiteFooter.astro'
+import Tab from '@/components/Tab.astro'
 import TimelineCard from '@/components/TimelineCard.astro'
 import projects from '@/data/projects.json'
 import socials from '@/data/socials.json'
 import timeline from '@/data/timeline.json'
-
-const year = new Date().getFullYear()
 ---
 
 <html lang="en">
@@ -36,6 +36,7 @@ const year = new Date().getFullYear()
 			their own opaque mirror copies so they occlude the sticky hero.
 		-->
 		<ContourMap />
+		<NavBar />
 		<main>
 			<!-- Hero -->
 			<!--
@@ -103,9 +104,9 @@ const year = new Date().getFullYear()
 					hairline seam along the join. Its compact negative drop shadow
 					stays above the tab and joins the section's top shadow.
 				-->
-				<BrowserTab class="absolute -top-8 left-1/2 h-[calc(2rem+1px)] -translate-x-1/2 text-khaki" labelClass="px-6">
+				<Tab align="center" class="absolute -top-8 left-1/2 h-[calc(2rem+1px)] -translate-x-1/2 text-khaki" labelClass="px-6">
 					<span class="text-xs uppercase tracking-[0.35em] text-maroon/70">Scroll &darr;</span>
-				</BrowserTab>
+				</Tab>
 				<div class="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-24 md:px-12 md:py-32">
 					<header class="flex flex-col gap-4">
 						<h2 class="severance-overline border-maroon/40 pt-4 font-display text-4xl font-bold md:text-5xl">Projects</h2>
@@ -153,23 +154,7 @@ const year = new Date().getFullYear()
 			</div>
 		</main>
 
-		<!--
-			Raised above the timeline layer so its top shadow paints over the fixed
-			panel, selling the footer as the surface sliding over it.
-		-->
-		<footer class="relative z-30 border-t border-khaki/20 bg-linear-to-b from-maroon-deep to-black/90 shadow-[0_-2px_12px_rgb(20_7_5/0.6),0_-24px_48px_rgb(20_7_5/0.4)]">
-			<div class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-12 md:flex-row md:items-center md:justify-between md:px-12">
-				<div class="flex flex-col gap-1">
-					<p class="font-display text-xl font-semibold text-khaki-light">Matthew McCall</p>
-					<p class="text-sm text-khaki/70">&copy; {year} &mdash; All rights reserved.</p>
-				</div>
-				<nav aria-label="Footer social links" class="flex flex-wrap gap-x-5 gap-y-2 text-xl">
-					{socials.map((social) => (
-						<IconedLink {...social} class="text-khaki hover:text-khaki-light" />
-					))}
-				</nav>
-			</div>
-		</footer>
+		<SiteFooter />
 
 		<script>
 			import { applySquircles } from '@/lib/squircle'

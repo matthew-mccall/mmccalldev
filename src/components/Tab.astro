@@ -1,0 +1,149 @@
+---
+import { cn } from '@/lib/utils'
+
+/*
+ * Tab.
+ *
+ * One component for both tab shapes. `align="left"` is the folder-style
+ * Australis tab: the left edge is vertical and sits flush with the card edge,
+ * the top-left corner shares the cards' squircle curvature, and the right
+ * side slopes down. `align="center"` is the symmetric browser-style tab:
+ * both sides slope down and outward, blending smoothly into the flat top.
+ *
+ * The fill is driven by `currentColor`, so set a text color on `class` whose
+ * color *and* transparency match the surface the tab sits on — the tab then
+ * flows seamlessly into it. Give the label span its own text color; the slot
+ * may be left empty for a purely decorative tab.
+ *
+ * The tab is a single element whose whole silhouette is one `clip-path`
+ * polygon, so its translucent fill and backdrop vibrancy render as one
+ * surface — separate slope/label pieces produced hairline seams and, on
+ * HiDPI screens, a visibly different shade on the slopes. The slopes sample
+ * the fixed-geometry Bezier (M0 0 C 16 0, 16 32, 32 32; 2rem x 2rem) with
+ * `calc()` x-stops so the gentle slant stays identical however wide the tab
+ * grows; the squircle corner samples the same superellipse cubic that
+ * squircle.ts applies to the cards (0.75rem radius, 1.8 spread, 0.37
+ * control). The polygon runs 1px past the flush bottom/left edges so those
+ * edges keep their natural rendering and can't open an antialiased seam
+ * against the card (see squircle.ts on bleeding).
+ *
+ * The horizontal padding reserves the sloped regions, keeping the label —
+ * sized by content and `min-w-16` — inside the flat top.
+ *
+ * Note for surrounding markup: `backdrop-filter` is nullified inside any
+ * ancestor that has a CSS `filter` (the ancestor becomes the backdrop root),
+ * so cast card shadows with box-shadow layers, never with a drop-shadow
+ * filter on a wrapper around the tab.
+ */
+
+type Props = {
+    class?: string
+    labelClass?: string
+    align?: 'left' | 'center'
+}
+
+const { class: className, labelClass, align = 'left' } = Astro.props
+---
+
+<span
+    class={cn(
+        'inline-flex h-8 items-stretch bg-current backdrop-blur-md backdrop-saturate-150',
+        align === 'left' ? 'tab-left pr-8' : 'tab-center px-8',
+        className,
+    )}
+>
+    <span class={cn('flex min-w-16 items-center justify-center', labelClass)}>
+        <slot />
+    </span>
+</span>
+
+<style>
+    .tab-left {
+        clip-path: polygon(
+            -1px calc(100% + 1px),
+            -1px 21.6px,
+            0 21.6px,
+            0.24px 17.69px,
+            0.94px 14.13px,
+            2.1px 10.94px,
+            3.69px 8.12px,
+            5.7px 5.7px,
+            8.12px 3.69px,
+            10.94px 2.1px,
+            14.13px 0.94px,
+            17.69px 0.24px,
+            21.6px 0,
+            calc(100% - 32px) 0,
+            calc(100% - 29.72px) 0.73%,
+            calc(100% - 27.65px) 2.8%,
+            calc(100% - 25.77px) 6.08%,
+            calc(100% - 24.06px) 10.4%,
+            calc(100% - 22.5px) 15.63%,
+            calc(100% - 21.06px) 21.6%,
+            calc(100% - 19.71px) 28.18%,
+            calc(100% - 18.43px) 35.2%,
+            calc(100% - 17.2px) 42.53%,
+            calc(100% - 16px) 50%,
+            calc(100% - 14.8px) 57.48%,
+            calc(100% - 13.57px) 64.8%,
+            calc(100% - 12.29px) 71.83%,
+            calc(100% - 10.94px) 78.4%,
+            calc(100% - 9.5px) 84.38%,
+            calc(100% - 7.94px) 89.6%,
+            calc(100% - 6.23px) 93.93%,
+            calc(100% - 4.35px) 97.2%,
+            calc(100% - 2.28px) 99.28%,
+            100% 100%,
+            100% calc(100% + 1px)
+        );
+    }
+
+    .tab-center {
+        clip-path: polygon(
+            0 calc(100% + 1px),
+            0 100%,
+            2.28px 99.28%,
+            4.35px 97.2%,
+            6.23px 93.93%,
+            7.94px 89.6%,
+            9.5px 84.38%,
+            10.94px 78.4%,
+            12.29px 71.83%,
+            13.57px 64.8%,
+            14.8px 57.48%,
+            16px 50%,
+            17.2px 42.53%,
+            18.43px 35.2%,
+            19.71px 28.18%,
+            21.06px 21.6%,
+            22.5px 15.63%,
+            24.06px 10.4%,
+            25.77px 6.08%,
+            27.65px 2.8%,
+            29.72px 0.73%,
+            32px 0,
+            calc(100% - 32px) 0,
+            calc(100% - 29.72px) 0.73%,
+            calc(100% - 27.65px) 2.8%,
+            calc(100% - 25.77px) 6.08%,
+            calc(100% - 24.06px) 10.4%,
+            calc(100% - 22.5px) 15.63%,
+            calc(100% - 21.06px) 21.6%,
+            calc(100% - 19.71px) 28.18%,
+            calc(100% - 18.43px) 35.2%,
+            calc(100% - 17.2px) 42.53%,
+            calc(100% - 16px) 50%,
+            calc(100% - 14.8px) 57.48%,
+            calc(100% - 13.57px) 64.8%,
+            calc(100% - 12.29px) 71.83%,
+            calc(100% - 10.94px) 78.4%,
+            calc(100% - 9.5px) 84.38%,
+            calc(100% - 7.94px) 89.6%,
+            calc(100% - 6.23px) 93.93%,
+            calc(100% - 4.35px) 97.2%,
+            calc(100% - 2.28px) 99.28%,
+            100% 100%,
+            100% calc(100% + 1px)
+        );
+    }
+</style>

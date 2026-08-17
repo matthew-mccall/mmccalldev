@@ -1,6 +1,6 @@
 ---
 import { cn } from '@/lib/utils'
-import AustralisTab from '@/components/AustralisTab.astro'
+import Tab from '@/components/Tab.astro'
 
 type Props = {
     title: string
@@ -14,15 +14,22 @@ const { title, body, badgeText, class: className } = Astro.props
 
 <article class={cn('timeline-card', className)}>
     <div class="timeline-card-rail" aria-hidden="true"></div>
-    <div class="flex h-full flex-col drop-shadow-[0_24px_32px_rgb(0_0_0/0.45)]">
-        <AustralisTab
+    <div class="relative flex h-full flex-col">
+        <!-- Shadow layer: box-shadow, because a drop-shadow filter on this wrapper
+             would become the backdrop root and disable the tab's and card's
+             backdrop vibrancy. -->
+        <span
+            class="pointer-events-none absolute inset-x-0 top-8 bottom-0 rounded-[1.35rem] rounded-tl-none shadow-[0_24px_32px_rgb(0_0_0/0.45)]"
+            aria-hidden="true"
+        ></span>
+        <Tab
             class="self-start text-maroon/80 text-[0.65rem] font-medium uppercase tracking-[0.2em]"
             labelClass="px-4"
         >
             <span class="text-khaki">{badgeText}</span>
-        </AustralisTab>
+        </Tab>
         <div
-            class="flex h-full flex-col gap-3 rounded-xl rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6"
+            class="flex h-full flex-col gap-3 rounded-[1.35rem] rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6 backdrop-blur-md backdrop-saturate-150"
             data-squircle="0 0.75 0.75 0.75"
         >
             <h3 class="text-xl font-semibold text-khaki-light">{title}</h3>

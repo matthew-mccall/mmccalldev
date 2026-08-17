@@ -1,0 +1,76 @@
+---
+// Supports weights 300-800
+import '@fontsource-variable/host-grotesk';
+
+import '@/styles/global.css'
+import ContourMap from '@/components/ContourMap/ContourMap.astro'
+import NavBar from '@/components/NavBar.astro'
+import SiteFooter from '@/components/SiteFooter.astro'
+
+/*
+ * Shared shell for the subpages (Posts, Papers). Follows the index page's
+ * design standards: the screen-locked contour map sits behind everything and
+ * the page lays a translucent maroon wash over it, so the contour texture
+ * shows through the content the same way it does on the hero.
+ */
+
+type Props = {
+    title: string
+    description?: string
+}
+
+const {
+    title,
+    description = 'Matthew McCall — Team Member @ BETA working on Airborne Software.',
+} = Astro.props
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title} &mdash; Matthew McCall</title>
+		<script is:inline>document.documentElement.classList.add('js')</script>
+	</head>
+	<body>
+		<ContourMap />
+		<NavBar />
+		<main class="relative flex min-h-svh flex-col bg-linear-to-b from-maroon-deep/80 via-maroon/60 to-maroon/80 text-khaki-light">
+			<div class="mx-auto flex w-full max-w-4xl grow flex-col px-6 pb-24 pt-28 md:px-12 md:pt-36">
+				<slot />
+			</div>
+		</main>
+		<SiteFooter />
+
+		<script>
+			import { applySquircles } from '@/lib/squircle'
+
+			// Bezier superellipse corners; CSS border-radius remains the no-JS fallback
+			applySquircles()
+
+			/*
+			 * Localize <time> elements. The HTML <time> element is purely
+			 * semantic — browsers never render or translate its `datetime`
+			 * attribute — so a line of JS re-renders each date with the
+			 * visitor's own locale conventions. Post dates are calendar dates
+			 * (date-only `datetime`, no time of day), so the Y-M-D parts are
+			 * used verbatim rather than fed through the Date-string parser,
+			 * which would read them as UTC midnight and shift the day west of
+			 * Greenwich. The server-rendered en-US text is the no-JS fallback.
+			 */
+			for (const time of document.querySelectorAll('time[datetime]')) {
+				const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(time.getAttribute('datetime') ?? '')
+				if (!match) continue
+				const [year, month, day] = match.slice(1).map(Number)
+				time.textContent = new Date(year, month - 1, day).toLocaleDateString(undefined, {
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric',
+				})
+			}
+		</script>
+	</body>
+</html>

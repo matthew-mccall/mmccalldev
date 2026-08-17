@@ -1,0 +1,31 @@
+---
+import { cn } from '@/lib/utils'
+import IconedLink from '@/components/IconedLink.astro'
+import socials from '@/data/socials.json'
+
+type Props = {
+    class?: string
+}
+
+const { class: className } = Astro.props
+const year = new Date().getFullYear()
+---
+
+<!--
+	Raised (z-30) above any fixed/sticky page surfaces — e.g. the index page's
+	timeline layer — so its top shadow paints over them, selling the footer as
+	the surface sliding over the page.
+-->
+<footer class={cn('relative z-30 border-t border-khaki/20 bg-linear-to-b from-maroon-deep to-black/90 shadow-[0_-2px_12px_rgb(20_7_5/0.6),0_-24px_48px_rgb(20_7_5/0.4)]', className)}>
+    <div class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-12 md:flex-row md:items-center md:justify-between md:px-12">
+        <div class="flex flex-col gap-1">
+            <p class="font-display text-xl font-semibold text-khaki-light">Matthew McCall</p>
+            <p class="text-sm text-khaki/70">&copy; {year} &mdash; All rights reserved.</p>
+        </div>
+        <nav aria-label="Footer social links" class="flex flex-wrap gap-x-5 gap-y-2 text-xl">
+            {socials.map((social) => (
+                <IconedLink {...social} class="text-khaki hover:text-khaki-light" />
+            ))}
+        </nav>
+    </div>
+</footer>

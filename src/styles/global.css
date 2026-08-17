@@ -124,6 +124,50 @@
 }
 
 /*
+ * CSS-only page transitions: cross-document view transitions fade/slide the
+ * page on same-origin navigations with zero JavaScript. The floating nav
+ * pill opts out via its own `view-transition-name` (see NavBar.astro), so it
+ * holds still like persistent chrome while the page content animates.
+ * Browsers without support (or reduced-motion users) simply get instant
+ * navigation.
+ */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: page-leave 0.2s ease-in both;
+  }
+
+  ::view-transition-new(root) {
+    animation: page-enter 0.3s ease-out 0.1s both;
+  }
+
+  @keyframes page-leave {
+    to {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+  }
+
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
+
+/*
  * Severance-style overline: a rule drawn with border-top above headings.
  * `--overline-thickness` is the single knob that adjusts the rule thickness
  * for every heading at once; color is set per instance with Tailwind border
@@ -327,4 +371,115 @@
   .js .timeline-hint {
     display: block;
   }
+}
+
+/*
+ * Blog post prose: styles for Markdown rendered by the posts collection
+ * (src/pages/posts/[slug].astro). Kept in plain CSS since the content HTML
+ * is generated and can't carry utility classes.
+ */
+.prose-post {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: rgb(230 220 193 / 0.9);
+}
+
+.prose-post p {
+  margin-block: 1.25rem;
+}
+
+.prose-post h2,
+.prose-post h3,
+.prose-post h4 {
+  margin-block: 2.25rem 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-khaki-light);
+}
+
+.prose-post h2 {
+  font-size: 1.75rem;
+}
+
+.prose-post h3 {
+  font-size: 1.375rem;
+}
+
+.prose-post a {
+  color: var(--color-khaki);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease;
+}
+
+.prose-post a:hover {
+  color: var(--color-khaki-light);
+}
+
+.prose-post strong {
+  color: var(--color-khaki-light);
+}
+
+.prose-post ul,
+.prose-post ol {
+  margin-block: 1.25rem;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prose-post ul {
+  list-style: disc;
+}
+
+.prose-post ol {
+  list-style: decimal;
+}
+
+.prose-post li::marker {
+  color: var(--color-khaki-dark);
+}
+
+.prose-post blockquote {
+  margin-block: 1.5rem;
+  border-left: var(--overline-thickness) solid rgb(194 178 128 / 0.4);
+  padding-left: 1.25rem;
+  color: rgb(230 220 193 / 0.75);
+  font-style: italic;
+}
+
+.prose-post code {
+  font-size: 0.9em;
+  background: rgb(20 7 5 / 0.6);
+  color: var(--color-khaki);
+  padding: 0.15em 0.4em;
+  border-radius: 0.375rem;
+}
+
+.prose-post pre {
+  margin-block: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgb(194 178 128 / 0.15);
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  background: rgb(20 7 5 / 0.7) !important; /* keep Shiki's tokens, match the surface */
+}
+
+.prose-post pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+}
+
+.prose-post hr {
+  margin-block: 2.5rem;
+  border: 0;
+  border-top: var(--overline-thickness) solid rgb(194 178 128 / 0.25);
+}
+
+.prose-post img {
+  margin-block: 1.5rem;
+  border-radius: 0.75rem;
 }

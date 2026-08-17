@@ -1,0 +1,6 @@
+[
+  { "link": "/", "title": "Home", "icon": "house-door" },
+  { "link": "/posts", "title": "Posts", "icon": "newspaper" },
+  { "link": "/papers", "title": "Papers", "icon": "journal-bookmark" },
+  { "link": "/resume.pdf", "title": "Resume", "icon": "filetype-pdf" }
+]

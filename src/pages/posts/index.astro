@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content'
+import Tab from '@/components/Tab.astro'
+import PageLayout from '@/layouts/PageLayout.astro'
+import { formatDate } from '@/lib/formatDate'
+
+// Get all blog posts and sort them by date (newest first)
+const posts = (await getCollection('posts')).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+)
+---
+
+<PageLayout title="Posts" description="Thoughts, ideas, and technical articles by Matthew McCall.">
+    <header class="flex flex-col gap-4 pb-12">
+        <h1 class="severance-overline border-khaki/40 pt-8 font-display text-5xl font-bold leading-none text-khaki-light md:text-6xl">
+            Posts
+        </h1>
+        <p class="text-lg leading-relaxed text-khaki-light/80 md:text-xl">
+            Thoughts, ideas, and technical articles
+        </p>
+    </header>
+
+    <div class="flex flex-col gap-8">
+        {posts.map((post) => (
+            <a href={`/posts/${post.id}`} class="group relative flex flex-col">
+                {/* Shadow layer: box-shadow, because a drop-shadow filter on this
+                    wrapper would become the backdrop root and disable the tab's
+                    and card's backdrop vibrancy. */}
+                <span
+                    class="pointer-events-none absolute inset-x-0 top-8 bottom-0 rounded-[1.35rem] rounded-tl-none shadow-[0_20px_24px_rgb(20_7_5/0.35)] transition-shadow duration-300 group-hover:shadow-[0_28px_36px_rgb(20_7_5/0.5)]"
+                    aria-hidden="true"
+                ></span>
+                <Tab
+                    class="self-start text-maroon/80 text-[0.65rem] font-medium uppercase tracking-[0.2em] transition-colors duration-300 group-hover:text-crimson-deep/80 group-focus-visible:text-crimson-deep/80"
+                    labelClass="px-4"
+                >
+                    <time datetime={post.data.date.toISOString().slice(0, 10)} class="text-khaki">
+                        {formatDate(post.data.date)}
+                    </time>
+                </Tab>
+                <span
+                    class="flex h-full flex-col gap-3 rounded-[1.35rem] rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6 backdrop-blur-md backdrop-saturate-150 transition-colors duration-300 group-hover:from-crimson-deep/80 group-hover:to-maroon-deep/80 group-focus-visible:from-crimson-deep/80 group-focus-visible:to-maroon-deep/80"
+                    data-squircle="0 0.75 0.75 0.75"
+                >
+                    <h2 class="font-display text-2xl font-semibold text-khaki-light md:text-3xl">{post.data.title}</h2>
+                    <span class="inline-flex items-center gap-2 pt-1 text-sm uppercase tracking-[0.2em] text-khaki/70 transition-colors duration-300 group-hover:text-khaki group-focus-visible:text-khaki">
+                        Read <i class="bi-arrow-right" aria-hidden="true"></i>
+                    </span>
+                </span>
+            </a>
+        ))}
+    </div>
+
+    {posts.length === 0 && (
+        <p class="py-10 text-center text-khaki/60">No posts yet. Check back soon!</p>
+    )}
+</PageLayout>

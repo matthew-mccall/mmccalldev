@@ -1,0 +1,151 @@
+---
+import { cn } from '@/lib/utils'
+import navLinks from '@/data/navlinks.json'
+
+/*
+ * Site navigation.
+ *
+ * Desktop (md+): a fixed pill floating at the top center of the viewport.
+ * The pill carries `view-transition-name: site-nav`, so during cross-document
+ * view transitions (see global.css) it is matched with itself on the next
+ * page and holds still while the rest of the page fades — the nav reads as
+ * persistent chrome.
+ *
+ * Mobile: a circular hamburger button fixed to the bottom right. It targets
+ * a native `popover` menu — no JavaScript involved: the popover promotes the
+ * menu to the top layer, `::backdrop` dims the rest of the screen, light
+ * dismiss (tap outside / Escape) closes it, and `@starting-style` powers the
+ * pure-CSS expand/collapse animation.
+ */
+
+const currentPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '')
+const isActive = (link: string) => currentPath === link || (link !== '/' && currentPath.startsWith(`${link}/`))
+---
+
+<!-- Desktop: floating pill, top center -->
+<nav aria-label="Primary" class="site-nav fixed left-1/2 top-6 z-50 hidden -translate-x-1/2 md:block">
+    <ul class="flex items-center gap-1 rounded-full border border-khaki/25 bg-maroon-deep/70 p-1.5 shadow-[0_12px_32px_rgb(20_7_5/0.55)] backdrop-blur-md backdrop-saturate-150">
+        {navLinks.map(({ link, title, icon }) => (
+            <li>
+                <a
+                    href={link}
+                    aria-current={isActive(link) ? 'page' : undefined}
+                    class={cn(
+                        'flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-300',
+                        isActive(link)
+                            ? 'bg-khaki text-maroon'
+                            : 'text-khaki hover:bg-khaki/15 hover:text-khaki-light focus-visible:bg-khaki/15 focus-visible:text-khaki-light',
+                    )}
+                >
+                    <i class={`bi-${icon}`} aria-hidden="true"></i>
+                    <span>{title}</span>
+                </a>
+            </li>
+        ))}
+    </ul>
+</nav>
+
+<!-- Mobile: circled hamburger, bottom right -->
+<button
+    popovertarget="mobile-nav"
+    aria-label="Toggle navigation menu"
+    class="fixed bottom-6 right-6 z-50 flex size-14 items-center justify-center rounded-full border border-khaki/25 bg-maroon-deep/80 text-2xl text-khaki shadow-[0_12px_32px_rgb(20_7_5/0.55)] backdrop-blur-md backdrop-saturate-150 transition-colors duration-300 hover:text-khaki-light md:hidden"
+>
+    <i class="bi-list" aria-hidden="true"></i>
+</button>
+
+<nav id="mobile-nav" popover aria-label="Primary" class="mobile-nav md:hidden">
+    <ul class="flex flex-col gap-1 p-2">
+        {navLinks.map(({ link, title, icon }) => (
+            <li>
+                <a
+                    href={link}
+                    aria-current={isActive(link) ? 'page' : undefined}
+                    class={cn(
+                        'flex items-center gap-3 rounded-full px-5 py-3 text-sm font-medium uppercase tracking-[0.2em] transition-colors duration-300',
+                        isActive(link)
+                            ? 'bg-khaki text-maroon'
+                            : 'text-khaki hover:bg-khaki/15 hover:text-khaki-light focus-visible:bg-khaki/15 focus-visible:text-khaki-light',
+                    )}
+                >
+                    <i class={`bi-${icon} text-lg`} aria-hidden="true"></i>
+                    <span>{title}</span>
+                </a>
+            </li>
+        ))}
+    </ul>
+</nav>
+
+<style>
+    /*
+     * The desktop pill is shared chrome across pages during view transitions;
+     * the name must be unique per page, and there is exactly one NavBar.
+     */
+    .site-nav {
+        view-transition-name: site-nav;
+    }
+
+    /*
+     * Small popup sheet pinned above the hamburger button in the bottom-right
+     * corner — deliberately not full screen. The popover lives in the top
+     * layer, so no z-index management is needed; `::backdrop` dims everything
+     * behind it (hamburger included, which doubles as a "tap anywhere to
+     * dismiss" affordance).
+     */
+    .mobile-nav {
+        position: fixed;
+        inset: auto 1.5rem 5.5rem auto;
+        margin: 0;
+        min-width: 14rem;
+        border: 1px solid rgb(194 178 128 / 0.25);
+        border-radius: 1.75rem;
+        background: rgb(20 7 5 / 0.9);
+        box-shadow: 0 24px 48px rgb(20 7 5 / 0.6);
+        backdrop-filter: blur(12px) saturate(1.5);
+        opacity: 0;
+        transform: translateY(0.75rem) scale(0.9);
+        transform-origin: bottom right;
+        transition:
+            opacity 0.25s ease,
+            transform 0.25s ease,
+            display 0.25s allow-discrete,
+            overlay 0.25s allow-discrete;
+    }
+
+    .mobile-nav:popover-open {
+        opacity: 1;
+        transform: none;
+    }
+
+    .mobile-nav::backdrop {
+        background: rgb(0 0 0 / 0.6);
+        opacity: 0;
+        transition:
+            opacity 0.25s ease,
+            display 0.25s allow-discrete,
+            overlay 0.25s allow-discrete;
+    }
+
+    .mobile-nav:popover-open::backdrop {
+        opacity: 1;
+    }
+
+    /* Entry keyframe equivalents — where the open transition starts from */
+    @starting-style {
+        .mobile-nav:popover-open {
+            opacity: 0;
+            transform: translateY(0.75rem) scale(0.9);
+        }
+
+        .mobile-nav:popover-open::backdrop {
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .mobile-nav,
+        .mobile-nav::backdrop {
+            transition: none;
+        }
+    }
+</style>

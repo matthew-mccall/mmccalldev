@@ -1,6 +1,6 @@
 ---
 import { cn } from '@/lib/utils'
-import AustralisTab from '@/components/AustralisTab.astro'
+import Tab from '@/components/Tab.astro'
 
 type Props = {
     title: string
@@ -14,15 +14,19 @@ const { title, description, href, class: className } = Astro.props
 
 <a
     href={href}
-    class={cn(
-        'group flex flex-col drop-shadow-[0_20px_24px_rgb(20_7_5/0.35)] transition-[filter] duration-300 hover:drop-shadow-[0_28px_36px_rgb(20_7_5/0.5)]',
-        className,
-    )}
+    class={cn('group relative flex flex-col', className)}
     data-fade
 >
-    <AustralisTab class="self-start text-khaki-light/40 transition-colors duration-300 group-hover:text-maroon group-focus-visible:text-maroon" />
+    <!-- Shadow layer: box-shadow, because a drop-shadow filter on this wrapper
+         would become the backdrop root and disable the tab's and card's
+         backdrop vibrancy. -->
     <span
-        class="relative flex h-full flex-col gap-4 overflow-hidden rounded-xl rounded-tl-none bg-khaki-light/40 p-8 transition-colors duration-300 group-hover:bg-maroon group-focus-visible:bg-maroon"
+        class="pointer-events-none absolute inset-x-0 top-8 bottom-0 rounded-[1.35rem] rounded-tl-none shadow-[0_20px_24px_rgb(20_7_5/0.35)] transition-shadow duration-300 group-hover:shadow-[0_28px_36px_rgb(20_7_5/0.5)]"
+        aria-hidden="true"
+    ></span>
+    <Tab class="self-start text-khaki-light/40 transition-colors duration-300 group-hover:text-maroon group-focus-visible:text-maroon" />
+    <span
+        class="relative flex h-full flex-col gap-4 overflow-hidden rounded-[1.35rem] rounded-tl-none bg-khaki-light/40 p-8 backdrop-blur-md backdrop-saturate-150 transition-colors duration-300 group-hover:bg-maroon group-focus-visible:bg-maroon"
         data-squircle="0 0.75 0.75 0.75"
     >
         <span class="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/15" aria-hidden="true"></span>
