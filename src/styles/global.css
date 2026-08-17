@@ -206,6 +206,10 @@
  * superellipse clip-path — see src/lib/squircle.ts. Without JavaScript the
  * border-radius utilities remain in effect as the fallback.
  */
+.frosted-surface {
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+}
 
 /*
  * Scroll-jacked timeline.

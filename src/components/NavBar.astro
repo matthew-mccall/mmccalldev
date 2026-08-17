@@ -24,7 +24,7 @@ const isActive = (link: string) => currentPath === link || (link !== '/' && curr
 
 <!-- Desktop: floating pill, top center -->
 <nav aria-label="Primary" class="site-nav fixed left-1/2 top-6 z-50 hidden -translate-x-1/2 md:block">
-    <ul class="flex items-center gap-1 rounded-full border border-khaki/25 bg-maroon-deep/70 p-1.5 shadow-[0_12px_32px_rgb(20_7_5/0.55)] backdrop-blur-md backdrop-saturate-150">
+    <ul class="frosted-surface flex items-center gap-1 rounded-full border border-khaki/25 bg-maroon-deep/70 p-1.5 shadow-[0_12px_32px_rgb(20_7_5/0.55)]">
         {navLinks.map(({ link, title, icon }) => (
             <li>
                 <a
