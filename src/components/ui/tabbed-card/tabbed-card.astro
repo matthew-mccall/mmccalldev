@@ -16,14 +16,14 @@ const rootProps = href ? { href } : {}
 
 <Root {...rootProps} class={cn('group relative flex flex-col', className)}>
     <Tab
-        class="self-start text-[0.65rem] font-medium uppercase tracking-[0.2em] text-maroon/80 transition-colors duration-300 group-hover:text-crimson-deep/80 group-focus-visible:text-crimson-deep/80"
+        class="tabbed-card-noise self-start text-[0.65rem] font-medium uppercase tracking-[0.2em] text-maroon/80 transition-colors duration-300 group-hover:text-crimson-deep/80 group-focus-visible:text-crimson-deep/80"
         labelClass="px-4"
     >
         <slot name="tab" />
     </Tab>
     <div
         class={cn(
-            'frosted-surface flex flex-col gap-4 rounded-[1.35rem] rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6 transition-colors duration-300 group-hover:from-crimson-deep/80 group-hover:to-maroon-deep/80 group-focus-visible:from-crimson-deep/80 group-focus-visible:to-maroon-deep/80 md:p-8',
+            'tabbed-card-noise frosted-surface flex flex-col gap-4 rounded-[1.35rem] rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6 transition-colors duration-300 group-hover:from-crimson-deep/80 group-hover:to-maroon-deep/80 group-focus-visible:from-crimson-deep/80 group-focus-visible:to-maroon-deep/80 md:p-8',
             bodyClass,
         )}
         data-squircle="0 0.75 0.75 0.75"
@@ -31,3 +31,30 @@ const rootProps = href ? { href } : {}
         <slot />
     </div>
 </Root>
+
+<style>
+    :global(.tabbed-card-noise) {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+    }
+
+    :global(.tabbed-card-noise)::before {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        background-image: url('/noise.webp');
+        background-repeat: repeat;
+        background-size: 360px 360px;
+        mix-blend-mode: normal;
+        filter: contrast(4) brightness(0.65);
+        opacity: 0.12;
+        pointer-events: none;
+        content: '';
+    }
+
+    :global(.tabbed-card-noise > *) {
+        position: relative;
+        z-index: 2;
+    }
+</style>
