@@ -1,30 +1,75 @@
 ---
+import type { HTMLAttributes } from 'astro/types'
+
 import { cn } from '@/lib/utils'
 import { Tab } from '@/components/ui/tab'
 
-type Props = {
+type Props = Omit<HTMLAttributes<'a'>, 'href'> & {
     href?: string
-    class?: string
-    bodyClass?: string
+    colorScheme?: 'khaki' | 'maroon'
+    density?: 'cozy' | 'comfy'
+    hover?: boolean
 }
 
-const { href, class: className, bodyClass } = Astro.props
+const {
+    href,
+    colorScheme = 'maroon',
+    density = 'comfy',
+    hover = true,
+    class: className,
+    ...props
+} = Astro.props
 
 const Root = href ? 'a' : 'section'
-const rootProps = href ? { href } : {}
+const rootProps = href ? { ...props, href } : props
 ---
 
-<Root {...rootProps} class={cn('group relative flex flex-col', className)}>
+<Root
+    {...rootProps}
+    class={cn(
+        'group tabbed-card relative flex flex-col',
+        `tabbed-card--${colorScheme}`,
+        hover && 'tabbed-card--hover',
+        className,
+    )}
+>
+    <span
+        class={cn(
+            'pointer-events-none absolute inset-x-0 top-8 bottom-0 rounded-[1.35rem] rounded-tl-none',
+            colorScheme === 'khaki'
+                ? 'shadow-[0_20px_24px_rgb(20_7_5/0.35)]'
+                : 'shadow-[0_24px_32px_rgb(0_0_0/0.45)]',
+            hover &&
+                (colorScheme === 'khaki'
+                    ? 'transition-shadow duration-300 group-hover:shadow-[0_28px_36px_rgb(20_7_5/0.5)] group-focus-visible:shadow-[0_28px_36px_rgb(20_7_5/0.5)]'
+                    : 'transition-shadow duration-300 group-hover:shadow-[0_28px_36px_rgb(0_0_0/0.55)] group-focus-visible:shadow-[0_28px_36px_rgb(0_0_0/0.55)]'),
+        )}
+        aria-hidden="true"
+    ></span>
     <Tab
-        class="tabbed-card-noise self-start text-[0.65rem] font-medium uppercase tracking-[0.2em] text-maroon/80 transition-colors duration-300 group-hover:text-crimson-deep/80 group-focus-visible:text-crimson-deep/80"
+        class={cn(
+            'tabbed-card-noise tabbed-card-surface self-start text-[0.65rem] font-medium uppercase tracking-[0.2em]',
+            colorScheme === 'khaki' ? 'text-khaki-light/40' : 'text-maroon/80',
+            hover &&
+                (colorScheme === 'khaki'
+                    ? 'transition-colors duration-300 group-hover:text-maroon group-focus-visible:text-maroon'
+                    : 'transition-colors duration-300 group-hover:text-crimson-deep/80 group-focus-visible:text-crimson-deep/80'),
+        )}
         labelClass="px-4"
     >
         <slot name="tab" />
     </Tab>
     <div
         class={cn(
-            'tabbed-card-noise frosted-surface flex flex-col gap-4 rounded-[1.35rem] rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6 transition-colors duration-300 group-hover:from-crimson-deep/80 group-hover:to-maroon-deep/80 group-focus-visible:from-crimson-deep/80 group-focus-visible:to-maroon-deep/80 md:p-8',
-            bodyClass,
+            'tabbed-card-noise tabbed-card-surface frosted-surface flex h-full flex-col rounded-[1.35rem] rounded-tl-none',
+            colorScheme === 'khaki'
+                ? 'bg-khaki-light/40'
+                : 'bg-linear-to-b from-maroon/80 to-maroon-deep/70',
+            density === 'cozy' ? 'gap-3 p-6' : 'gap-4 p-8',
+            hover && 'transition-colors duration-300',
+            hover &&
+                colorScheme === 'maroon' &&
+                'group-hover:from-crimson-deep/80 group-hover:to-maroon-deep/80 group-focus-visible:from-crimson-deep/80 group-focus-visible:to-maroon-deep/80',
         )}
         data-squircle="0 0.75 0.75 0.75"
     >
@@ -46,7 +91,7 @@ const rootProps = href ? { href } : {}
         background-image: url('/noise.webp');
         background-repeat: repeat;
         background-size: 360px 360px;
-        mix-blend-mode: normal;
+        mix-blend-mode: multiply;
         filter: contrast(4) brightness(0.65);
         opacity: 0.12;
         pointer-events: none;
@@ -56,5 +101,9 @@ const rootProps = href ? { href } : {}
     :global(.tabbed-card-noise > *) {
         position: relative;
         z-index: 2;
+    }
+
+    :global(.tabbed-card--khaki.tabbed-card--hover:is(:hover, :focus-visible) > .tabbed-card-surface) {
+        background-color: var(--color-maroon);
     }
 </style>

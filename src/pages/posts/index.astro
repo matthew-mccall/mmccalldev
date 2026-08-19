@@ -24,7 +24,9 @@ const posts = (await getCollection('posts')).sort(
         {posts.map((post) => (
             <TabbedCard
                 href={`/posts/${post.id}`}
-                bodyClass="h-full gap-3 p-6 md:p-6"
+                colorScheme="maroon"
+                density="cozy"
+                hover
             >
                 <time
                     slot="tab"

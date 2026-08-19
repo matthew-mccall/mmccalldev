@@ -16,7 +16,7 @@ import papers from '@/data/papers.json'
 
     <div class="flex flex-col gap-8">
         {papers.map((paper) => (
-            <TabbedCard>
+            <TabbedCard colorScheme="maroon" density="comfy" hover>
                 <span slot="tab" class="text-khaki">Paper</span>
                 <h2 class="font-display text-2xl font-semibold text-khaki-light md:text-3xl">{paper.title}</h2>
                 <p class="text-base leading-relaxed text-khaki-light/80">
