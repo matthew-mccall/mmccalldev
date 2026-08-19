@@ -9,7 +9,9 @@ import navLinks from '@/data/navlinks.json'
  * The pill carries `view-transition-name: site-nav`, so during cross-document
  * view transitions (see global.css) it is matched with itself on the next
  * page and holds still while the rest of the page fades — the nav reads as
- * persistent chrome.
+ * persistent chrome. The transition name belongs on the frosted element
+ * itself: placing it on an ancestor creates a backdrop root that prevents the
+ * pill from sampling and blurring the page behind it.
  *
  * Mobile: a circular hamburger button fixed to the bottom right. It targets
  * a native `popover` menu — no JavaScript involved: the popover promotes the
@@ -23,8 +25,8 @@ const isActive = (link: string) => currentPath === link || (link !== '/' && curr
 ---
 
 <!-- Desktop: floating pill, top center -->
-<nav aria-label="Primary" class="site-nav fixed left-1/2 top-6 z-50 hidden -translate-x-1/2 md:block">
-    <ul class="frosted-surface flex items-center gap-1 rounded-full border border-khaki/25 bg-maroon-deep/70 p-1.5 shadow-[0_12px_32px_rgb(20_7_5/0.55)]">
+<nav aria-label="Primary" class="pointer-events-none fixed inset-x-0 top-6 z-50 hidden justify-center md:flex">
+    <ul class="site-nav frosted-surface pointer-events-auto flex items-center gap-1 rounded-full border border-khaki/25 bg-maroon-deep/40 p-1.5 shadow-[0_12px_32px_rgb(20_7_5/0.55)]">
         {navLinks.map(({ link, title, icon }) => (
             <li>
                 <a
@@ -78,8 +80,10 @@ const isActive = (link: string) => currentPath === link || (link !== '/' && curr
 
 <style>
     /*
-     * The desktop pill is shared chrome across pages during view transitions;
-     * the name must be unique per page, and there is exactly one NavBar.
+     * The desktop pill is shared chrome across pages during view transitions.
+     * Keep the name on the element that owns backdrop-filter: a named ancestor
+     * would become its backdrop root and isolate it from the page underneath.
+     * The name must be unique per page, and there is exactly one NavBar.
      */
     .site-nav {
         view-transition-name: site-nav;

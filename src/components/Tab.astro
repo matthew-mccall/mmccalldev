@@ -28,7 +28,9 @@ import { cn } from '@/lib/utils'
  * against the card (see squircle.ts on bleeding).
  *
  * The horizontal padding reserves the sloped regions, keeping the label —
- * sized by content and `min-w-16` — inside the flat top.
+ * sized by content and `min-w-16` — inside the flat top. Folder-style labels
+ * use a fixed start inset and sit against the card edge without space beneath
+ * them; the centered variant stays centered on both axes.
  *
  * Note for surrounding markup: `backdrop-filter` is nullified inside any
  * ancestor that has a CSS `filter` (the ancestor becomes the backdrop root),
@@ -52,7 +54,13 @@ const { class: className, labelClass, align = 'left' } = Astro.props
         className,
     )}
 >
-    <span class={cn('flex min-w-16 items-center justify-center', labelClass)}>
+    <span
+        class={cn(
+            'flex min-w-16',
+            align === 'left' ? 'items-end justify-start' : 'items-center justify-center',
+            labelClass,
+        )}
+    >
         <slot />
     </span>
 </span>

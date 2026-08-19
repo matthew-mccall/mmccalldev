@@ -1,5 +1,5 @@
 ---
-import Tab from '@/components/Tab.astro'
+import { TabbedCard } from '@/components/ui/tabbed-card'
 import PageLayout from '@/layouts/PageLayout.astro'
 import papers from '@/data/papers.json'
 ---
@@ -16,38 +16,21 @@ import papers from '@/data/papers.json'
 
     <div class="flex flex-col gap-8">
         {papers.map((paper) => (
-            <section class="relative flex flex-col">
-                {/* Shadow layer: box-shadow, because a drop-shadow filter on this
-                    wrapper would become the backdrop root and disable the tab's
-                    and card's backdrop vibrancy. */}
-                <span
-                    class="pointer-events-none absolute inset-x-0 top-8 bottom-0 rounded-[1.35rem] rounded-tl-none shadow-[0_20px_24px_rgb(20_7_5/0.35)]"
-                    aria-hidden="true"
-                ></span>
-                <Tab
-                    class="self-start text-maroon/80 text-[0.65rem] font-medium uppercase tracking-[0.2em]"
-                    labelClass="px-4"
-                >
-                    <span class="text-khaki">Paper</span>
-                </Tab>
-                <div
-                    class="frosted-surface flex flex-col gap-4 rounded-[1.35rem] rounded-tl-none bg-linear-to-b from-maroon/80 to-maroon-deep/70 p-6 md:p-8"
-                    data-squircle="0 0.75 0.75 0.75"
-                >
-                    <h2 class="font-display text-2xl font-semibold text-khaki-light md:text-3xl">{paper.title}</h2>
-                    <p class="text-base leading-relaxed text-khaki-light/80">
-                        <strong class="text-khaki-light">Abstract:</strong> {paper.abstract}
-                    </p>
-                    <div class="pt-2">
-                        <a
-                            href={paper.href}
-                            class="inline-flex items-center gap-2 rounded-full bg-khaki px-6 py-3 text-sm font-medium uppercase tracking-[0.2em] text-maroon transition-colors duration-300 hover:bg-khaki-light"
-                        >
-                            Download PDF <i class="bi-filetype-pdf" aria-hidden="true"></i>
-                        </a>
-                    </div>
+            <TabbedCard>
+                <span slot="tab" class="text-khaki">Paper</span>
+                <h2 class="font-display text-2xl font-semibold text-khaki-light md:text-3xl">{paper.title}</h2>
+                <p class="text-base leading-relaxed text-khaki-light/80">
+                    <strong class="text-khaki-light">Abstract:</strong> {paper.abstract}
+                </p>
+                <div class="pt-2">
+                    <a
+                        href={paper.href}
+                        class="inline-flex items-center gap-2 rounded-full bg-khaki px-6 py-3 text-sm font-medium uppercase tracking-[0.2em] text-maroon transition-colors duration-300 hover:bg-khaki-light"
+                    >
+                        Download PDF <i class="bi-filetype-pdf" aria-hidden="true"></i>
+                    </a>
                 </div>
-            </section>
+            </TabbedCard>
         ))}
     </div>
 </PageLayout>

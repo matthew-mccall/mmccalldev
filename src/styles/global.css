@@ -207,8 +207,10 @@
  * border-radius utilities remain in effect as the fallback.
  */
 .frosted-surface {
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  backdrop-filter: blur(20px) saturate(1.5);
+  --frosted-blur: 20px;
+  --frosted-saturate: 1.5;
+  -webkit-backdrop-filter: blur(var(--frosted-blur)) saturate(var(--frosted-saturate));
+  backdrop-filter: blur(var(--frosted-blur)) saturate(var(--frosted-saturate));
 }
 
 /*

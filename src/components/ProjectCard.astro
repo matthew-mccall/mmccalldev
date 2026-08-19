@@ -14,7 +14,7 @@ const { title, description, href, class: className } = Astro.props
 
 <a
     href={href}
-    class={cn('group relative flex flex-col', className)}
+    class={cn('group project-card relative flex flex-col', className)}
     data-fade
 >
     <!-- Shadow layer: box-shadow, because a drop-shadow filter on this wrapper
@@ -24,12 +24,11 @@ const { title, description, href, class: className } = Astro.props
         class="pointer-events-none absolute inset-x-0 top-8 bottom-0 rounded-[1.35rem] rounded-tl-none shadow-[0_20px_24px_rgb(20_7_5/0.35)] transition-shadow duration-300 group-hover:shadow-[0_28px_36px_rgb(20_7_5/0.5)]"
         aria-hidden="true"
     ></span>
-    <Tab class="self-start text-khaki-light/40 transition-colors duration-300 group-hover:text-maroon group-focus-visible:text-maroon" />
+    <Tab class="project-surface self-start text-khaki-light/40 transition-colors duration-300" />
     <span
-        class="frosted-surface relative flex h-full flex-col gap-4 overflow-hidden rounded-[1.35rem] rounded-tl-none bg-khaki-light/40 p-8 transition-colors duration-300 group-hover:bg-maroon group-focus-visible:bg-maroon"
+        class="project-surface frosted-surface relative flex h-full flex-col gap-4 overflow-hidden rounded-[1.35rem] rounded-tl-none bg-khaki-light/40 p-8 transition-colors duration-300"
         data-squircle="0 0.75 0.75 0.75"
     >
-        <span class="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/15" aria-hidden="true"></span>
         <h3 class="relative font-display text-3xl font-bold text-maroon transition-colors duration-300 group-hover:text-khaki-light group-focus-visible:text-khaki-light">{title}</h3>
         <p class="relative text-base leading-relaxed text-maroon/80 transition-colors duration-300 group-hover:text-khaki-light/80 group-focus-visible:text-khaki-light/80">{description}</p>
         <span class="relative mt-auto inline-flex items-center gap-2 pt-2 text-sm uppercase tracking-[0.2em] text-maroon/70 transition-colors duration-300 group-hover:text-khaki group-focus-visible:text-khaki">
@@ -37,3 +36,16 @@ const { title, description, href, class: className } = Astro.props
         </span>
     </span>
 </a>
+
+<style>
+    /*
+     * The opaque hover state does not need backdrop processing. Removing it
+     * from both joined pieces avoids separate compositor layers producing a
+     * slightly different maroon through the tab's clip-path.
+     */
+    :global(.project-card:is(:hover, :focus-visible) > .project-surface) {
+        background-color: var(--color-maroon);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+</style>
