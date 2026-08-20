@@ -49,11 +49,7 @@ const rootProps = href ? { ...props, href } : props
     <Tab
         class={cn(
             'tabbed-card-noise tabbed-card-surface self-start text-[0.65rem] font-medium uppercase tracking-[0.2em]',
-            colorScheme === 'khaki' ? 'text-khaki-light/40' : 'text-maroon/80',
-            hover &&
-                (colorScheme === 'khaki'
-                    ? 'transition-colors duration-300 group-hover:text-maroon group-focus-visible:text-maroon'
-                    : 'transition-colors duration-300 group-hover:text-crimson-deep/80 group-focus-visible:text-crimson-deep/80'),
+            hover && 'transition-colors duration-300',
         )}
         labelClass="px-4"
     >
@@ -61,15 +57,9 @@ const rootProps = href ? { ...props, href } : props
     </Tab>
     <div
         class={cn(
-            'tabbed-card-noise tabbed-card-surface frosted-surface flex h-full flex-col rounded-[1.35rem] rounded-tl-none',
-            colorScheme === 'khaki'
-                ? 'bg-khaki-light/40'
-                : 'bg-linear-to-b from-maroon/80 to-maroon-deep/70',
+            'tabbed-card-noise tabbed-card-surface flex h-full flex-col rounded-[1.35rem] rounded-tl-none',
             density === 'cozy' ? 'gap-3 p-6' : 'gap-4 p-8',
             hover && 'transition-colors duration-300',
-            hover &&
-                colorScheme === 'maroon' &&
-                'group-hover:from-crimson-deep/80 group-hover:to-maroon-deep/80 group-focus-visible:from-crimson-deep/80 group-focus-visible:to-maroon-deep/80',
         )}
         data-squircle="0 0.75 0.75 0.75"
     >
@@ -78,32 +68,28 @@ const rootProps = href ? { ...props, href } : props
 </Root>
 
 <style>
-    :global(.tabbed-card-noise) {
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
+    :global(.tabbed-card--khaki) {
+        --tabbed-card-fill: color-mix(in srgb, var(--color-khaki-light) 40%, var(--color-khaki));
+        --tabbed-card-hover-fill: var(--color-maroon);
     }
 
-    :global(.tabbed-card-noise)::before {
-        position: absolute;
-        z-index: 1;
-        inset: 0;
+    :global(.tabbed-card--maroon) {
+        --tabbed-card-fill: var(--color-maroon);
+        --tabbed-card-hover-fill: var(--color-crimson-deep);
+    }
+
+    :global(.tabbed-card > .tabbed-card-surface) {
+        background-color: var(--tabbed-card-fill);
+    }
+
+    :global(.tabbed-card-noise) {
         background-image: url('/noise.webp');
         background-repeat: repeat;
         background-size: 360px 360px;
-        mix-blend-mode: multiply;
-        filter: contrast(4) brightness(0.65);
-        opacity: 0.12;
-        pointer-events: none;
-        content: '';
+        background-blend-mode: soft-light;
     }
 
-    :global(.tabbed-card-noise > *) {
-        position: relative;
-        z-index: 2;
-    }
-
-    :global(.tabbed-card--khaki.tabbed-card--hover:is(:hover, :focus-visible) > .tabbed-card-surface) {
-        background-color: var(--color-maroon);
+    :global(.tabbed-card--hover:is(:hover, :focus-visible) > .tabbed-card-surface) {
+        background-color: var(--tabbed-card-hover-fill);
     }
 </style>

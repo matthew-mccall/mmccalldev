@@ -42,14 +42,16 @@ type Props = {
     class?: string
     labelClass?: string
     align?: 'left' | 'center'
+    frosted?: boolean
 }
 
-const { class: className, labelClass, align = 'left' } = Astro.props
+const { class: className, labelClass, align = 'left', frosted = false } = Astro.props
 ---
 
 <span
     class={cn(
-        'inline-flex h-8 items-stretch bg-current backdrop-blur-md backdrop-saturate-150',
+        'inline-flex h-8 items-stretch bg-current',
+        frosted && 'backdrop-blur-md backdrop-saturate-150',
         align === 'left' ? 'tab-left pr-8' : 'tab-center px-8',
         className,
     )}

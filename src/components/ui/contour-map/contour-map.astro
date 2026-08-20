@@ -1,122 +1,245 @@
-<div id="contour-container" class="fixed inset-0 -z-10 w-full h-full overflow-hidden"></div>
+<div id="contour-container" class="fixed inset-0 -z-10 h-full w-full overflow-hidden bg-maroon"></div>
 
 <script>
-    import vertexShader from './vertex.glsl?raw'
-    import fragmentShader from './fragment.glsl?raw'
-    import * as THREE from 'three';
+    import vertexShaderSource from './vertex.glsl?raw'
+    import fragmentShaderSource from './fragment.glsl?raw'
 
-    // Constants
-    const NOISE_SCALE = 2.5;
-    const NOISE_SPEED = 0.01;
-    const DENSITY = 5.0;
-    const LINE_WIDTH = 2.0;
-    const BG_COLOR = new THREE.Color(0x1e0c09); // maroon — matches --color-maroon
-    const LINE_COLOR = new THREE.Color(0x8a7a55); // muted khaki — matches --color-khaki-dark
-    const SEED = Math.random() * 10000.0;
-    const MOUSE_RADIUS = 0.7;
-    const MOUSE_STRENGTH = 0.5;
+    const TARGET_FPS = 30
+    const FRAME_INTERVAL = 1000 / TARGET_FPS
+    const RENDER_SCALE = 0.65
+    const RESIZE_DEBOUNCE_MS = 150
 
-    const container = document.getElementById('contour-container');
-    if (!container) throw new Error('Contour container not found');
+    const container = document.getElementById('contour-container')
+    if (container) initializeContourMap(container)
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
+    function initializeContourMap(container: HTMLElement): void {
+        const canvas = document.createElement('canvas')
+        canvas.className = 'block h-full w-full'
+        canvas.setAttribute('aria-hidden', 'true')
+        container.appendChild(canvas)
 
-    // Sections that must occlude content behind them (e.g. the Projects
-    // parallax layer sliding over the hero and timeline) declare their own
-    // <canvas data-contour-mirror> and receive a per-frame copy of the master
-    // render — a cheap GPU blit, so one WebGL context serves every section and
-    // CSS alone keeps every mirror fixed and clipped to its section.
-    const mirrors = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-contour-mirror]'))
-        .map((canvas) => ({canvas, ctx: canvas.getContext('2d')}))
-        .filter((mirror): mirror is {canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D} => mirror.ctx !== null);
+        const gl = canvas.getContext('webgl', {
+            alpha: false,
+            antialias: false,
+            powerPreference: 'low-power',
+        })
+        if (!gl || !gl.getExtension('OES_standard_derivatives')) return
 
-    function resizeMirrors(width: number, height: number): void {
-        for (const {canvas} of mirrors) {
-            canvas.width = width;
-            canvas.height = height;
-        }
-    }
+        function compileShader(type: number, source: string): WebGLShader {
+            const shader = gl.createShader(type)
+            if (!shader) throw new Error('Unable to create contour shader')
 
-    resizeMirrors(window.innerWidth, window.innerHeight);
+            gl.shaderSource(shader, source)
+            gl.compileShader(shader)
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const mouse = new THREE.Vector2(-10, -10);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                const message = gl.getShaderInfoLog(shader) ?? 'Unknown shader compilation error'
+                gl.deleteShader(shader)
+                throw new Error(message)
+            }
 
-    function mouseMoveHandler(e: MouseEvent) : void {
-        mouse.x = e.clientX / window.innerWidth;
-        mouse.y = 1.0 - (e.clientY / window.innerHeight);
-    }
-
-    const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let motionEnabled = !motionMediaQuery.matches;
-
-    function handleMotionChange() {
-        const newMotionEnabled = !motionMediaQuery.matches;
-
-        if (newMotionEnabled && !motionEnabled) {
-            window.addEventListener('mousemove', mouseMoveHandler);
-        } else if (!newMotionEnabled && motionEnabled) {
-            window.removeEventListener('mousemove', mouseMoveHandler);
+            return shader
         }
 
-        motionEnabled = newMotionEnabled;
+        const vertexShader = compileShader(gl.VERTEX_SHADER, vertexShaderSource)
+        const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentShaderSource)
+        const program = gl.createProgram()
+        if (!program) throw new Error('Unable to create contour shader program')
+
+        gl.attachShader(program, vertexShader)
+        gl.attachShader(program, fragmentShader)
+        gl.linkProgram(program)
+
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            throw new Error(gl.getProgramInfoLog(program) ?? 'Unable to link contour shader program')
+        }
+
+        gl.useProgram(program)
+
+        const positionBuffer = gl.createBuffer()
+        if (!positionBuffer) throw new Error('Unable to create contour geometry')
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+            gl.STATIC_DRAW,
+        )
+
+        const positionLocation = gl.getAttribLocation(program, 'aPosition')
+        gl.enableVertexAttribArray(positionLocation)
+        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)
+
+        const uniforms = {
+            time: gl.getUniformLocation(program, 'uTime'),
+            resolution: gl.getUniformLocation(program, 'uResolution'),
+            mouse: gl.getUniformLocation(program, 'uMouse'),
+        }
+
+        gl.uniform1f(gl.getUniformLocation(program, 'uSeed'), Math.random() * 10000)
+        gl.uniform1f(gl.getUniformLocation(program, 'uNoiseScale'), 2.5)
+        gl.uniform1f(gl.getUniformLocation(program, 'uNoiseSpeed'), 0.01)
+        gl.uniform1f(gl.getUniformLocation(program, 'uDensity'), 5)
+        gl.uniform1f(gl.getUniformLocation(program, 'uLineWidth'), 2)
+        gl.uniform1f(gl.getUniformLocation(program, 'uMouseRadius'), 0.7)
+        gl.uniform1f(gl.getUniformLocation(program, 'uMouseStrength'), 0.5)
+        gl.uniform3f(gl.getUniformLocation(program, 'uBgColor'), 30 / 255, 12 / 255, 9 / 255)
+        gl.uniform3f(gl.getUniformLocation(program, 'uLineColor'), 138 / 255, 122 / 255, 85 / 255)
+
+        type Mirror = {
+            canvas: HTMLCanvasElement
+            context: CanvasRenderingContext2D
+            root: Element
+            visible: boolean
+        }
+
+        const mirrors: Mirror[] = Array.from(
+            document.querySelectorAll<HTMLCanvasElement>('canvas[data-contour-mirror]'),
+        ).flatMap((mirrorCanvas) => {
+            const context = mirrorCanvas.getContext('2d')
+            if (!context) return []
+
+            return [{
+                canvas: mirrorCanvas,
+                context,
+                root: mirrorCanvas.closest('[data-projects-section], [data-timeline-section]') ?? mirrorCanvas,
+                visible: typeof IntersectionObserver === 'undefined',
+            }]
+        })
+
+        let animationTime = 0
+        let animationFrameId = 0
+        let lastAnimationTime = performance.now()
+        let lastFrameTime = 0
+        let mouseX = -10
+        let mouseY = -10
+        let resizeTimer: number | undefined
+
+        const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+        let motionEnabled = !motionMediaQuery.matches
+
+        function drawFrame(): void {
+            gl.uniform1f(uniforms.time, animationTime * 0.001)
+            gl.uniform2f(uniforms.mouse, mouseX, mouseY)
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+
+            for (const mirror of mirrors) {
+                if (mirror.visible) mirror.context.drawImage(canvas, 0, 0)
+            }
+        }
+
+        function animate(currentTime: number): void {
+            animationFrameId = window.requestAnimationFrame(animate)
+
+            const elapsed = currentTime - lastFrameTime
+            if (elapsed < FRAME_INTERVAL) return
+
+            animationTime += Math.min(currentTime - lastAnimationTime, 100)
+            lastAnimationTime = currentTime
+            lastFrameTime = currentTime - (elapsed % FRAME_INTERVAL)
+            drawFrame()
+        }
+
+        function syncAnimationLoop(): void {
+            window.cancelAnimationFrame(animationFrameId)
+            animationFrameId = 0
+
+            if (motionEnabled && !document.hidden) {
+                lastAnimationTime = performance.now()
+                lastFrameTime = 0
+                animationFrameId = window.requestAnimationFrame(animate)
+            } else if (!document.hidden) {
+                drawFrame()
+            }
+        }
+
+        function resizeCanvas(): void {
+            const viewport = window.visualViewport
+            const cssWidth = Math.max(1, Math.round(viewport?.width ?? window.innerWidth))
+            const cssHeight = Math.max(1, Math.round(viewport?.height ?? window.innerHeight))
+            const renderWidth = Math.max(1, Math.round(cssWidth * RENDER_SCALE))
+            const renderHeight = Math.max(1, Math.round(cssHeight * RENDER_SCALE))
+
+            canvas.width = renderWidth
+            canvas.height = renderHeight
+            gl.viewport(0, 0, renderWidth, renderHeight)
+            gl.uniform2f(uniforms.resolution, renderWidth, renderHeight)
+
+            for (const mirror of mirrors) {
+                mirror.canvas.width = renderWidth
+                mirror.canvas.height = renderHeight
+            }
+
+            drawFrame()
+        }
+
+        function scheduleResize(): void {
+            window.clearTimeout(resizeTimer)
+            resizeTimer = window.setTimeout(resizeCanvas, RESIZE_DEBOUNCE_MS)
+        }
+
+        function handlePointerMove(event: PointerEvent): void {
+            mouseX = event.clientX / window.innerWidth
+            mouseY = 1 - event.clientY / window.innerHeight
+        }
+
+        function handleMotionChange(): void {
+            const nextMotionEnabled = !motionMediaQuery.matches
+            if (nextMotionEnabled === motionEnabled) return
+
+            motionEnabled = nextMotionEnabled
+            if (motionEnabled) {
+                window.addEventListener('pointermove', handlePointerMove, { passive: true })
+            } else {
+                window.removeEventListener('pointermove', handlePointerMove)
+            }
+            syncAnimationLoop()
+        }
+
+        const mirrorsByRoot = new Map<Element, Mirror[]>()
+        for (const mirror of mirrors) {
+            const rootMirrors = mirrorsByRoot.get(mirror.root) ?? []
+            rootMirrors.push(mirror)
+            mirrorsByRoot.set(mirror.root, rootMirrors)
+        }
+
+        const mirrorObserver = typeof IntersectionObserver === 'undefined'
+            ? undefined
+            : new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    for (const mirror of mirrorsByRoot.get(entry.target) ?? []) {
+                        mirror.visible = entry.isIntersecting
+                    }
+                }
+                if (!motionEnabled && !document.hidden) drawFrame()
+            })
+
+        for (const root of mirrorsByRoot.keys()) mirrorObserver?.observe(root)
+
+        if (motionEnabled) {
+            window.addEventListener('pointermove', handlePointerMove, { passive: true })
+        }
+        motionMediaQuery.addEventListener('change', handleMotionChange)
+        document.addEventListener('visibilitychange', syncAnimationLoop)
+        window.addEventListener('resize', scheduleResize, { passive: true })
+        window.visualViewport?.addEventListener('resize', scheduleResize, { passive: true })
+
+        resizeCanvas()
+        syncAnimationLoop()
+
+        window.addEventListener('pagehide', () => {
+            window.cancelAnimationFrame(animationFrameId)
+            window.clearTimeout(resizeTimer)
+            mirrorObserver?.disconnect()
+            motionMediaQuery.removeEventListener('change', handleMotionChange)
+            document.removeEventListener('visibilitychange', syncAnimationLoop)
+            window.removeEventListener('pointermove', handlePointerMove)
+            window.removeEventListener('resize', scheduleResize)
+            window.visualViewport?.removeEventListener('resize', scheduleResize)
+            gl.deleteBuffer(positionBuffer)
+            gl.deleteProgram(program)
+            gl.deleteShader(vertexShader)
+            gl.deleteShader(fragmentShader)
+        }, { once: true })
     }
-
-    if (motionEnabled)
-        window.addEventListener('mousemove', mouseMoveHandler);
-
-    motionMediaQuery.addEventListener('change', handleMotionChange);
-
-    const material = new THREE.ShaderMaterial({
-        uniforms: {
-            uTime: {value: 0},
-            uResolution: {value: new THREE.Vector2(window.innerWidth, window.innerHeight)},
-            uMouse: {value: mouse},
-            uSeed: {value: SEED},
-            uNoiseScale: {value: NOISE_SCALE},
-            uNoiseSpeed: {value: NOISE_SPEED},
-            uDensity: {value: DENSITY},
-            uLineWidth: {value: LINE_WIDTH},
-            uMouseRadius: {value: MOUSE_RADIUS},
-            uMouseStrength: {value: MOUSE_STRENGTH},
-            uBgColor: {value: BG_COLOR},
-            uLineColor: {value: LINE_COLOR}
-        }, vertexShader, fragmentShader
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    let lastTime = document.timeline.currentTime as number;
-    let animationTime = 0;
-
-    function animate(currentTime: number) {
-        const deltaTime = currentTime - lastTime;
-        if (motionEnabled)
-            animationTime += deltaTime;
-
-        material.uniforms.uTime.value = animationTime * 0.001;
-        renderer.render(scene, camera);
-
-        // Blit while the drawing buffer is still valid (same rAF callback),
-        // so preserveDrawingBuffer isn't needed.
-        for (const {ctx} of mirrors)
-            ctx.drawImage(renderer.domElement, 0, 0);
-
-        lastTime = currentTime;
-    }
-
-    renderer.setAnimationLoop(animate);
-
-    window.addEventListener('resize', () => {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        renderer.setSize(width, height);
-        resizeMirrors(width, height);
-        material.uniforms.uResolution.value.set(width, height);
-    });
 </script>

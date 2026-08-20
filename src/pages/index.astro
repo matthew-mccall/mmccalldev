@@ -103,7 +103,7 @@ import timeline from '@/data/timeline.json'
 					hairline seam along the join. Its compact negative drop shadow
 					stays above the tab and joins the section's top shadow.
 				-->
-				<Tab align="center" class="absolute -top-8 left-1/2 h-[calc(2rem+1px)] -translate-x-1/2 text-khaki" labelClass="px-6">
+				<Tab align="center" frosted class="absolute -top-8 left-1/2 h-[calc(2rem+1px)] -translate-x-1/2 text-khaki" labelClass="px-6">
 					<span class="text-xs uppercase tracking-[0.35em] text-maroon/70">Scroll &darr;</span>
 				</Tab>
 				<div class="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-24 md:px-12 md:py-32">
@@ -205,24 +205,6 @@ import timeline from '@/data/timeline.json'
 			const matchMedia = gsap.matchMedia()
 
 			matchMedia.add('(prefers-reduced-motion: no-preference)', () => {
-				// Fade project cards in one after the other — each successive card
-				// starts later, but well within the previous card's 0.7s window so
-				// the fades overlap
-				gsap.utils.toArray<HTMLElement>('[data-fade]').forEach((card, i) => {
-					gsap.from(card, {
-						opacity: 0,
-						y: 32,
-						duration: 0.7,
-						ease: 'power2.out',
-						delay: i * 0.15,
-						scrollTrigger: {
-							trigger: card,
-							start: 'top 88%',
-							toggleActions: 'play none none reverse',
-						},
-					})
-				})
-
 				if (!section || !projectsSection || !stage || !track) return
 
 				const cards = gsap.utils.toArray<HTMLElement>('.timeline-card', track)

@@ -1,3 +1,7 @@
+#extension GL_OES_standard_derivatives : enable
+
+precision highp float;
+
 uniform float uTime;
 uniform vec2 uResolution;
 uniform vec2 uMouse;
