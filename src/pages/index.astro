@@ -135,11 +135,11 @@ import timeline from '@/data/timeline.json'
 
 			<!-- Timeline -->
 			<!--
-				The Timeline section supplies the horizontal pan's scroll distance. Its
-				inner panel is viewport-fixed and clipped to the section, so Projects
-				peels away above it and the footer slides over it below. A named CSS
-				view timeline maps that section's passage through the viewport to the
-				horizontal track and progress bar.
+				The Timeline fills the lower stage behind Projects. Its inner panel is
+				viewport-fixed and clipped to the stage, so Projects peels away above it
+				and the footer slides over it below. The in-flow spacer supplies the
+				horizontal travel distance while CSS maps the document scroll range to
+				the track and progress bar.
 			-->
 			<section class="timeline-section relative z-10 text-khaki-light" data-timeline-section>
 				<div class="absolute inset-0 -z-10 [clip-path:inset(0)]" aria-hidden="true">
@@ -179,6 +179,7 @@ import timeline from '@/data/timeline.json'
 					</div>
 				</div>
 			</section>
+				<div class="timeline-scroll-space" aria-hidden="true"></div>
 			</div>
 		</main>
 
@@ -193,9 +194,11 @@ import timeline from '@/data/timeline.json'
 
 		<script>
 			const section = document.querySelector<HTMLElement>('[data-timeline-section]')
+			const projectsSection = document.querySelector<HTMLElement>('[data-projects-section]')
+			const stage = document.querySelector<HTMLElement>('[data-parallax-stage]')
 			const track = document.querySelector<HTMLElement>('[data-timeline-track]')
 
-			if (section && track) {
+			if (section && projectsSection && stage && track) {
 				const cards = Array.from(track.querySelectorAll<HTMLElement>('.timeline-card'))
 				let frame = 0
 
@@ -209,8 +212,12 @@ import timeline from '@/data/timeline.json'
 					const startX = viewportWidth / 2 - (first.offsetLeft + first.offsetWidth / 2)
 					const endX = viewportWidth / 2 - (last.offsetLeft + last.offsetWidth / 2)
 					const distance = Math.max(1, startX - endX)
+					const scrollStart = projectsSection.getBoundingClientRect().bottom + window.scrollY
+					const scrollEnd = scrollStart + distance
 
-					section.style.setProperty('--timeline-pan-distance', `${distance}px`)
+					stage.style.setProperty('--timeline-pan-distance', `${distance}px`)
+					section.style.setProperty('--timeline-scroll-start', `${scrollStart}px`)
+					section.style.setProperty('--timeline-scroll-end', `${scrollEnd}px`)
 					track.style.setProperty('--timeline-start-x', `${startX}px`)
 					track.style.setProperty('--timeline-end-x', `${endX}px`)
 
@@ -227,8 +234,14 @@ import timeline from '@/data/timeline.json'
 						)
 						const entryEnd = Math.min(1, entryProgress + 0.08)
 
-						card.style.setProperty('--timeline-card-entry-start', `${entryProgress * 100}%`)
-						card.style.setProperty('--timeline-card-entry-end', `${entryEnd * 100}%`)
+						card.style.setProperty(
+							'--timeline-card-entry-start',
+							`${scrollStart + entryProgress * distance}px`,
+						)
+						card.style.setProperty(
+							'--timeline-card-entry-end',
+							`${scrollStart + entryEnd * distance}px`,
+						)
 					})
 				}
 
@@ -239,6 +252,7 @@ import timeline from '@/data/timeline.json'
 
 				const resizeObserver = new ResizeObserver(scheduleMeasurement)
 				resizeObserver.observe(track)
+				resizeObserver.observe(projectsSection)
 				window.addEventListener('resize', scheduleMeasurement, { passive: true })
 				document.fonts.ready.then(scheduleMeasurement)
 				scheduleMeasurement()

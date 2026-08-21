@@ -320,21 +320,25 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
+  @supports (animation-timeline: scroll(root block)) {
     /*
-     * The section is taller than the viewport by exactly the horizontal travel
-     * distance. Its `contain` view-timeline range therefore begins when its top
-     * reaches the viewport top and ends when its bottom reaches the viewport
-     * bottom. The fixed panel remains clipped to the section throughout.
+     * Timeline fills the complete stage behind Projects. The absolute section
+     * preserves that cover/reveal stack while the in-flow spacer reserves the
+     * horizontal travel distance. Pixel attachment ranges limit the root scroll
+     * timeline to the interval between Projects leaving and the pan completing.
      */
     .js .parallax-stage {
       position: relative;
     }
 
     .js .timeline-section {
-      height: calc(100svh + var(--timeline-pan-distance, 1px));
+      position: absolute;
+      inset: 0;
       clip-path: inset(0);
-      view-timeline: --timeline-pan block;
+    }
+
+    .js .timeline-scroll-space {
+      height: calc(100svh + var(--timeline-pan-distance, 1px));
     }
 
     /*
@@ -366,8 +370,9 @@
       gap: 2rem;
       padding-inline: clamp(1.5rem, 5vw, 3rem);
       animation: timeline-pan 1ms linear both;
-      animation-timeline: --timeline-pan;
-      animation-range: contain 0% contain 100%;
+      animation-timeline: scroll(root block);
+      animation-range-start: var(--timeline-scroll-start, 0px);
+      animation-range-end: var(--timeline-scroll-end, 1px);
     }
 
     .js .timeline-card {
@@ -388,9 +393,9 @@
 
     .js .timeline-card {
       animation: timeline-card-enter 1ms ease-out both;
-      animation-timeline: --timeline-pan;
-      animation-range-start: contain var(--timeline-card-entry-start, 0%);
-      animation-range-end: contain var(--timeline-card-entry-end, 8%);
+      animation-timeline: scroll(root block);
+      animation-range-start: var(--timeline-card-entry-start, 0px);
+      animation-range-end: var(--timeline-card-entry-end, 1px);
     }
 
     .js .timeline-card-rail {
@@ -426,8 +431,9 @@
 
     .js .timeline-progress-bar {
       animation: timeline-progress 1ms linear both;
-      animation-timeline: --timeline-pan;
-      animation-range: contain 0% contain 100%;
+      animation-timeline: scroll(root block);
+      animation-range-start: var(--timeline-scroll-start, 0px);
+      animation-range-end: var(--timeline-scroll-end, 1px);
     }
 
     @keyframes timeline-pan {
