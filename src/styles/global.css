@@ -92,11 +92,6 @@
     @apply border-border outline-ring/50;
   }
 
-  /*
-   * Note: no `scroll-behavior: smooth` here — CSS smooth scrolling makes
-   * Safari animate ScrollTrigger's internal scroll adjustments, which fights
-   * the pinned timeline and freezes the scrubbed pan.
-   */
   html {
     @apply font-sans;
   }
@@ -124,7 +119,7 @@
 }
 
 /*
- * CSS-only page transitions: cross-document view transitions fade/slide the
+ * CSS-only page transitions: cross-document view transitions reveal the
  * page on same-origin navigations with zero JavaScript. The floating nav
  * pill opts out via its own `view-transition-name` (see NavBar.astro), so it
  * holds still like persistent chrome while the page content animates.
@@ -135,26 +130,46 @@
   navigation: auto;
 }
 
+/*
+ * The WebGL context is recreated by each document, but a deterministic seed
+ * and wall-clock phase make both captures represent the same contour state.
+ * Capture the map separately so the root page reveal does not move or dim it,
+ * and switch directly to the live new capture instead of cross-fading maps.
+ */
+#contour-container {
+  view-transition-name: contour-map;
+}
+
+::view-transition-group(contour-map),
+::view-transition-new(contour-map) {
+  animation: none;
+}
+
+::view-transition-old(contour-map) {
+  display: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+
   ::view-transition-old(root) {
-    animation: page-leave 0.2s ease-in both;
+    animation: none;
   }
 
   ::view-transition-new(root) {
-    animation: page-enter 0.3s ease-out 0.1s both;
+    animation: page-reveal 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  @keyframes page-leave {
-    to {
-      opacity: 0;
-      transform: translateY(-0.5rem);
-    }
-  }
-
-  @keyframes page-enter {
+  @keyframes page-reveal {
     from {
-      opacity: 0;
-      transform: translateY(0.75rem);
+      clip-path: inset(0 0 100% 0);
+    }
+
+    to {
+      clip-path: inset(0);
     }
   }
 }
@@ -243,13 +258,13 @@
 }
 
 /*
- * Scroll-jacked timeline.
+ * Scroll-driven timeline.
  *
  * Default styles (below) are a static vertical timeline that needs no
- * JavaScript at all. When JavaScript runs, an inline script adds the `js`
- * class to <html> and GSAP ScrollTrigger pins the section while panning the
- * horizontal track — the `.js`-scoped rules switch the layout accordingly.
- * Reduced-motion users keep the static fallback even with JavaScript on.
+ * JavaScript at all. Where CSS view timelines are supported, a small script
+ * measures the responsive track geometry and CSS maps the timeline section's
+ * scroll range to the horizontal pan. Reduced-motion users and unsupported
+ * browsers retain the static fallback.
  */
 .timeline-track {
   display: flex;
@@ -305,106 +320,138 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /*
-   * Timeline fills the complete stage behind Projects. Its panel is fixed to
-   * the viewport for the whole cover/reveal — sticky positioning would only
-   * engage once the stage top passes the viewport top, letting the timeline
-   * ride along with the flow while Projects still covers part of it. The
-   * clip-path on the section trims the fixed panel to the stage box (unlike
-   * overflow, clip-path clips fixed descendants without becoming their
-   * containing block), so Projects peels away above it and the footer slides
-   * over it below while the timeline itself never moves. The in-flow spacer
-   * reserves the horizontal pan distance.
-   */
-  .js .parallax-stage {
-    position: relative;
-  }
+  @supports (animation-timeline: view()) {
+    /*
+     * The section is taller than the viewport by exactly the horizontal travel
+     * distance. Its `contain` view-timeline range therefore begins when its top
+     * reaches the viewport top and ends when its bottom reaches the viewport
+     * bottom. The fixed panel remains clipped to the section throughout.
+     */
+    .js .parallax-stage {
+      position: relative;
+    }
 
-  .js .timeline-section {
-    position: absolute;
-    inset: 0;
-    clip-path: inset(0);
-  }
+    .js .timeline-section {
+      height: calc(100svh + var(--timeline-pan-distance, 1px));
+      clip-path: inset(0);
+      view-timeline: --timeline-pan block;
+    }
 
-  .js .timeline-scroll-space {
-    height: calc(100svh + var(--timeline-pan-distance, 1px));
-  }
+    /*
+     * `overflow: hidden` (not `clip`) and no `will-change` on the track:
+     * Safari's compositor can stop repainting transformed children inside a
+     * fixed element when `overflow: clip` or a stale `will-change` layer is
+     * involved. The Timeline surface itself is never transformed, keeping its
+     * CSS-fixed contour stable throughout the reveal and horizontal pan.
+     */
+    .js .timeline-pin {
+      position: fixed;
+      inset: 0;
+      height: 100svh;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-  /*
-   * `overflow: hidden` (not `clip`) and no `will-change` on the track:
-   * Safari's compositor can stop repainting transformed children inside a
-   * fixed element when `overflow: clip` or a stale `will-change` layer is
-   * involved. The Timeline surface itself is never transformed, keeping its
-   * CSS-fixed contour stable throughout the reveal and horizontal pan.
-   */
-  .js .timeline-pin {
-    position: fixed;
-    inset: 0;
-    height: 100svh;
-    justify-content: center;
-    overflow: hidden;
-  }
+    .js .timeline-viewport {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
 
-  .js .timeline-viewport {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-  }
+    .js .timeline-track {
+      flex-direction: row;
+      align-items: flex-start;
+      width: max-content;
+      gap: 2rem;
+      padding-inline: clamp(1.5rem, 5vw, 3rem);
+      animation: timeline-pan 1ms linear both;
+      animation-timeline: --timeline-pan;
+      animation-range: contain 0% contain 100%;
+    }
 
-  .js .timeline-track {
-    flex-direction: row;
-    align-items: flex-start;
-    width: max-content;
-    gap: 2rem;
-    padding-inline: clamp(1.5rem, 5vw, 3rem);
-  }
+    .js .timeline-card {
+      width: min(21rem, 78vw);
+      flex: none;
+      border-left: 0;
+      padding-left: 0;
+      padding-bottom: 0;
+    }
 
-  .js .timeline-card {
-    width: min(21rem, 78vw);
-    flex: none;
-    border-left: 0;
-    padding-left: 0;
-    padding-bottom: 0;
-  }
+    .js .timeline-card::before {
+      display: none;
+    }
 
-  .js .timeline-card::before {
-    display: none;
-  }
+    .js .timeline-card:nth-child(even) {
+      margin-top: 2.5rem;
+    }
 
-  .js .timeline-card:nth-child(even) {
-    margin-top: 2.5rem;
-  }
+    .js .timeline-card {
+      animation: timeline-card-enter 1ms ease-out both;
+      animation-timeline: --timeline-pan;
+      animation-range-start: contain var(--timeline-card-entry-start, 0%);
+      animation-range-end: contain var(--timeline-card-entry-end, 8%);
+    }
 
-  .js .timeline-card-rail {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 1.5rem;
-    margin-bottom: 1rem;
-  }
+    .js .timeline-card-rail {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 1.5rem;
+      margin-bottom: 1rem;
+    }
 
-  .js .timeline-card-rail::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -2rem;
-    right: -2rem;
-    height: 1px;
-    background: rgb(194 178 128 / 0.35);
-  }
+    .js .timeline-card-rail::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -2rem;
+      right: -2rem;
+      height: 1px;
+      background: rgb(194 178 128 / 0.35);
+    }
 
-  .js .timeline-card-rail::after {
-    content: "";
-    position: relative;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 9999px;
-    background: var(--color-khaki);
-  }
+    .js .timeline-card-rail::after {
+      content: "";
+      position: relative;
+      width: 0.625rem;
+      height: 0.625rem;
+      border-radius: 9999px;
+      background: var(--color-khaki);
+    }
 
-  .js .timeline-hint {
-    display: block;
+    .js .timeline-hint {
+      display: block;
+    }
+
+    .js .timeline-progress-bar {
+      animation: timeline-progress 1ms linear both;
+      animation-timeline: --timeline-pan;
+      animation-range: contain 0% contain 100%;
+    }
+
+    @keyframes timeline-pan {
+      from {
+        transform: translateX(var(--timeline-start-x, 0));
+      }
+
+      to {
+        transform: translateX(var(--timeline-end-x, 0));
+      }
+    }
+
+    @keyframes timeline-progress {
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes timeline-card-enter {
+      from {
+        opacity: 0;
+        transform: translateY(3rem);
+      }
+    }
   }
 }
 

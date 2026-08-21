@@ -8,6 +8,12 @@
     const FRAME_INTERVAL = 1000 / TARGET_FPS
     const RENDER_SCALE = 0.65
     const RESIZE_DEBOUNCE_MS = 150
+    const NOISE_SPEED = 0.01
+    const SIMPLEX_PERIOD = 289
+    const NOISE_PERIOD_SECONDS = SIMPLEX_PERIOD / NOISE_SPEED
+    const SEED = 1729.25
+    const POINTER_STORAGE_KEY = 'contour-map-pointer'
+    const POINTER_PERSIST_DEBOUNCE_MS = 100
 
     const container = document.getElementById('contour-container')
     if (container) initializeContourMap(container)
@@ -76,9 +82,9 @@
             mouse: gl.getUniformLocation(program, 'uMouse'),
         }
 
-        gl.uniform1f(gl.getUniformLocation(program, 'uSeed'), Math.random() * 10000)
+        gl.uniform1f(gl.getUniformLocation(program, 'uSeed'), SEED)
         gl.uniform1f(gl.getUniformLocation(program, 'uNoiseScale'), 2.5)
-        gl.uniform1f(gl.getUniformLocation(program, 'uNoiseSpeed'), 0.01)
+        gl.uniform1f(gl.getUniformLocation(program, 'uNoiseSpeed'), NOISE_SPEED)
         gl.uniform1f(gl.getUniformLocation(program, 'uDensity'), 5)
         gl.uniform1f(gl.getUniformLocation(program, 'uLineWidth'), 2)
         gl.uniform1f(gl.getUniformLocation(program, 'uMouseRadius'), 0.7)
@@ -107,19 +113,67 @@
             }]
         })
 
-        let animationTime = 0
         let animationFrameId = 0
-        let lastAnimationTime = performance.now()
         let lastFrameTime = 0
-        let mouseX = -10
-        let mouseY = -10
+        const storedPointer = readPointerPosition()
+        let mouseX = storedPointer?.x ?? -10
+        let mouseY = storedPointer?.y ?? -10
         let resizeTimer: number | undefined
+        let pointerPersistTimer: number | undefined
 
         const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
         let motionEnabled = !motionMediaQuery.matches
+        let frozenContourTime = getContourTime(performance.now())
 
-        function drawFrame(): void {
-            gl.uniform1f(uniforms.time, animationTime * 0.001)
+        function getContourTime(timestamp: number): number {
+            const epochSeconds = (performance.timeOrigin + timestamp) * 0.001
+            return epochSeconds % NOISE_PERIOD_SECONDS
+        }
+
+        function readPointerPosition(): { x: number, y: number } | undefined {
+            try {
+                const value = sessionStorage.getItem(POINTER_STORAGE_KEY)
+                if (!value) return undefined
+
+                const pointer = JSON.parse(value) as { x?: unknown, y?: unknown }
+                if (
+                    typeof pointer.x !== 'number' ||
+                    typeof pointer.y !== 'number' ||
+                    pointer.x < 0 || pointer.x > 1 ||
+                    pointer.y < 0 || pointer.y > 1
+                ) return undefined
+
+                return { x: pointer.x, y: pointer.y }
+            } catch {
+                return undefined
+            }
+        }
+
+        function persistPointerPosition(): void {
+            window.clearTimeout(pointerPersistTimer)
+            pointerPersistTimer = undefined
+            if (mouseX < 0 || mouseY < 0) return
+
+            try {
+                sessionStorage.setItem(POINTER_STORAGE_KEY, JSON.stringify({ x: mouseX, y: mouseY }))
+            } catch {
+                // Storage can be unavailable in privacy-restricted contexts.
+            }
+        }
+
+        function schedulePointerPersist(): void {
+            window.clearTimeout(pointerPersistTimer)
+            pointerPersistTimer = window.setTimeout(
+                persistPointerPosition,
+                POINTER_PERSIST_DEBOUNCE_MS,
+            )
+        }
+
+        function drawFrame(currentTime = performance.now()): void {
+            gl.uniform1f(
+                uniforms.time,
+                motionEnabled ? getContourTime(currentTime) : frozenContourTime,
+            )
             gl.uniform2f(uniforms.mouse, mouseX, mouseY)
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 
@@ -134,10 +188,8 @@
             const elapsed = currentTime - lastFrameTime
             if (elapsed < FRAME_INTERVAL) return
 
-            animationTime += Math.min(currentTime - lastAnimationTime, 100)
-            lastAnimationTime = currentTime
             lastFrameTime = currentTime - (elapsed % FRAME_INTERVAL)
-            drawFrame()
+            drawFrame(currentTime)
         }
 
         function syncAnimationLoop(): void {
@@ -145,7 +197,6 @@
             animationFrameId = 0
 
             if (motionEnabled && !document.hidden) {
-                lastAnimationTime = performance.now()
                 lastFrameTime = 0
                 animationFrameId = window.requestAnimationFrame(animate)
             } else if (!document.hidden) {
@@ -181,17 +232,27 @@
         function handlePointerMove(event: PointerEvent): void {
             mouseX = event.clientX / window.innerWidth
             mouseY = 1 - event.clientY / window.innerHeight
+            schedulePointerPersist()
+        }
+
+        function handlePointerDown(event: PointerEvent): void {
+            mouseX = event.clientX / window.innerWidth
+            mouseY = 1 - event.clientY / window.innerHeight
+            persistPointerPosition()
         }
 
         function handleMotionChange(): void {
             const nextMotionEnabled = !motionMediaQuery.matches
             if (nextMotionEnabled === motionEnabled) return
 
+            if (!nextMotionEnabled) frozenContourTime = getContourTime(performance.now())
             motionEnabled = nextMotionEnabled
             if (motionEnabled) {
                 window.addEventListener('pointermove', handlePointerMove, { passive: true })
+                window.addEventListener('pointerdown', handlePointerDown, { passive: true })
             } else {
                 window.removeEventListener('pointermove', handlePointerMove)
+                window.removeEventListener('pointerdown', handlePointerDown)
             }
             syncAnimationLoop()
         }
@@ -218,9 +279,11 @@
 
         if (motionEnabled) {
             window.addEventListener('pointermove', handlePointerMove, { passive: true })
+            window.addEventListener('pointerdown', handlePointerDown, { passive: true })
         }
         motionMediaQuery.addEventListener('change', handleMotionChange)
         document.addEventListener('visibilitychange', syncAnimationLoop)
+        window.addEventListener('pageswap', persistPointerPosition)
         window.addEventListener('resize', scheduleResize, { passive: true })
         window.visualViewport?.addEventListener('resize', scheduleResize, { passive: true })
 
@@ -228,12 +291,16 @@
         syncAnimationLoop()
 
         window.addEventListener('pagehide', () => {
+            persistPointerPosition()
             window.cancelAnimationFrame(animationFrameId)
             window.clearTimeout(resizeTimer)
+            window.clearTimeout(pointerPersistTimer)
             mirrorObserver?.disconnect()
             motionMediaQuery.removeEventListener('change', handleMotionChange)
             document.removeEventListener('visibilitychange', syncAnimationLoop)
+            window.removeEventListener('pageswap', persistPointerPosition)
             window.removeEventListener('pointermove', handlePointerMove)
+            window.removeEventListener('pointerdown', handlePointerDown)
             window.removeEventListener('resize', scheduleResize)
             window.visualViewport?.removeEventListener('resize', scheduleResize)
             gl.deleteBuffer(positionBuffer)

@@ -109,6 +109,9 @@ import timeline from '@/data/timeline.json'
 				<div class="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-24 md:px-12 md:py-32">
 					<header class="flex flex-col gap-4">
 						<h2 class="severance-overline border-maroon/40 pt-4 font-display text-4xl font-bold md:text-5xl">Projects</h2>
+						<p class="max-w-xl text-lg leading-relaxed text-maroon/70 md:text-xl">
+							Ideas are easy. Shipping is the feature.
+						</p>
 					</header>
 					<div class="grid gap-6 md:grid-cols-3">
 						{projects.map((project) => (
@@ -132,12 +135,11 @@ import timeline from '@/data/timeline.json'
 
 			<!-- Timeline -->
 			<!--
-				The Timeline fills the complete lower-section stage and its inner panel
-				is viewport-fixed, clipped to the stage box (see .timeline-section), so
-				it never rides along with the scroll: Projects peels away above it and
-				the footer slides over it below while the panel holds still. The
-				in-flow spacer below supplies the horizontal pan's scroll distance; GSAP
-				therefore never needs to pin or transform this CSS-fixed surface.
+				The Timeline section supplies the horizontal pan's scroll distance. Its
+				inner panel is viewport-fixed and clipped to the section, so Projects
+				peels away above it and the footer slides over it below. A named CSS
+				view timeline maps that section's passage through the viewport to the
+				horizontal track and progress bar.
 			-->
 			<section class="timeline-section relative z-10 text-khaki-light" data-timeline-section>
 				<div class="absolute inset-0 -z-10 [clip-path:inset(0)]" aria-hidden="true">
@@ -150,8 +152,8 @@ import timeline from '@/data/timeline.json'
 							<div class="timeline-progress-bar" data-timeline-progress></div>
 						</div>
 						<h2 class="font-display text-4xl font-bold md:text-5xl">Timeline</h2>
-						<p class="timeline-hint text-xs uppercase tracking-[0.3em] text-khaki/60">
-							Keep scrolling &mdash; the timeline pans with you
+						<p class="max-w-xl text-lg leading-relaxed text-khaki/80 md:text-xl">
+							The changelog, with fewer breaking changes.
 						</p>
 					</header>
 					<div class="timeline-viewport mx-auto w-full max-w-6xl px-6 md:px-12">
@@ -177,7 +179,6 @@ import timeline from '@/data/timeline.json'
 					</div>
 				</div>
 			</section>
-				<div class="timeline-scroll-space" aria-hidden="true"></div>
 			</div>
 		</main>
 
@@ -191,75 +192,57 @@ import timeline from '@/data/timeline.json'
 		</script>
 
 		<script>
-			import gsap from 'gsap'
-			import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-			gsap.registerPlugin(ScrollTrigger)
-
 			const section = document.querySelector<HTMLElement>('[data-timeline-section]')
-			const projectsSection = document.querySelector<HTMLElement>('[data-projects-section]')
-			const stage = document.querySelector<HTMLElement>('[data-parallax-stage]')
 			const track = document.querySelector<HTMLElement>('[data-timeline-track]')
-			const progress = document.querySelector<HTMLElement>('[data-timeline-progress]')
 
-			const matchMedia = gsap.matchMedia()
+			if (section && track) {
+				const cards = Array.from(track.querySelectorAll<HTMLElement>('.timeline-card'))
+				let frame = 0
 
-			matchMedia.add('(prefers-reduced-motion: no-preference)', () => {
-				if (!section || !projectsSection || !stage || !track) return
+				const measureTimeline = () => {
+					frame = 0
+					const first = cards.at(0)
+					const last = cards.at(-1)
+					if (!first || !last) return
 
-				const cards = gsap.utils.toArray<HTMLElement>('.timeline-card', track)
-				if (cards.length === 0) return
+					const viewportWidth = document.documentElement.clientWidth
+					const startX = viewportWidth / 2 - (first.offsetLeft + first.offsetWidth / 2)
+					const endX = viewportWidth / 2 - (last.offsetLeft + last.offsetWidth / 2)
+					const distance = Math.max(1, startX - endX)
 
-				const first = cards[0]
-				const last = cards[cards.length - 1]
+					section.style.setProperty('--timeline-pan-distance', `${distance}px`)
+					track.style.setProperty('--timeline-start-x', `${startX}px`)
+					track.style.setProperty('--timeline-end-x', `${endX}px`)
 
-				// Start with the first card near the center of the screen and stop
-				// panning once the last card reaches the center — the pin then
-				// releases and normal scrolling continues to the footer.
-				const startX = () => window.innerWidth / 2 - (first.offsetLeft + first.offsetWidth / 2)
-				const endX = () => window.innerWidth / 2 - (last.offsetLeft + last.offsetWidth / 2)
-				const distance = () => {
-					const value = Math.max(1, startX() - endX())
-					stage.style.setProperty('--timeline-pan-distance', `${value}px`)
-					return value
+					const minimumEntryStagger = 0.04
+
+					cards.forEach((card, index) => {
+						const naturalEntryProgress = Math.max(
+							0,
+							(card.offsetLeft + startX - viewportWidth * 0.92) / distance,
+						)
+						const entryProgress = Math.min(
+							0.9,
+							Math.max(index * minimumEntryStagger, naturalEntryProgress),
+						)
+						const entryEnd = Math.min(1, entryProgress + 0.08)
+
+						card.style.setProperty('--timeline-card-entry-start', `${entryProgress * 100}%`)
+						card.style.setProperty('--timeline-card-entry-end', `${entryEnd * 100}%`)
+					})
 				}
 
-				const pan = gsap.fromTo(
-					track,
-					{ x: startX },
-					{
-						x: endX,
-						ease: 'none',
-							scrollTrigger: {
-								trigger: projectsSection,
-								start: 'bottom top',
-								end: () => `+=${distance()}`,
-							scrub: 1,
-							anticipatePin: 1,
-							invalidateOnRefresh: true,
-							onUpdate: (self) => {
-								if (progress) progress.style.transform = `scaleX(${self.progress})`
-							},
-						},
-					},
-				)
+				const scheduleMeasurement = () => {
+					if (frame) return
+					frame = requestAnimationFrame(measureTimeline)
+				}
 
-				// Fade each timeline card in as the horizontal pan brings it into view
-				cards.forEach((card) => {
-					gsap.from(card, {
-						opacity: 0,
-						y: 48,
-						duration: 0.6,
-						ease: 'power2.out',
-						scrollTrigger: {
-							trigger: card,
-							containerAnimation: pan,
-							start: 'left 92%',
-							toggleActions: 'play none none reverse',
-						},
-					})
-				})
-			})
+				const resizeObserver = new ResizeObserver(scheduleMeasurement)
+				resizeObserver.observe(track)
+				window.addEventListener('resize', scheduleMeasurement, { passive: true })
+				document.fonts.ready.then(scheduleMeasurement)
+				scheduleMeasurement()
+			}
 		</script>
 	</body>
 </html>
